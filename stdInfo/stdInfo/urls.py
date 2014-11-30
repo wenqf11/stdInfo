@@ -9,4 +9,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^student/', include('student.urls')),
+    url(r'^manage/', include('manage.urls')),
+    url(r'^$', 'stdInfo.views.index'),
 )

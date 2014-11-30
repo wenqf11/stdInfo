@@ -36,8 +36,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main',
-    'django.contrib.admin',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -60,11 +58,11 @@ WSGI_APPLICATION = 'stdInfo.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql", # Add "postgresql_psycopg2", "postgresql", "mysql", "sqlite3" or "oracle".
-        "NAME": "stdinfo",                       # Or path to database file if using sqlite3.
-        "USER": "root",                             # Not used with sqlite3.
+        "NAME": "",                       # Or path to database file if using sqlite3.
+        "USER": "",                             # Not used with sqlite3.
         "PASSWORD": "",                         # Not used with sqlite3.
-        "HOST": "127.0.0.1",                             # Set to empty string for localhost. Not used with sqlite3.
-        "PORT": "3306",                             # Set to empty string for default. Not used with sqlite3.
+        "HOST": "",                             # Set to empty string for localhost. Not used with sqlite3.
+        "PORT": "",                             # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -86,3 +84,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, "templates"),
+)
+
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
