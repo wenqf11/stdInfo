@@ -1,0 +1,10 @@
+#main{
+    margin-top: 60px;
+}
+
+.glyphicon-chevron-right{
+    float: right;
+}
+.table-click > tbody tr:hover{
+    cursor: pointer;
+}

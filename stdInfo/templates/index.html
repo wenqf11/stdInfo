@@ -1,16 +1,31 @@
 {% extends 'base.html' %}
 {% block title %}学生信息管理系统{% endblock %}
 
+{% block css_js %}
+    <link href="../static/css/index.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-<header>
-    学生信息管理系统
-</header>
-
-<div class="container">
-
+<div class="container content">
+    <h1>欢迎使用软件学院学生信息系统</h1>
+    <div class="login-form">
+        <form action="/" role="form" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" class="form-control" name="username" id="username" placeholder="用户名 / 学号">
+            </div>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="密码">
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox">记住我
+                </label><span class="help-block">登录信息将保存三周</span>
+            </div>
+            <button type="submit" class="btn btn-primary">登录</button>
+        </form>
+    </div>
 </div>
-
-<footer>
-&copy; 2014  <a href="http://ssast.org" target="_blank">软件学院学生科协</a>技术支持
-</footer>
 {% endblock %}

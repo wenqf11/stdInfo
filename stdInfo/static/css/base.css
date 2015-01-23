@@ -1,0 +1,10 @@
+.dropdown-menu{
+    min-width: 0px;
+}
+.footer{
+    width:100%;
+    height:50px;
+    text-align: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
