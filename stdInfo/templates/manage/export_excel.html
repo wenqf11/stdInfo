@@ -1,65 +1,88 @@
-{% extends 'base.html' %}
-{% block title %}学生信息管理系统{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>学生详细信息 - 学生信息管理系统</title>
+    <link href="../../static/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/css/base.css" rel="stylesheet">
+    <script type="text/javascript" src="../../static/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="../../static/bootstrap3/js/bootstrap.min.js"></script>
+    <link href="../../static/css/manage.css" rel="stylesheet">
+</head>
 
-{% block css_js %}
-    <link href="../static/css/manage.css" rel="stylesheet">
-{% endblock %}
-
-
-{% block header %}
+<body>
 <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="glyphicon glyphicon-user"></span> admin<span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">个人信息</a></li>
-            <li class="divider"></li>
-            <li><a href="#">设置</a></li>
-            <li class="divider"></li>
-            <li><a href="#">退出</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-{% endblock %}
+    <header>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">学生信息系统</a>
+            </div>
 
+            <form class="navbar-form navbar-left" role="search">
+                 <div class="form-group">
+                     <input type="text" class="form-control" placeholder="Search">
+                 </div>
+                 <button type="submit" class="btn btn-default">搜索</button>
+             </form>
 
-{% block content %}
-<div class="container-fluid" id="main">
-    <div class="row">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="sidebar">
-            <ul id="sidebar-tab" class="nav nav-list collapse navbar-collapse nav-pills nav-stacked" role="tablist">
-                <li role="presentation" >
-                    <a href="/manage/basic_info">基本信息<i class="glyphicon glyphicon-chevron-right"></i></a>
-                </li>
-                <li role="presentation">
-                    <a href="/manage/degree_info" >学籍信息<i class="glyphicon glyphicon-chevron-right"></i></a>
-                </li>
-                <li role="presentation">
-                    <a href="/manage/award_info">奖助贷<i class="glyphicon glyphicon-chevron-right"></i></a>
-                </li>
-                <li role="presentation">
-                    <a href="/manage/work_info">科创社工<i class="glyphicon glyphicon-chevron-right"></i></a>
-                </li>
-                <li role="presentation">
-                    <a href="/manage/graduation_info">毕业信息<i class="glyphicon glyphicon-chevron-right"></i></a>
-                </li>
-                <li role="presentation">
-                    <a href="/manage/import_excel">导入<i class="glyphicon glyphicon-chevron-right"></i></a>
-                </li>
-                <li role="presentation" class="active">
-                    <a href="/manage/export_excel">导出<i class="glyphicon glyphicon-chevron-right"></i></a>
-                </li>
-            </ul>
-        </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-user"></span> admin<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">个人信息</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">设置</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">退出</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid" id="main">
+        <div class="row">
+            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="sidebar">
+                <ul id="sidebar-tab" class="nav nav-list collapse navbar-collapse nav-pills nav-stacked" role="tablist">
+                    <li role="presentation" >
+                        <a href="/manage/basic_info">基本信息<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </li>
+                    <li role="presentation">
+                        <a href="/manage/degree_info" >学籍信息<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </li>
+                    <li role="presentation">
+                        <a href="/manage/award_info">奖助贷<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </li>
+                    <li role="presentation">
+                        <a href="/manage/work_info">科创社工<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </li>
+                    <li role="presentation">
+                        <a href="/manage/graduation_info">毕业信息<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </li>
+                    <li role="presentation">
+                        <a href="/manage/import_excel">导入<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </li>
+                    <li role="presentation" class="active">
+                        <a href="/manage/export_excel">导出<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </li>
+                </ul>
+            </div>
 
         <!--/span-->
-        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" id="content">
-                   导出
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" id="content">
+                导出
+            </div>
         </div>
     </div>
-</div>
-{% endblock %}
+</body>
+</html>
