@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>学生详细信息 - 学生信息管理系统</title>
     <link href="../../static/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../static/css/base.css" rel="stylesheet">
+    <link href="../../static/bootstrap-table/bootstrap-table.css" rel="stylesheet">
     <script type="text/javascript" src="../../static/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="../../static/bootstrap-table/bootstrap-table.js"></script>
     <script type="text/javascript" src="../../static/bootstrap3/js/bootstrap.min.js"></script>
     <link href="../../static/css/manage.css" rel="stylesheet">
 </head>
@@ -77,27 +79,46 @@
                     </li>
                 </ul>
             </div>
+
+
+
+
+            <!--===============================================================================================-->
             <!--/span-->
-            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" id="content">
-                <table class="table table-hover table-bordered table-click">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>学号</th>
-                        <th>姓名</th>
-                        <th>教学班</th>
-                    <th>性别</th>
-                    <th>身份证号</th>
-                    <th>出生日期</th>
-                    <th>民族</th>
-                    <th>政治面貌</th>
-                    <th>考区</th>
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10"  id="content">
+                <table class="table table-hover table-bordered table-click" data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                <thead>
+                    <tr>      
+                        <th data-field="state" data-checkbox="true"></th>
+                        <th data-sortable="true">学号</th>
+                        <th data-sortable="true">姓名</th>
+                        <th data-sortable="true">教学班</th>
+                    <th data-sortable="true">性别</th>
+                    <th data-sortable="true">身份证号</th>
+                    <th data-sortable="true">出生日期</th>
+                    <th data-sortable="true">民族</th>
+                    <th data-sortable="true">政治面貌</th>
+                    <th data-sortable="true">考区</th>
                 </tr>
               </thead>
               <tbody>
                 <tr onclick="location.href='/manage/detail'">
+                  <td></td>
                   <td>1</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
                   <td>Mark</td>
+                  <td>Ottl</td>
+                  <td>@mdo</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+
+                <tr onclick="location.href='/manage/detail'">
+                  <td></td>
+                  <td>3</td>
+                  
                   <td>Otto</td>
                   <td>@mdo</td>
                   <td>Mark</td>
@@ -109,21 +130,9 @@
                 </tr>
 
                 <tr onclick="location.href='/manage/detail'">
-                  <td>1</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-
-                <tr onclick="location.href='/manage/detail'">
-                  <td>1</td>
-                  <td>Mark</td>
+                  <td></td>
+                  <td>6</td>
+                  
                   <td>Otto</td>
                   <td>@mdo</td>
                   <td>Otto</td>
@@ -135,8 +144,9 @@
                 </tr>
 
                 <tr onclick="location.href='/manage/detail'">
-                  <td>1</td>
-                  <td>Mark</td>
+                  <td></td>
+                  <td>12</td>
+                  
                   <td>Otto</td>
                   <td>@mdo</td>
                   <td>Mark</td>
@@ -148,14 +158,155 @@
                 </tr>
 
                 <tr onclick="location.href='/manage/detail'">
-                  <td>1</td>
-                  <td>Mark</td>
+                  <td></td>
+                  <td>16</td>
+                 
                   <td>Otto</td>
                   <td>@mdo</td>
                   <td>Mark</td>
                   <td>Otto</td>
                   <td>Otto</td>
                   <td>@mdo</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+
+                <tr onclick="location.href='/manage/detail'">
+                  <td></td>
+                  <td>10</td>
+                 
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+
+                <tr onclick="location.href='/manage/detail'">
+                  <td></td>
+                  <td>11</td>
+                  
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+
+                <tr onclick="location.href='/manage/detail'">
+                  <td></td>
+                  <td>8</td>
+                  
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+
+                <tr onclick="location.href='/manage/detail'">
+                  <td></td>
+                  <td>10</td>
+                  
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+
+                <tr onclick="location.href='/manage/detail'">
+                  <td></td>
+                  <td>5</td>
+                  
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+
+                <tr onclick="location.href='/manage/detail'">
+                  <td></td>
+                  <td>9</td>
+                  
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+
+                <tr onclick="location.href='/manage/detail'">
+                  <td></td>
+                  <td>12</td>
+                  
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+
+                <tr onclick="location.href='/manage/detail'">
+                  <td></td>
+                  <td>112</td>
+                 
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+
+                <tr onclick="location.href='/manage/detail'">
+                  <td></td>
+                  <td>34</td>
+                 
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+
+                <tr onclick="location.href='/manage/detail'">
+                  <td></td>
+                  <td>41</td>
+                 
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>Otto</td>
                   <td>@mdo</td>
                   <td>@mdo</td>
                 </tr>
@@ -164,3 +315,5 @@
         </div>
     </div>
 </div>
+</body>
+</html>
