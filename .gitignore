@@ -1,4 +1,6 @@
-local_settings.py
 *.pyc
 *.swp
 
+
+workspace.xml
+local_settings.py
