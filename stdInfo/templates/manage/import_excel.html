@@ -3,69 +3,98 @@
 
 {% block css_js %}
     <link href="../static/css/manage.css" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;}
+        body{margin:30px;}
+        .upload1{position:relative;width:260px;height:30px;}
+        .upload_file1{position:absolute;left:0;top:0;width:260px;height:30px;line-height:30px;opacity:0;filter:alpha(opacity:0);}
+    </style>
 {% endblock %}
-
 
 {% block header %}
-<!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="glyphicon glyphicon-user"></span> admin<span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">个人信息</a></li>
-            <li class="divider"></li>
-            <li><a href="#">设置</a></li>
-            <li class="divider"></li>
-            <li><a href="#">退出</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-{% endblock %}
-
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-user"></span> admin<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">个人信息</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">设置</a></li>
+                            <li class="divider"></li>
+                            <li data-toggle="modal" data-target="#myModal"><a href="#">导入数据</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">退出</a></li>
+                        </ul>
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">请选择文件路径</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                       <!-- <form  role="form" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+                                             <input type="file" name="basic_info" >
+                                         </form>-->
+                                        <div class="upload1">
+                                            <input type="text" class="ipt_text" id="file_text" />
+                                            <input type="button" class="btn btn-primary" value="浏览" />
+                                            <input type="file" class="upload_file1" size="26" onchange="document.getElementById('file_text').value=this.value" />
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary" data-dismiss="modal">确认</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+   {% endblock %}
 
 {% block content %}
-<div class="container-fluid" id="main">
-    <div class="row">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="sidebar">
-            <ul id="sidebar-tab" class="nav nav-list collapse navbar-collapse nav-pills nav-stacked" role="tablist">
-                <li role="presentation" >
-                    <a href="/manage/basic_info">基本信息<i class="glyphicon glyphicon-chevron-right"></i></a>
-                </li>
-                <li role="presentation">
-                    <a href="/manage/degree_info" >学籍信息<i class="glyphicon glyphicon-chevron-right"></i></a>
-                </li>
-                <li role="presentation">
-                    <a href="/manage/award_info">奖助贷<i class="glyphicon glyphicon-chevron-right"></i></a>
-                </li>
-                <li role="presentation">
-                    <a href="/manage/work_info">科创社工<i class="glyphicon glyphicon-chevron-right"></i></a>
-                </li>
-                <li role="presentation">
-                    <a href="/manage/graduation_info">毕业信息<i class="glyphicon glyphicon-chevron-right"></i></a>
-                </li>
-                <li role="presentation" class="active">
-                    <a href="/manage/import_excel">导入<i class="glyphicon glyphicon-chevron-right"></i></a>
-                </li>
-                <li role="presentation">
-                    <a href="/manage/export_excel">导出<i class="glyphicon glyphicon-chevron-right"></i></a>
-                </li>
-            </ul>
-        </div>
-
-        <!--/span-->
-        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" id="content">
-            <div class="row">
-                <form  role="form" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
-                    {% csrf_token %}
-                        基本信息：<input type="file" name="basic_info">
-                    <input type="submit" class="btn btn-primary">
-                </form>
+    <div class="container-fluid" id="main">
+        <div class="row">
+            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="sidebar">
+                <ul id="sidebar-tab" class="nav nav-list collapse navbar-collapse nav-pills nav-stacked" role="tablist">
+                    <li role="presentation" >
+                        <a href="/manage/basic_info">基本信息<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </li>
+                    <li role="presentation">
+                        <a href="/manage/degree_info" >学籍信息<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </li>
+                    <li role="presentation">
+                        <a href="/manage/award_info">奖助贷<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </li>
+                    <li role="presentation">
+                        <a href="/manage/work_info">科创社工<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </li>
+                    <li role="presentation">
+                        <a href="/manage/graduation_info">毕业信息<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </li>
+                    <li role="presentation" class="active">
+                        <a href="/manage/import_excel">导入<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </li>
+                    <li role="presentation">
+                        <a href="/manage/export_excel">导出<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <!--/span-->
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" id="content">
+                <div class="row">
+                    <form  role="form" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+                        {% csrf_token %}
+                        <input type="file" name="basic_info" >
+                        <input type="submit" class="btn btn-primary">
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
