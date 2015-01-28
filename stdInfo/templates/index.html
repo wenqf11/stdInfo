@@ -26,6 +26,15 @@
             </div>
             <button type="submit" class="btn btn-primary">登录</button>
         </form>
+        {% if errors %}
+        <ul>
+            {% for error in errors %}
+                <front color="AA0120">
+                <li>{{ error }}</li>
+                </front>
+            {% endfor %}
+        </ul>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

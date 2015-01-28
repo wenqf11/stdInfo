@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
 admin.autodiscover()
+import stdInfo.views
 
 urlpatterns = patterns('',
     # Examples:
@@ -11,5 +12,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^student/', include('student.urls')),
     url(r'^manage/', include('manage.urls')),
-    url(r'^$', 'stdInfo.views.index'),
+    url(r'^$', stdInfo.views.index),
+    url(r'^logout/',stdInfo.views.logout),
+    url(r'^create_user/p1(\w+)p2(.+)/', stdInfo.views.create_user),
 )
