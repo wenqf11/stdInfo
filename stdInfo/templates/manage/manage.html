@@ -60,229 +60,151 @@
             <!--/span-->
             <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10"  id="content">
                 <table class="table table-hover table-bordered table-click" data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+
+                <!-- table content for basic_info page-->
+               {% ifequal page 'basic_info'%}
                 <thead>
                     <tr>      
                         <th data-field="state" data-checkbox="true"></th>
                         <th data-sortable="true">学号</th>
                         <th data-sortable="true">姓名</th>
-                        <th data-sortable="true">教学班</th>
-                    <th data-sortable="true">性别</th>
-                    <th data-sortable="true">身份证号</th>
-                    <th data-sortable="true">出生日期</th>
-                    <th data-sortable="true">民族</th>
-                    <th data-sortable="true">政治面貌</th>
-                    <th data-sortable="true">考区</th>
+                        <th data-sortable="true">性别</th>
+                        <th data-sortable="true">身份证号</th>
+                        <th data-sortable="true">出生日期</th>
+                        <th data-sortable="true">民族</th>
+                        <th data-sortable="true">政治面貌</th>
+                        <th data-sortable="true">考区</th>
                 </tr>
               </thead>
               <tbody>
+             {%  for student in students %}
                 <tr onclick="location.href='/manage/detail'">
                   <td></td>
-                  <td>1</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Ottl</td>
-                  <td>@mdo</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
+                  <td>{{ student.number }}</td>
+                  <td>{{ student.name }}</td>
+                  <td>{% if student.gender %}男{% else %}女{% endif %}</td>
+                  <td>{{ student.identity_number }}</td>
+                  <td>{{ student.birthday |date:"Y-m-d"}}</td>
+                  <td>{{ student.nation }}</td>
+                  <td>{{ student.politics }}</td>
+                  <td>{{ student.exam_province }}</td>
                 </tr>
+              {% endfor %}
+              {% endifequal %}
 
-                <tr onclick="location.href='/manage/detail'">
-                  <td></td>
-                  <td>3</td>
-                  
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
 
+              <!-- table content for degree_info page-->
+                {% ifequal page 'degree_info'%}
+                <thead>
+                    <tr>
+                        <th data-field="state" data-checkbox="true"></th>
+                        <th data-sortable="true">学号</th>
+                        <th data-sortable="true">姓名</th>
+                        <th data-sortable="true">系所名</th>
+                        <th data-sortable="true">专业名</th>
+                        <th data-sortable="true">教学班</th>
+                        <th data-sortable="true">所属年级</th>
+                        <th data-sortable="true">学制</th>
+                        <th data-sortable="true">是否异动</th>
+                        <th data-sortable="true">学位</th>
+                        <th data-sortable="true">是否留学生</th>
+                        <th data-sortable="true">是否有学籍</th>
+                        <th data-sortable="true">学生类别</th>
+                        <th data-sortable="true">经费办法</th>
+                        <th data-sortable="true">交换时间/学校</th>
+                        <th data-sortable="true">大三年级学分绩及排名</th>
+                </tr>
+              </thead>
+              <tbody>
+             {%  for student in students %}
                 <tr onclick="location.href='/manage/detail'">
                   <td></td>
-                  <td>6</td>
-                  
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
+                  <td>{{ student.number }}</td>
+                  <td>{{ student.name }}</td>
+                  <td>{{ student.degree.department }}</td>
+                  <td>{{ student.degree.major }}</td>
+                  <td>{{ student.degree.class_num }}</td>
+                  <td>{{ student.degree.grade }}</td>
+                  <td>{{ student.degree.duration}}</td>
+                  <td>{{ student.degree.change }}</td>
+                  <td>{{ student.degree.degree_type }}</td>
+                  <td>{% if student.degree.is_foreign %}是{% else %}否{% endif %}</td>
+                  <td>{% if student.degree.is_candidate %}是{% else %}否{% endif %}</td>
+                  <td>{{ student.degree.student_type }}</td>
+                  <td>{{ student.degree.expenditure_type }}</td>
+                  <td>{{ student.degree.exchange_info }}</td>
+                  <td>{{ student.degree.scores_rank }}</td>
                 </tr>
+              {% endfor %}
+              {% endifequal %}
 
-                <tr onclick="location.href='/manage/detail'">
-                  <td></td>
-                  <td>12</td>
-                  
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
 
+              <!-- table content for award_info page-->
+                {% ifequal page 'award_info'%}
+                <thead>
+                    <tr>
+                        <th data-field="state" data-checkbox="true"></th>
+                        <th data-sortable="true">学号</th>
+                        <th data-sortable="true">姓名</th>
+                        <th data-sortable="true">奖学金学年度</th>
+                        <th data-sortable="true">荣誉等级</th>
+                        <th data-sortable="true">奖项简称</th>
+                        <th data-sortable="true">获奖金额</th>
+                        <th data-sortable="true">助学金学年度</th>
+                        <th data-sortable="true">助项简称</th>
+                        <th data-sortable="true">获助金额</th>
+                        <th data-sortable="true">贷款</th>
+                </tr>
+              </thead>
+              <tbody>
+             {%  for scholarship in scholarships %}
                 <tr onclick="location.href='/manage/detail'">
                   <td></td>
-                  <td>16</td>
-                 
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
+                  <td>{{ scholarship.student.number }}</td>
+                  <td>{{ scholarship.student.name }}</td>
+                  <td>{{ scholarship.year }}</td>
+                  <td>{{ scholarship.honor_grade }}</td>
+                  <td>{{ scholarship.name }}</td>
+                  <td>{{ scholarship.amount }}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                 </tr>
+              {% endfor %}
+              {% endifequal %}
 
-                <tr onclick="location.href='/manage/detail'">
-                  <td></td>
-                  <td>10</td>
-                 
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
 
+               <!-- table content for  graduation_info page-->
+                {% ifequal page 'graduation_info'%}
+                <thead>
+                    <tr>
+                        <th data-field="state" data-checkbox="true"></th>
+                        <th data-sortable="true">学号</th>
+                        <th data-sortable="true">姓名</th>
+                        <th data-sortable="true">毕业日期</th>
+                        <th data-sortable="true">毕业类别</th>
+                        <th data-sortable="true">毕业手机</th>
+                        <th data-sortable="true">毕业邮箱</th>
+                        <th data-sortable="true">毕业去向</th>
+                        <th data-sortable="true">分流方向</th>
+                </tr>
+              </thead>
+              <tbody>
+             {%  for student in students %}
                 <tr onclick="location.href='/manage/detail'">
                   <td></td>
-                  <td>11</td>
-                  
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
+                  <td>{{ student.number }}</td>
+                  <td>{{ student.name }}</td>
+                  <td>{{ student.graduation.date | date:"Y-m-d"}}</td>
+                  <td>{{ student.graduation.type }}</td>
+                  <td>{{ student.graduation.phone}}</td>
+                  <td>{{ student.graduation.email }}</td>
+                  <td>{{ student.graduation.destination }}</td>
+                  <td>{{ student.graduation.direction }}</td>
                 </tr>
-
-                <tr onclick="location.href='/manage/detail'">
-                  <td></td>
-                  <td>8</td>
-                  
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-
-                <tr onclick="location.href='/manage/detail'">
-                  <td></td>
-                  <td>10</td>
-                  
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-
-                <tr onclick="location.href='/manage/detail'">
-                  <td></td>
-                  <td>5</td>
-                  
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-
-                <tr onclick="location.href='/manage/detail'">
-                  <td></td>
-                  <td>9</td>
-                  
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-
-                <tr onclick="location.href='/manage/detail'">
-                  <td></td>
-                  <td>12</td>
-                  
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-
-                <tr onclick="location.href='/manage/detail'">
-                  <td></td>
-                  <td>112</td>
-                 
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-
-                <tr onclick="location.href='/manage/detail'">
-                  <td></td>
-                  <td>34</td>
-                 
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-
-                <tr onclick="location.href='/manage/detail'">
-                  <td></td>
-                  <td>41</td>
-                 
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
+              {% endfor %}
+              {% endifequal %}
               </tbody>
             </table>
         </div>
