@@ -5,7 +5,8 @@ __date__ = '2014-12-04'
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render, redirect
-
+from django.template.loader import get_template
+from django.db import connection
 from django.http import HttpResponse
 from student.models import Student
 from django.contrib import auth
@@ -13,6 +14,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.http import Http404
 import datetime
+import xlwt
+
 
 
 def log(request):
@@ -53,3 +56,25 @@ def create_user(request, parm1, parm2):
     user.set_password(parm2)
     user.save()
     return HttpResponse('create user successfully. username:%s, password:%s'%(user.username, user.password))
+
+def save_xls(request):
+    book = xlwt.Workbook(encoding='utf-8')
+    sheet = book.add_sheet('untitled')
+    sheet.write(0, 0, "姓名")
+    sheet.write(0, 1, "密码")
+    user = User.objects.all()
+    data1 = []
+    data = []
+    for i in user.values():
+        data1.append(i["username"])
+        data1.append(i["password"])
+        data.append(data1)
+        data1 = []
+    for k in range(len(data)):
+        for j in range(len(data[k])):
+            sheet.write(k+1,j,data[k][j])
+    response = HttpResponse(mimetype='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=example.xls'
+    book.save(response)
+    return response
+
