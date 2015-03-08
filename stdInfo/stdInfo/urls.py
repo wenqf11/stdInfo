@@ -15,4 +15,5 @@ urlpatterns = patterns('',
     url(r'^$', stdInfo.views.index),
     url(r'^logout/',stdInfo.views.logout),
     url(r'^create_user/p1(\w+)p2(.+)/', stdInfo.views.create_user),
+    url(r'^del/', stdInfo.views.del_cookie),
     )

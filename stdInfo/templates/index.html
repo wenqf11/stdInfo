@@ -28,11 +28,7 @@
         </form>
         {% if errors %}
         <ul>
-            {% for error in errors %}
-                <front color="AA0120">
-                <li>{{ error }}</li>
-                </front>
-            {% endfor %}
+            <li><span style="color: red">{{ errors }}</span></li>
         </ul>
         {% endif %}
     </div>
