@@ -120,24 +120,34 @@ def export_excel(request):
             alignment0.horz = xlwt.Alignment.HORZ_CENTER
             alignment0.vert = xlwt.Alignment.VERT_CENTER
             style0 = xlwt.XFStyle()
+            style1 = xlwt.XFStyle()
+            styleDate = xlwt.XFStyle()
+
+            styleDate.num_format_str = 'YYYY-MM-DD'
+            styleDate.font.name = 'Times New Roman'
+            styleDate.alignment = alignment0
             style0.font = font0
             style0.alignment = alignment0
+            style1.alignment = alignment0
             data1 = []
             data = []
             column = 0
             book = xlwt.Workbook(encoding='utf-8')
-            sheet = book.add_sheet('untitled')
+            sheet = book.add_sheet('untitled', cell_overwrite_ok = True)
+            sheet.col(0).width = 256*13
             student = Student.objects.all()
             degreeInfo = DegreeInfo.objects.all()
             graduation = GraduationInfo.objects.all()
             secondDegree = SecondDegree.objects.all()
             familyInfo = FamilyInfo.objects.all()
             scholarship = Scholarship.objects.all()
+            grant = Grant.objects.all()
             loan = Loan.objects.all()
             competition = Competition.objects.all()
             socialWork = SocialWork.objects.all()
             for m in range(len(info)):
                 if info[m] == u'基本信息':
+                    sheetCol = column
                     sheet.write(0, column + 0, "学号", style0)
                     sheet.write(0, column + 1, "姓名", style0)
                     sheet.write(0, column + 2, "系所名", style0)
@@ -153,12 +163,23 @@ def export_excel(request):
                     sheet.write(0, column + 12, "考区", style0)
                     sheet.write(0, column + 13, "毕业中学", style0)
                     sheet.write(0, column + 14, "高考总分", style0)
-                    column = column + 14
+
+                    sheet.col(column + 3).width = 256*12
+                    sheet.col(column + 7).width = 256*20
+                    sheet.col(column + 8).width = 256*12
+                    sheet.col(column + 13).width = 256*30
+
                     for i in student.values():
                         data1.append(i["number"])
                         data1.append(i["name"])
                         data.append(data1)
                         data1 = []
+                    for k in range(len(data)):
+                        for j in range(len(data[k])):
+                            sheet.write(k+1,j + sheetCol,data[k][j])
+                    sheetCol = column + 2
+                    data = []
+
                     for i in degreeInfo.values():
                         data1.append(i["department"])
                         data1.append(i["major"])
@@ -166,25 +187,51 @@ def export_excel(request):
                         data1.append(i["grade"])
                         data.append(data1)
                         data1 = []
+                    for k in range(len(data)):
+                        for j in range(len(data[k])):
+                            sheet.write(k+1,j + sheetCol,data[k][j], style1)
+                    sheetCol = column + 6
+                    data = []
+
                     for i in student.values():
-                        data1.append(i["gender"])
-                        data1.append(i["identity_number"])
-                        data1.append(i["birthday"])
-                        data1.append(i["nation"])
-                        data1.append(i["nationality"])
-                        data1.append(i["politics"])
-                        data1.append(i["exam_province"])
-                        data1.append(i["high_school"])
-                        data1.append(i["entrance_exam_score"])
-                        data.append(data1)
-                        data1 = []
+                        if i["gender"] == True:
+                            sheet.write(i["id"],sheetCol,u'男', style1)
+                        else:
+                            sheet.write(i["id"],sheetCol,u'女', style1)
+
+                    sheetCol += 1
+
+                    for i in student.values():
+                        sheet.write(i["id"],0 + sheetCol,i["identity_number"], style1)
+                        sheet.write(i["id"],1 + sheetCol,i["birthday"], styleDate)
+                        sheet.write(i["id"],2 + sheetCol,i["nation"], style1)
+                        sheet.write(i["id"],3 + sheetCol,i["nationality"], style1)
+                        sheet.write(i["id"],4 + sheetCol,i["politics"], style1)
+                        sheet.write(i["id"],5 + sheetCol,i["exam_province"], style1)
+                        sheet.write(i["id"],6 + sheetCol,i["high_school"], style1)
+                        sheet.write(i["id"],7 + sheetCol,i["entrance_exam_score"], style1)
+
+
+                    data = []
+
+                    column = 14
+
+
                 elif info[m] == u'学籍信息' :
+                    sheetCol = column + 1
                     if column == 0:
                         sheet.write(0, column, "学号", style0)
                         for i in student.values():
                             data1.append(i["number"])
                             data.append(data1)
                             data1 = []
+                        for k in range(len(data)):
+                            for j in range(len(data[k])):
+                                sheet.write(k+1,j,data[k][j], style1)
+                        sheetCol = column + 1
+                        data = []
+
+
                     sheet.write(0, column + 1, "入学年级", style0)
                     sheet.write(0, column + 2, "学制", style0)
                     sheet.write(0, column + 3, "是否异动", style0)
@@ -204,7 +251,19 @@ def export_excel(request):
                     #sheet.write(0, column + 17, "补行毕业时间", style0)
                     #sheet.write(0, column + 18, "补行毕业类别", style0)
                     sheet.write(0, column + 17, "大三年级学分绩及排名", style0)
-                    column += 17
+
+                    sheet.col(column + 3).width = 256*65
+                    sheet.col(column + 5).width = 256*12
+                    sheet.col(column + 6).width = 256*17
+                    sheet.col(column + 7).width = 256*15
+                    sheet.col(column + 12).width = 256*17
+                    sheet.col(column + 13).width = 256*15
+                    sheet.col(column + 14).width = 256*12
+                    sheet.col(column + 15).width = 256*17
+                    sheet.col(column + 16).width = 256*40
+                    sheet.col(column + 17).width = 256*22
+
+
 
                     for i in degreeInfo.values():
                         data1.append(i["grade"])
@@ -216,12 +275,21 @@ def export_excel(request):
                         data1.append(i["exchange_info"])
                         data.append(data1)
                         data1 = []
+                    for k in range(len(data)):
+                        for j in range(len(data[k])):
+                            sheet.write(k+1,j + sheetCol,data[k][j], style1)
+                    sheetCol = column + 8
+                    data = []
+
                     for i in graduation.values():
-                        data1.append(i["date"])
+                        sheet.write(i["id"],sheetCol,i["date"], styleDate)
+                        sheet.write(i["id"],sheetCol + 1,i["type"], style1)
+                        sheet.write(i["id"],sheetCol + 2,i["direction"], style1)
                         data1.append(i["type"])
-                        data1.append(i["direction"])
-                        data.append(data1)
-                        data1 = []
+
+                    sheetCol = column + 11
+                    data = []
+
                     for i in secondDegree.values():
                         data1.append(i["major_type"])
                         data1.append(i["department_num"])
@@ -231,41 +299,88 @@ def export_excel(request):
                         data1.append(i["major"])
                         data.append(data1)
                         data1 = []
+                    for k in range(len(data)):
+                        for j in range(len(data[k])):
+                            sheet.write(k+1,j + sheetCol,data[k][j])
+                    sheetCol = column + 17
+                    data = []
+
                     for i in degreeInfo.values():
                         data1.append(i["scores_rank"])
                         data.append(data1)
                         data1 = []
+                    for k in range(len(data)):
+                        for j in range(len(data[k])):
+                            sheet.write(k+1,j + sheetCol,data[k][j])
+                    data = []
+
+                    column += 17
+
+
                 elif info[m] == u'毕业信息':
+                    sheetCol = column + 1
                     if column == 0:
                         sheet.write(0, column, "学号", style0)
                         for i in student.values():
                             data1.append(i["number"])
                             data.append(data1)
                             data1 = []
+                        for k in range(len(data)):
+                            for j in range(len(data[k])):
+                                sheet.write(k+1,j,data[k][j])
+                        sheetCol = column + 1
+                        data = []
+
                     sheet.write(0, column + 1, "毕业手机", style0)
                     sheet.write(0, column + 2, "毕业邮箱", style0)
                     sheet.write(0, column + 3, "毕业去向", style0)
-                    column = column + 3
+
+                    sheet.col(column + 1).width = 256*13
+                    sheet.col(column + 2).width = 256*25
+                    sheet.col(column + 3).width = 256*50
+
+
                     for i in graduation.values():
                         data1.append(i["phone"])
                         data1.append(i["email"])
                         data1.append(i["destination"])
                         data.append(data1)
                         data1 = []
+                    for k in range(len(data)):
+                        for j in range(len(data[k])):
+                            sheet.write(k+1,j + sheetCol,data[k][j])
+                    data = []
+
+                    column += 3
+
+
                 elif info[m] == u'家庭信息':
+                    sheetCol = column + 1
                     if column == 0:
                         sheet.write(0, column, "学号", style0)
                         for i in student.values():
                             data1.append(i["number"])
                             data.append(data1)
                             data1 = []
+                        for k in range(len(data)):
+                            for j in range(len(data[k])):
+                                sheet.write(k+1,j,data[k][j])
+                        sheetCol = column + 1
+                        data = []
+
                     sheet.write(0, column + 1, "家庭住址", style0)
                     sheet.write(0, column + 2, "户口类别", style0)
                     sheet.write(0, column + 3, "家庭人月均收入", style0)
                     sheet.write(0, column + 4, "I值", style0)
                     sheet.write(0, column + 5, "贫困等级", style0)
                     sheet.write(0, column + 6, "经济情况说明", style0)
-                    column = column + 6
+
+                    sheet.col(column + 1).width = 256*55
+                    sheet.col(column + 2).width = 256*13
+                    sheet.col(column + 3).width = 256*17
+                    sheet.col(column + 6).width = 256*250
+
+
                     for i in familyInfo.values():
                         data1.append(i["address"])
                         data1.append(i["hukou_type"])
@@ -275,51 +390,106 @@ def export_excel(request):
                         data1.append(i["detail"])
                         data.append(data1)
                         data1 = []
+                    for k in range(len(data)):
+                        for j in range(len(data[k])):
+                            sheet.write(k+1,j + sheetCol,data[k][j])
+                    data = []
+
+                    column += 6
+
                 elif info[m] == u'奖助贷信息':
+                    sheetCol = column + 1
                     if column == 0:
                         sheet.write(0, column, "学号", style0)
                         for i in student.values():
                             data1.append(i["number"])
                             data.append(data1)
                             data1 = []
+                        for k in range(len(data)):
+                            for j in range(len(data[k])):
+                                sheet.write(k+1,j,data[k][j])
+                        sheetCol = column + 1
+                        data = []
+
                     sheet.write(0, column + 1, "奖学金学年度", style0)
-                    sheet.write(0, column + 2, "奖项金额", style0)
-                    sheet.write(0, column + 3, "贷款", style0)
-                    column = column + 3
+                    sheet.write(0, column + 2, "荣誉等级", style0)
+                    sheet.write(0, column + 3, "奖项简称", style0)
+                    sheet.write(0, column + 4, "奖项金额", style0)
+                    sheet.write(0, column + 5, "助学金学年度", style0)
+                    sheet.write(0, column + 6, "助项简称", style0)
+                    sheet.write(0, column + 7, "获助简称", style0)
+                    sheet.write(0, column + 8, "贷款", style0)
+
+                    sheet.col(column + 1).width = 256*15
+                    sheet.col(column + 2).width = 256*20
+                    sheet.col(column + 3).width = 256*14
+                    sheet.col(column + 5).width = 256*15
+
                     for i in scholarship.values():
-                        data1.append(i["year"])
-                        data1.append(i["amount"])
-                        data.append(data1)
-                        data1 = []
+                        sheet.write(i["student_id"],sheetCol,i["year"])
+                        sheet.write(i["student_id"],sheetCol + 1,i["honor_grade"])
+                        sheet.write(i["student_id"],sheetCol + 2,i["name"])
+                        sheet.write(i["student_id"],sheetCol + 3,i["amount"])
+                    sheetCol = column + 4
+
+                    for i in grant.values():
+                        sheet.write(i["student_id"],sheetCol,i["year"])
+                        sheet.write(i["student_id"],sheetCol + 1,i["name"])
+                        sheet.write(i["student_id"],sheetCol + 2,i["amount"])
+                    sheetCol = column + 7
+
                     for i in loan.values():
-                        data1.append(i["info"])
-                        data.append(data1)
-                        data1 = []
+                        sheet.write(i["student_id"],sheetCol,i["info"])
+
+                    column += 8
+
+
                 elif info[m] == u'社工及科研信息':
+                    sheetCol = column + 1
                     if column == 0:
                         sheet.write(0, column, "学号", style0)
                         for i in student.values():
                             data1.append(i["number"])
                             data.append(data1)
                             data1 = []
+                        for k in range(len(data)):
+                            for j in range(len(data[k])):
+                                sheet.write(k+1,j,data[k][j])
+                        sheetCol = column + 1
+                        data = []
+
                     sheet.write(0, column + 1, "科技赛事学年度", style0)
                     sheet.write(0, column + 2, "科技赛事名称", style0)
                     sheet.write(0, column + 3, "社工学年度", style0)
                     sheet.write(0, column + 4, "社会工作（学生干部情况）", style0)
-                    column = column + 4
+
+                    sheet.col(column + 1).width = 256*16
+                    sheet.col(column + 2).width = 256*15
+                    sheet.col(column + 3).width = 256*13
+                    sheet.col(column + 4).width = 256*25
+
                     for i in competition.values():
                         data1.append(i["year"])
                         data1.append(i["name"])
                         data.append(data1)
                         data1 = []
+                    for k in range(len(data)):
+                        for j in range(len(data[k])):
+                            sheet.write(k+1,j + sheetCol,data[k][j])
+                    sheetCol = column + 2
+                    data = []
+
                     for i in socialWork.values():
                         data1.append(i["year"])
                         data1.append(i["name"])
                         data.append(data1)
                         data1 = []
-            for k in range(len(data)):
-                for j in range(len(data[k])):
-                    sheet.write(k+1,j,data[k][j])
+                    for k in range(len(data)):
+                        for j in range(len(data[k])):
+                            sheet.write(k+1,j + sheetCol,data[k][j])
+
+
+
             response = HttpResponse(mimetype='application/vnd.ms-excel')
             response['Content-Disposition'] = 'attachment; filename=学生信息表.xls'
             book.save(response)
