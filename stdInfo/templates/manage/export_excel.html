@@ -64,8 +64,25 @@
 
         <!--/span-->
         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" id="content">
-                   导出
-        </div>
+            <form  method="POST" action="">请选择表格所包含信息
+                 <br />{% csrf_token %}<br />
+                <label><input name="info" value = '基本信息' type="checkbox"  /> 基本信息 </label>
+                <br /><br />
+                <label><input name="info" value = '学籍信息' type="checkbox"  /> 学籍信息 </label>
+                <br /><br />
+                <label><input name="info" value = '毕业信息' type="checkbox"  /> 毕业信息 </label>
+                <br /><br />
+                <label><input name="info" value = '家庭信息' type="checkbox"  /> 家庭信息 </label>
+                <br /><br />
+                <label><input name="info" value = '奖助贷信息' type="checkbox"  /> 奖助贷信息 </label>
+                <br /><br />
+                <label><input name="info" value = '社工及科研信息' type="checkbox" /> 社工及科研信息</label>
+                <br /><br />
+                <input type="submit"  value="导出" />
+
+            </form>
+
     </div>
-</div>
+    </div>
+    </div>
 {% endblock %}

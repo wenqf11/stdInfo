@@ -40,7 +40,7 @@
       <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/manage/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="464" column="46" selection-start="17796" selection-end="17796" vertical-scroll-proportion="0.0" vertical-offset="8669" max-vertical-offset="11267">
+            <state line="856" column="46" selection-start="35527" selection-end="35527" vertical-scroll-proportion="0.0" vertical-offset="16117" max-vertical-offset="18696">
               <folding>
                 <element signature="e#73#109#0" expanded="true" />
               </folding>
@@ -561,7 +561,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="1" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -573,7 +573,7 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4332784" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4332784" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27512357" sideWeight="0.7342606" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27512357" sideWeight="0.7342606" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -707,7 +707,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/manage/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="464" column="46" selection-start="17796" selection-end="17796" vertical-scroll-proportion="0.0" vertical-offset="8669" max-vertical-offset="11267">
+        <state line="856" column="46" selection-start="35527" selection-end="35527" vertical-scroll-proportion="0.0" vertical-offset="16117" max-vertical-offset="18696">
           <folding>
             <element signature="e#73#109#0" expanded="true" />
           </folding>

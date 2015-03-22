@@ -5,7 +5,8 @@ __date__ = '2014-12-04'
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render, redirect
-
+from django.template.loader import get_template
+from django.db import connection
 from django.http import HttpResponse
 from student.models import Student
 from django.contrib import auth
@@ -13,10 +14,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.http import Http404
 import datetime
+import xlwt
+
 
 
 def index(request):
-    errors = []
     if "username" in request.COOKIES:
         name = request.COOKIES["username"]
         user = User.objects.get(username=name)
@@ -38,24 +40,26 @@ def index(request):
                 request.session.delete_test_cookie()
                 if clk == "on":
                     dt = datetime.datetime.now() + datetime.timedelta(weeks=3)
-                    response = HttpResponse(index.html)
+                    response = HttpResponseRedirect('/')
                     response.set_cookie("username", username, expires=dt)
                     return response
             else:
-                errors.append('Please enable cookies and try again.')
+                errors = u"请启用cookie再试一次"
+                return render_to_response("index.html", {'errors':errors}, context_instance=RequestContext(request))
             if request.user.is_staff:
                 return HttpResponseRedirect('/manage')
             else:
                 return HttpResponseRedirect('/student')
         else:
-            errors.append('username or password is wrong!')
+            errors = u"用户名或密码错误!"
             return render_to_response("index.html", {'errors':errors}, context_instance=RequestContext(request))
 
 
 def logout(request):
     auth.logout(request)
-    del_cookie(request)
-    return render_to_response("index.html", context_instance=RequestContext(request))
+    response = HttpResponseRedirect('/')
+    response.delete_cookie("username")
+    return response
 
 
 def create_user(request, parm1, parm2):
