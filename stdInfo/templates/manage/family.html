@@ -32,7 +32,7 @@
                     <li role="presentation">
                     <a href="/manage/search">搜索<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
-                    <li role="presentation" class="active">
+                    <li role="presentation">
                     <a href="/manage/basic_info">基本信息<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                     <li role="presentation">
@@ -41,7 +41,7 @@
                     <li role="presentation">
                     <a href="/manage/award_info">奖助贷<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
-                    <li role="presentation">
+                    <li role="presentation" class="active">
                     <a href="/manage/family_info">家庭情况<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                     <li role="presentation">
@@ -60,54 +60,43 @@
             </div>
 
 
+
+
             <!--===============================================================================================-->
             <!--/span-->
             <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10"  id="content">
 
-                <div id="custom-toolbar">
-                    <div class="btn-group">
-                       <button class="btn btn-default" id="append-data" data-method="append">新增</button>
-                       <button class="btn btn-default" id="remove-data" data-method="remove">删除</button>
-                    </div>
-                </div>
-
-                <table id ="table-methods-table" data-toolbar="#custom-toolbar" class="table table-hover table-bordered" data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc"
+                <table id ="table-methods-table" class="table table-hover table-bordered" data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc"
                 border="0" align="center" cellpadding="0" cellspacing="0">
 
-                <!-- table content for basic_info page-->
+                <!-- table content for  family_info page-->
                 <thead>
                     <tr>
-                        <th data-field="status" data-checkbox="true"></th>
-                        <th data-visible="false" data-field="id">ID</th>
+                        <th data-valign="middle" data-align="center">详情</th>
+                        <th data-field="id" data-visible="false">ID</th>
                         <th data-valign="middle" data-align="center" data-field="number" data-sortable="true">学号</th>
                         <th data-valign="middle" data-align="center" data-field="name" data-sortable="true" data-editable="true">姓名</th>
-                        <th data-valign="middle" data-align="center" data-field="gender" data-sortable="true" data-editable="true">性别</th>
-                        <th data-valign="middle" data-align="center" data-field="identity_number" data-sortable="true" data-editable="true">身份证号</th>
-                        <th data-valign="middle" data-align="center" data-field="birthday"data-sortable="true" data-editable="true">出生日期</th>
-                        <th data-valign="middle" data-align="center" data-field="nation" data-sortable="true" data-editable="true">民族</th>
-                        <th data-valign="middle" data-align="center" data-field="nationality" data-sortable="true" data-editable="true">国籍</th>
-                        <th data-valign="middle" data-align="center" data-field="politics" data-sortable="true" data-editable="true">政治面貌</th>
-                        <th data-valign="middle" data-align="center" data-field="high_school" data-sortable="true" data-editable="true">毕业中学</th>
-                        <th data-valign="middle" data-align="center" data-field="exam_province" data-sortable="true" data-editable="true">考区</th>
-                        <th data-valign="middle" data-align="center" data-field="entrance_exam_score" data-sortable="true" data-editable="true">高考总分</th>
-                    </tr>
+                        <th data-valign="middle" data-halign="center" data-field="address" data-sortable="true" data-editable="true">家庭住址</th>
+                        <th data-valign="middle" data-align="center" data-field="hukou_type" data-sortable="true" data-editable="true">户口类型</th>
+                        <th data-valign="middle" data-align="center" data-field="avg_income" data-sortable="true" data-editable="true">家庭人均月收入（元）</th>
+                        <th data-valign="middle" data-align="center" data-field="I_value" data-sortable="true" data-editable="true">I 值</th>
+                        <th data-valign="middle" data-align="center" data-field="poverty_degree" data-sortable="true" data-editable="true">贫困等级</th>
+                        <th data-valign="middle" data-halign="center" data-field="detail" data-sortable="true" data-editable="true">经济情况说明</th>
+                </tr>
               </thead>
               <tbody>
              {%  for student in students %}
                 <tr>
-                  <td></td>
+                  <td><a href="/manage/detail/{{ student.id }}">详情</a></td>
                   <td>{{ student.id }}</td>
                   <td>{{ student.number }}</td>
                   <td>{{ student.name }}</td>
-                  <td>{% if student.gender %}男{% else %}女{% endif %}</td>
-                  <td>{{ student.identity_number }}</td>
-                  <td>{{ student.birthday |date:"Y-m-d"}}</td>
-                  <td>{{ student.nation }}</td>
-                  <td>{{ student.nationality }}</td>
-                  <td>{{ student.politics }}</td>
-                  <td>{{ student.high_school }}</td>
-                  <td>{{ student.exam_province }}</td>
-                  <td>{{ student.entrance_exam_score }}</td>
+                  <td>{{ student.family.address}}</td>
+                  <td>{{ student.family.hukou_type }}</td>
+                  <td>{{ student.family.avg_income }}</td>
+                  <td>{{ student.family.I_value }}</td>
+                  <td>{{ student.family.poverty_degree }}</td>
+                  <td>{{ student.family.detail }}</td>
                 </tr>
               {% endfor %}
 
@@ -115,18 +104,6 @@
             </table>
 
             <script type="text/javascript">
-            $('#remove-data').click(function () {
-                var selects = $('#table-methods-table').bootstrapTable('getSelections');
-                    ids = $.map(selects, function (row) {
-                        return row.status;
-                    });
-
-                $('#table-methods-table').bootstrapTable('remove', {
-                    field: 'status',
-                    values: ids
-                });
-            });
-
             $.fn.editable.defaults.mode = 'inline';
             var flag = 0, sRow = null;
             $('#table-methods-table').bootstrapTable({
@@ -138,7 +115,7 @@
                 if(flag == 1){
                     $.ajax({
                         type:"POST",
-                        url:"/manage/update_basic_info",
+                        url:"/manage/update_family_info",
                         data: sRow,
                         dataType: "text",
                         error: function(){
@@ -148,12 +125,6 @@
                     flag = 0;
                 }
             });
-            /*$('#append-data').click(function () {
-                $('#table-methods-table').bootstrapTable('append', {
-                    number: 2011013239,
-                    name: '文庆福'
-                });
-            });*/
            </script>
 
         </div>

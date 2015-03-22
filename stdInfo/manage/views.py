@@ -4,10 +4,11 @@ __email__ = 'thssvince@163.com'
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
 from student.models import *
 import datetime
 import xlrd
+
 
 basic_info_set = set([
     u'学号',
@@ -71,38 +72,305 @@ basic_info_set = set([
     u'社会工作（学生干部情况）',
 ])
 
+
+def global_search(request):
+    content = request.POST.get('search_content', '')
+    students = Student.objects.filter(number=int(content))
+    if len(students) == 0:
+        students = Student.objects.filter(name=content)
+    return render_to_response("manage/degree.html", locals(), context_instance=RequestContext(request))
+
+
 def index(request):
-    return get_basic_info(request)
+    return search(request)
+
+
+def search(request):
+    if request.method == 'GET':
+        return render_to_response("manage/search.html", context_instance=RequestContext(request))
+    else:
+        students = Student.objects.all()
+        if request.POST.get('number', ''):
+            students = students.filter(number=request.POST.get('number', ''))
+        if request.POST.get('name', ''):
+            students = students.filter(name__contains=request.POST.get('name', ''))
+        if request.POST.get('grade', ''):
+            degreeinfos = DegreeInfo.objects.filter(grade=request.POST.get('grade', ''))
+            students = students.filter(degree__in=degreeinfos)
+        if request.POST.get('nation', ''):
+            students = students.filter(nation=request.POST.get('nation', ''))
+        if request.POST.get('politics', ''):
+            students = students.filter(politics=request.POST.get('politics', ''))
+        if request.POST.get('province', ''):
+            students = students.filter(exam_province=request.POST.get('province', ''))
+        if request.POST.get('is_foreign', ''):
+            is_foreign = True if request.POST.get('is_foreign', '') ==  u'是' else False
+            degreeinfos = DegreeInfo.objects.filter(is_foreign=is_foreign)
+            students = students.filter(degree__in=degreeinfos)
+        if request.POST.get('hukou_type', ''):
+            familyinfos = FamilyInfo.objects.filter(hukou_type=request.POST.get('hukou_type', ''))
+            students = students.filter(family__in=familyinfos)
+        if request.POST.get('poverty_degree', ''):
+            familyinfos = FamilyInfo.objects.filter(poverty_degree=request.POST.get('poverty_degree', ''))
+            students = students.filter(family__in=familyinfos)
+        if request.POST.get('graduation_type', ''):
+            graduationinfos = GraduationInfo.objects.filter(type=request.POST.get('graduation_type', ''))
+            students = students.filter(graduation__in=graduationinfos)
+        if request.POST.get('graduation_year', ''):
+            graduationinfos = GraduationInfo.objects.filter(date__year=request.POST.get('graduation_year', ''))
+            students = students.filter(graduation__in=graduationinfos)
+        if request.POST.get('graduation_direction', ''):
+            graduationinfos = GraduationInfo.objects.filter(direction=request.POST.get('graduation_direction', ''))
+            students = students.filter(graduation__in=graduationinfos)
+
+        basic_info = False
+        degree_info = False
+        award_info = False
+        family_info = False
+        work_info = False
+        graduation_info = False
+        if request.POST.get('basic_info', ''):
+            basic_info = True
+        if request.POST.get('degree_info', ''):
+            degree_info = True
+        if request.POST.get('award_info', ''):
+            award_info = True
+        if request.POST.get('family_info', ''):
+            family_info = True
+        if request.POST.get('work_info', ''):
+            work_info = True
+        if request.POST.get('graduation_info', ''):
+            graduation_info = True
+
+        return render_to_response("manage/search.html", {
+            'students': students,
+            'basic_info': basic_info,
+            'degree_info': degree_info,
+            'award_info': award_info,
+            'family_info': family_info,
+            'work_info': work_info,
+            'graduation_info': graduation_info,
+        }, context_instance=RequestContext(request))
 
 
 def get_basic_info(request):
     students = Student.objects.all()
-    page = 'basic_info'
     return render_to_response("manage/manage.html", locals(), context_instance=RequestContext(request))
+
+
+@csrf_exempt
+def update_basic_info(request):
+    id = request.POST.get('id', '')
+    number = request.POST.get('number', '')
+    name = request.POST.get('name', '')
+    gender = request.POST.get('gender', '')
+    identity_number = request.POST.get('identity_number', '')
+    birthday = request.POST.get('birthday', '')
+    nation = request.POST.get('nation', '')
+    nationality = request.POST.get('nationality', '')
+    politics = request.POST.get('politics', '')
+    high_school = request.POST.get('high_school', '')
+    exam_province = request.POST.get('exam_province', '')
+    entrance_exam_score = request.POST.get('entrance_exam_score', '')
+    student = Student.objects.get(id=id)
+    student.number = int(number)
+    student.name = name
+    student.gender = True if gender == u'男' else False
+    student.identity_number = identity_number
+    student.birthday = datetime.datetime.strptime(birthday, "%Y-%m-%d")
+    student.nation = nation
+    student.nationality = nationality
+    student.politics = politics
+    student.high_school = high_school
+    student.exam_province = exam_province
+    student.entrance_exam_score = entrance_exam_score
+    student.save()
+    return HttpResponse('OK')
 
 
 def get_degree_info(request):
     students = Student.objects.all()
-    page = 'degree_info'
-    return render_to_response("manage/manage.html", locals(), context_instance=RequestContext(request))
+    return render_to_response("manage/degree.html", locals(), context_instance=RequestContext(request))
+
+
+@csrf_exempt
+def update_degree_info(request):
+    id = request.POST.get('id', '')
+    number = request.POST.get('number', '')
+    name = request.POST.get('name', '')
+    department = request.POST.get('department', '')
+    major = request.POST.get('major', '')
+    class_num = request.POST.get('class_num', '')
+    grade = request.POST.get('grade', '')
+    duration = request.POST.get('duration', '')
+    change = request.POST.get('change', '')
+    degree_type = request.POST.get('degree_type', '')
+    is_foreign = request.POST.get('is_foreign', '')
+    is_candidate = request.POST.get('is_candidate', '')
+    student_type = request.POST.get('student_type', '')
+    expenditure_type = request.POST.get('expenditure_type', '')
+    exchange_info = request.POST.get('exchange_info', '')
+    scores_rank = request.POST.get('scores_rank', '')
+    student = Student.objects.get(id=id)
+    student.number = int(number)
+    student.name = name
+    student.degree.department = department
+    student.degree.major = major
+    student.degree.class_num = class_num
+    student.degree.grade = grade
+    student.degree.duration = int(duration)
+    student.degree.change = change
+    student.degree.degree_type = degree_type
+    student.degree.is_foreign = True if is_foreign == u'是' else False
+    student.degree.is_candidate = True if is_candidate == u'是' else False
+    student.degree.student_type = student_type
+    student.degree.expenditure_type = expenditure_type
+    student.degree.exchange_info = exchange_info
+    student.degree.scores_rank = scores_rank
+    student.degree.save()
+    student.save()
+    return HttpResponse('OK')
 
 
 def get_award_info(request):
-    scholarships = Scholarship.objects.all()
-    page = 'award_info'
-    return render_to_response("manage/manage.html", locals(), context_instance=RequestContext(request))
+    students = Student.objects.all()
+    awards = list()
+    for student in students:
+        scholarships = Scholarship.objects.filter(student=student)
+        grants = Grant.objects.filter(student=student)
+        loans = Loan.objects.filter(student=student)
+        award_scholarship = ''
+        award_grant = ''
+        award_loan = ''
+        for scholarship in scholarships:
+            award_scholarship += scholarship.year + ' ' + scholarship.honor_grade + ' ' + scholarship.name + ' ' + \
+                                 str(scholarship.amount) + '\r\n'
+        for grant in grants:
+            award_grant += grant.year + ' ' + grant.name + ' ' + str(grant.amount) + '\r\n'
 
+        for loan in loans:
+            award_loan += loan.info + '\r\n'
+
+        awards.append({
+            'id': student.id,
+            'number': student.number,
+            'name': student.name,
+            'scholarship': award_scholarship,
+            'grant': award_grant,
+            'loan': award_loan
+        })
+    return render_to_response("manage/award.html", {
+        'awards' : awards
+    }, context_instance=RequestContext(request))
+
+
+def update_award_info(request):
+    id = request.POST.get('id', '')
+    number = request.POST.get('number', '')
+    name = request.POST.get('name', '')
+    address = request.POST.get('address', '')
+    hukou_type = request.POST.get('hukou_type', '')
+    avg_income = request.POST.get('avg_income', '')
+    I_value = request.POST.get('I_value', '')
+    poverty_degree = request.POST.get('poverty_degree', '')
+    detail = request.POST.get('detail', '')
+    student = Student.objects.get(id=id)
+    student.number = int(number)
+    student.name = name
+    student.family.address = address
+    student.family.hukou_type = hukou_type
+    student.family.avg_income = float(avg_income)
+    student.family.I_value = float(I_value)
+    student.family.poverty_degree = poverty_degree
+    student.family.detail = detail
+    student.family.save()
+    student.save()
+    return HttpResponse('OK')
+
+
+def get_family_info(request):
+    students = Student.objects.all()
+    return render_to_response("manage/family.html", locals(), context_instance=RequestContext(request))
+
+
+@csrf_exempt
+def update_family_info(request):
+    id = request.POST.get('id', '')
+    number = request.POST.get('number', '')
+    name = request.POST.get('name', '')
+    address = request.POST.get('address', '')
+    hukou_type = request.POST.get('hukou_type', '')
+    avg_income = request.POST.get('avg_income', '')
+    I_value = request.POST.get('I_value', '')
+    poverty_degree = request.POST.get('poverty_degree', '')
+    detail = request.POST.get('detail', '')
+    student = Student.objects.get(id=id)
+    student.number = int(number)
+    student.name = name
+    student.family.address = address
+    student.family.hukou_type = hukou_type
+    student.family.avg_income = float(avg_income)
+    student.family.I_value = float(I_value)
+    student.family.poverty_degree = poverty_degree
+    student.family.detail = detail
+    student.family.save()
+    student.save()
+    return HttpResponse('OK')
 
 def get_work_info(request):
-    return render_to_response("manage/manage.html", {
-        'page': 'work_info',
+    students = Student.objects.all()
+    works = list()
+    for student in students:
+        competitions = Competition.objects.filter(student=student)
+        social_works = SocialWork.objects.filter(student=student)
+        work_competition = ''
+        work_social_work = ''
+        for competition in competitions:
+            work_competition += competition.year + ' ' + competition.name + '\r\n'
+
+        for social_work in social_works:
+            work_social_work += social_work.name + '\r\n'
+
+        works.append({
+            'id': student.id,
+            'number': student.number,
+            'name': student.name,
+            'competition': work_competition,
+            'social_work': work_social_work
+        })
+    return render_to_response("manage/work.html", {
+        'works' : works
     }, context_instance=RequestContext(request))
 
 
 def get_graduation_info(request):
     students = Student.objects.all()
-    page = 'graduation_info'
-    return render_to_response("manage/manage.html", locals(), context_instance=RequestContext(request))
+    return render_to_response("manage/graduation.html", locals(), context_instance=RequestContext(request))
+
+
+@csrf_exempt
+def update_graduation_info(request):
+    id = request.POST.get('id', '')
+    number = request.POST.get('number', '')
+    name = request.POST.get('name', '')
+    date = request.POST.get('date', '')
+    type = request.POST.get('type', '')
+    phone = request.POST.get('phone', '')
+    email = request.POST.get('email', '')
+    destination = request.POST.get('destination', '')
+    direction = request.POST.get('direction', '')
+    student = Student.objects.get(id=id)
+    student.number = int(number)
+    student.name = name
+    student.graduation.date = datetime.datetime.strptime(date, "%Y-%m-%d")
+    student.graduation.type = type
+    student.graduation.phone = phone
+    student.graduation.email = email
+    student.graduation.destination = destination
+    student.graduation.direction = direction
+    student.graduation.save()
+    student.save()
+    return HttpResponse('OK')
 
 
 def get_detail(request):
@@ -190,9 +458,15 @@ def import_excel(request):
                             elif table.cell(0, j).value == u'学位':
                                 degree.degree_type = value
                             elif table.cell(0, j).value == u'是否留学生':
-                                degree.is_foreign = value
+                                if value == u'是':
+                                    degree.is_foreign = True
+                                else:
+                                    degree.is_foreign = False
                             elif table.cell(0, j).value == u'是否有学籍':
-                                degree.is_candidate = value
+                                if value == u'是':
+                                    degree.is_candidate = True
+                                else:
+                                    degree.is_candidate = False
                             elif table.cell(0, j).value == u'学生类别':
                                 degree.student_type = value
                             elif table.cell(0, j).value == u'经费办法':

@@ -32,13 +32,13 @@
                     <li role="presentation">
                     <a href="/manage/search">搜索<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
-                    <li role="presentation" class="active">
+                    <li role="presentation">
                     <a href="/manage/basic_info">基本信息<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                     <li role="presentation">
                     <a href="/manage/degree_info" >学籍信息<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
-                    <li role="presentation">
+                    <li role="presentation" class="active">
                     <a href="/manage/award_info">奖助贷<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                     <li role="presentation">
@@ -60,11 +60,42 @@
             </div>
 
 
+
+
             <!--===============================================================================================-->
             <!--/span-->
             <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10"  id="content">
 
-            </div>
+                <table id ="table-methods-table" class="table table-hover table-bordered" data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc"
+                border="0" align="center" cellpadding="0" cellspacing="0">
+              <!-- table content for award_info page-->
+                <thead>
+                    <tr>
+                        <th data-valign="middle" data-align="center">详情</th>
+                        <th data-field="id" data-visible="false">ID</th>
+                        <th data-valign="middle" data-align="center"  data-sortable="true" >学号</th>
+                        <th data-valign="middle" data-align="center"  data-sortable="true" >姓名</th>
+                        <th data-valign="middle" data-halign="center"  data-sortable="true" >奖学金</th>
+                        <th data-valign="middle" data-halign="center"  data-sortable="true" >助学金</th>
+                        <th data-valign="middle" data-halign="center"  data-sortable="true" >贷款</th>
+                    </tr>
+              </thead>
+              <tbody>
+             {%  for award in awards %}
+                <tr>
+                  <td><a href="/manage/detail/{{ award| key:"id"}}">详情</a></td>
+                  <td>{{ award| key:"id"}}</td>
+                  <td>{{ award| key:"number"}}</td>
+                  <td>{{ award| key:'name' }}</td>
+                  <td><pre>{{ award| key:'scholarship' }}</pre></td>
+                  <td><pre>{{ award| key:'grant' }}</pre></td>
+                  <td><pre>{{ award| key:'loan' }}</pre></td>
+                </tr>
+              {% endfor %}
+
+              </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}
