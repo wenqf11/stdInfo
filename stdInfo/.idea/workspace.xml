@@ -28,58 +28,44 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="urls.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/manage/urls.py">
+      <file leaf-file-name="export_excel.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/manage/export_excel.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="23" selection-start="696" selection-end="708" vertical-scroll-proportion="0.0" vertical-offset="76" max-vertical-offset="570">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="44.785713" vertical-offset="1254" max-vertical-offset="1767">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/manage/views.py">
+        <entry file="file://$PROJECT_DIR$/stdInfo/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="856" column="46" selection-start="35527" selection-end="35527" vertical-scroll-proportion="0.0" vertical-offset="16117" max-vertical-offset="18696">
+            <state line="67" column="35" selection-start="2615" selection-end="2615" vertical-scroll-proportion="-6.12" vertical-offset="1120" max-vertical-offset="1577">
               <folding>
-                <element signature="e#73#109#0" expanded="true" />
+                <element signature="e#99#143#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="search.html" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/manage/search.html">
+      <file leaf-file-name="urls.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/stdInfo/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="381" column="70" selection-start="25658" selection-end="25658" vertical-scroll-proportion="0.6742857" vertical-offset="7003" max-vertical-offset="8455">
-              <folding />
+            <state line="16" column="32" selection-start="521" selection-end="523" vertical-scroll-proportion="0.0" vertical-offset="62" max-vertical-offset="475">
+              <folding>
+                <element signature="e#0#51#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="award.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/manage/award.html">
+      <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/student/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="84" column="20" selection-start="4271" selection-end="4271" vertical-scroll-proportion="-10.178572" vertical-offset="1311" max-vertical-offset="2014">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="family.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/manage/family.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="98" column="54" selection-start="5132" selection-end="5460" vertical-scroll-proportion="-9.5" vertical-offset="1596" max-vertical-offset="2622">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="manage.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/css/manage.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="21" selection-start="514" selection-end="514" vertical-scroll-proportion="0.0" vertical-offset="97" max-vertical-offset="798">
-              <folding />
+            <state line="19" column="73" selection-start="579" selection-end="579" vertical-scroll-proportion="0.72397095" vertical-offset="62" max-vertical-offset="475">
+              <folding>
+                <element signature="e#70#125#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -87,7 +73,7 @@
       <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/student/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="53" selection-start="598" selection-end="598" vertical-scroll-proportion="-5.32" vertical-offset="114" max-vertical-offset="1995">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="285" max-vertical-offset="1995">
               <folding />
             </state>
           </provider>
@@ -96,7 +82,7 @@
       <file leaf-file-name="graduation.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/manage/graduation.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="102" column="20" selection-start="3017" selection-end="5557" vertical-scroll-proportion="-13.142858" vertical-offset="1570" max-vertical-offset="2603">
+            <state line="102" column="20" selection-start="3017" selection-end="5557" vertical-scroll-proportion="0.0" vertical-offset="1570" max-vertical-offset="2603">
               <folding />
             </state>
           </provider>
@@ -105,16 +91,7 @@
       <file leaf-file-name="manage.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/manage/manage.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="77" column="23" selection-start="3838" selection-end="3838" vertical-scroll-proportion="-4.0" vertical-offset="1351" max-vertical-offset="3173">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="work.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/manage/work.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="83" column="37" selection-start="4153" selection-end="4153" vertical-scroll-proportion="-10.678572" vertical-offset="1278" max-vertical-offset="1976">
+            <state line="77" column="23" selection-start="3838" selection-end="3838" vertical-scroll-proportion="0.0" vertical-offset="1351" max-vertical-offset="3173">
               <folding />
             </state>
           </provider>
@@ -130,15 +107,10 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/manage/__init__.py" />
-        <option value="$PROJECT_DIR$/templates/manage/degree.html" />
-        <option value="$PROJECT_DIR$/templates/manage/detail.html" />
-        <option value="$PROJECT_DIR$/templates/manage/export_excel.html" />
         <option value="$PROJECT_DIR$/templates/manage/family.html" />
         <option value="$PROJECT_DIR$/templates/manage/import_excel.html" />
         <option value="$PROJECT_DIR$/templates/manage/manage.html" />
         <option value="$PROJECT_DIR$/templates/base.html" />
-        <option value="$PROJECT_DIR$/student/views.py" />
         <option value="$PROJECT_DIR$/templates/manage/award.html" />
         <option value="$PROJECT_DIR$/templates/manage/work.html" />
         <option value="$PROJECT_DIR$/manage/urls.py" />
@@ -146,6 +118,11 @@
         <option value="$PROJECT_DIR$/templates/manage/graduation.html" />
         <option value="$PROJECT_DIR$/manage/views.py" />
         <option value="$PROJECT_DIR$/templates/manage/search.html" />
+        <option value="$PROJECT_DIR$/stdInfo/settings.py" />
+        <option value="$PROJECT_DIR$/student/urls.py" />
+        <option value="$PROJECT_DIR$/stdInfo/urls.py" />
+        <option value="$PROJECT_DIR$/stdInfo/views.py" />
+        <option value="$PROJECT_DIR$/student/views.py" />
       </list>
     </option>
   </component>
@@ -181,6 +158,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -223,11 +201,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="manage" />
+              <option name="myItemId" value="stdInfo" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -247,20 +221,19 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
-    <property name="restartRequiresConfirmation" value="true" />
+    <property name="recentsLimit" value="5" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -415,27 +388,7 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <option name="port" value="8000" />
-      <option name="host" value="" />
-      <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="" />
-      <option name="runTestServer" value="false" />
-      <option name="runNoReload" value="false" />
-      <option name="useCustomRunCommand" value="false" />
-      <option name="customRunCommand" value="" />
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
@@ -461,7 +414,27 @@
       <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -605,119 +578,125 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="229" />
+      <option name="time" value="230" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/manage/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="397" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="4" selection-start="480" selection-end="563" vertical-scroll-proportion="-2.5357144" vertical-offset="100" max-vertical-offset="1026">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/manage/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="23" selection-start="696" selection-end="708" vertical-scroll-proportion="0.0" vertical-offset="133" max-vertical-offset="570">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://D:/Program Files/python27/Lib/site-packages/django/core/handlers/base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="111" column="0" selection-start="4475" selection-end="4475" vertical-scroll-proportion="0.3322034" vertical-offset="1726" max-vertical-offset="5301">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/manage.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="21" selection-start="514" selection-end="514" vertical-scroll-proportion="0.0" vertical-offset="97" max-vertical-offset="798">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/stdInfo/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="43" selection-start="401" selection-end="401" vertical-scroll-proportion="-2.1762712" vertical-offset="851" max-vertical-offset="1520">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/student/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="53" selection-start="598" selection-end="598" vertical-scroll-proportion="-5.32" vertical-offset="114" max-vertical-offset="1995">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/manage/import_excel.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="61" column="78" selection-start="3122" selection-end="3122" vertical-scroll-proportion="0.07317073" vertical-offset="1132" max-vertical-offset="1501">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/manage/degree.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="112" column="59" selection-start="6128" selection-end="6944" vertical-scroll-proportion="0.7989418" vertical-offset="1826" max-vertical-offset="2888">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/manage/award.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="84" column="20" selection-start="4271" selection-end="4271" vertical-scroll-proportion="-10.178572" vertical-offset="1311" max-vertical-offset="2014">
+        <state line="84" column="20" selection-start="4271" selection-end="4271" vertical-scroll-proportion="0.0" vertical-offset="1311" max-vertical-offset="2014">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/manage/family.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="98" column="54" selection-start="5132" selection-end="5460" vertical-scroll-proportion="-9.5" vertical-offset="1596" max-vertical-offset="2622">
+        <state line="98" column="54" selection-start="5132" selection-end="5460" vertical-scroll-proportion="0.0" vertical-offset="1596" max-vertical-offset="2622">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/manage/work.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="37" selection-start="4153" selection-end="4153" vertical-scroll-proportion="-10.678572" vertical-offset="1278" max-vertical-offset="1976">
+        <state line="83" column="37" selection-start="4153" selection-end="4153" vertical-scroll-proportion="0.0" vertical-offset="1278" max-vertical-offset="1976">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/manage/manage.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="23" selection-start="3838" selection-end="3838" vertical-scroll-proportion="-4.0" vertical-offset="1351" max-vertical-offset="3173">
+        <state line="77" column="23" selection-start="3838" selection-end="3838" vertical-scroll-proportion="0.0" vertical-offset="1351" max-vertical-offset="3173">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/manage/graduation.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="20" selection-start="3017" selection-end="5557" vertical-scroll-proportion="-13.142858" vertical-offset="1570" max-vertical-offset="2603">
+        <state line="102" column="20" selection-start="3017" selection-end="5557" vertical-scroll-proportion="0.0" vertical-offset="1570" max-vertical-offset="2603">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/manage/search.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="381" column="70" selection-start="25658" selection-end="25658" vertical-scroll-proportion="17.92742" vertical-offset="570" max-vertical-offset="8455">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.1460055" vertical-offset="416" max-vertical-offset="779">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/student/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="57" selection-start="260" selection-end="260" vertical-scroll-proportion="0.3887468" vertical-offset="0" max-vertical-offset="391">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/student/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1995">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stdInfo/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="109" column="0" selection-start="2990" selection-end="2990" vertical-scroll-proportion="0.7084399" vertical-offset="1794" max-vertical-offset="2185">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/manage/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="856" column="46" selection-start="35527" selection-end="35527" vertical-scroll-proportion="0.0" vertical-offset="16117" max-vertical-offset="18696">
+        <state line="951" column="32" selection-start="41658" selection-end="41658" vertical-scroll-proportion="0.47938144" vertical-offset="17750" max-vertical-offset="18487">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/manage/export_excel.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="44.785713" vertical-offset="1254" max-vertical-offset="1767">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stdInfo/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="67" column="35" selection-start="2615" selection-end="2615" vertical-scroll-proportion="-6.12" vertical-offset="1120" max-vertical-offset="1577">
           <folding>
-            <element signature="e#73#109#0" expanded="true" />
+            <element signature="e#99#143#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/manage/search.html">
+    <entry file="file://$PROJECT_DIR$/stdInfo/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="381" column="70" selection-start="25658" selection-end="25658" vertical-scroll-proportion="0.6742857" vertical-offset="7003" max-vertical-offset="8455">
+        <state line="16" column="32" selection-start="521" selection-end="523" vertical-scroll-proportion="0.0" vertical-offset="62" max-vertical-offset="475">
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/student/student.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="211" selection-start="1193" selection-end="1196" vertical-scroll-proportion="0.3314121" vertical-offset="436" max-vertical-offset="6859">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/student/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="73" selection-start="579" selection-end="579" vertical-scroll-proportion="0.72397095" vertical-offset="62" max-vertical-offset="475">
+          <folding>
+            <element signature="e#70#125#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

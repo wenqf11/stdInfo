@@ -14,8 +14,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.http import Http404
 import datetime
-import xlwt
-
 
 
 def index(request):
@@ -33,6 +31,7 @@ def index(request):
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
         clk = request.POST.get('clk', '')
+        request.session["username"] = username
         user = auth.authenticate(username=username, password=password)
         if user is not None and user.is_active:
             auth.login(request, user)
@@ -45,14 +44,14 @@ def index(request):
                     return response
             else:
                 errors = u"请启用cookie再试一次"
-                return render_to_response("index.html", {'errors':errors}, context_instance=RequestContext(request))
+                return render_to_response("index.html", {'errors': errors}, context_instance=RequestContext(request))
             if request.user.is_staff:
                 return HttpResponseRedirect('/manage')
             else:
                 return HttpResponseRedirect('/student')
         else:
             errors = u"用户名或密码错误!"
-            return render_to_response("index.html", {'errors':errors}, context_instance=RequestContext(request))
+            return render_to_response("index.html", {'errors': errors}, context_instance=RequestContext(request))
 
 
 def logout(request):
@@ -63,10 +62,10 @@ def logout(request):
 
 
 def create_user(request, parm1, parm2):
-    user = User(username=parm1,
-                password=parm2)
-    user.save()
-    user = User.objects.get(username=parm1)
+    try:
+        user = User.objects.get(username=parm1)
+    except Exception as e:
+        user = User(username=parm1)
     user.set_password(parm2)
     user.save()
     return HttpResponse('create user successfully. username:%s, password:%s'%(user.username, user.password))
