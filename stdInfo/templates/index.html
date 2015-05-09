@@ -2,7 +2,7 @@
 {% block title %}学生信息管理系统{% endblock %}
 
 {% block css_js %}
-    <link href="../static/css/index.css" rel="stylesheet">
+    <link href="/static/css/index.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -27,9 +27,7 @@
             <button type="submit" class="btn btn-primary">登录</button>
         </form>
         {% if errors %}
-        <ul>
-            <li><span style="color: red">{{ errors }}</span></li>
-        </ul>
+        <span style="color: red">{{ errors }}</span>
         {% endif %}
     </div>
 </div>

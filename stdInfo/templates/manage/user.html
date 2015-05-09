@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% block title %}学生信息管理系统{% endblock %}
+
+{% block css_js %}
+    <link href="/static/css/manage.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid" id="main">
+    <div class="row">
+        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1" id="content">
+
+            <div id="custom-toolbar">
+                <div class="btn-group">
+                    <button class="btn btn-default" id="add-data" data-toggle="modal" data-target="#addModal">增加</button>
+                   <button class="btn btn-default" id="remove-data" data-method="remove">删除</button>
+                </div>
+            </div>
+
+            <table id ="table-methods-table" data-toolbar="#custom-toolbar" class="table table-hover table-bordered" data-toggle="table"
+                data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1"
+                data-pagination="true"  border="0" align="center" cellpadding="0" cellspacing="0">
+              <!-- table content for award_info page-->
+                <thead>
+                    <tr>
+                        <th data-field="status" data-checkbox="true"></th>
+                        <th data-valign="middle" data-align="center"  data-field="username" data-sortable="true" >用户名</th>
+                        <th data-valign="middle" data-align="center"  data-field="name" data-sortable="true" data-editable="true">姓名</th>
+                        <th data-valign="middle" data-align="center" data-field="phone" data-sortable="true" data-editable="true">电话</th>
+                        <th data-valign="middle" data-align="center" data-field="email" data-sortable="true" data-editable="true">邮箱</th>
+                        <th data-valign="middle" data-align="center" >管理</th>
+                    </tr>
+              </thead>
+              <tbody>
+             {%  for staff in staffs %}
+                <tr>
+                  <td></td>
+                  <td>{{ staff.user.username}}</td>
+                  <td>{{ staff.name }}</td>
+                  <td>{{ staff.phone }}</td>
+                  <td>{{ staff.email }}</td>
+                  <td><button type="button" class="btn btn-primary" data-toggle="modal"
+                              data-target="#resetPsdModal" data-username="{{ staff.user.username }}">重置密码</button></td>
+                </tr>
+              {% endfor %}
+
+              </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="resetPsdModal" tabindex="-1" role="dialog" aria-labelledby="resetPsdModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="resetPsdModalLabel">重置密码</h4>
+      </div>
+      <div class="modal-body">
+        <form id="reset_form" role="form">
+            {% csrf_token %}
+          <input type="hidden" class="form-control" name="username" id="username_for_reset">
+          <div class="form-group">
+            <label for="new_password" class="control-label">密码:</label>
+            <input type="password" placeholder="密码长度不少于6位" class="form-control" name="new_password" id="new_password">
+          </div>
+          <div class="form-group">
+            <label for="confirm_password2" class="control-label">重复密码:</label>
+            <input type="password" placeholder="密码长度不少于6位" class="form-control" name="confirm_password" id="confirm_password2">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="submit-reset-form"class="btn btn-primary">提交</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="addModalLabel">添加用户</h4>
+      </div>
+
+      <div class="modal-body">
+          <form id="add_form" action="/manage/add_staff" method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="username" class="control-label">用户名：</label>
+            <input type="text" class="form-control" name="username" id="username">
+          </div>
+          <div class="form-group">
+            <label for="password" class="control-label">密码：</label>
+            <input type="password" placeholder="密码长度至少6位" class="form-control" name="password" id="password">
+          </div>
+          <div class="form-group">
+            <label for="confirm_password" class="control-label">重复密码：</label>
+            <input type="password" placeholder="密码长度至少6位" class="form-control" name="confirm_password" id="confirm_password">
+          </div>
+          <div class="form-group">
+            <label for="name" class="control-label">姓名：</label>
+            <input type="text"  class="form-control" name="name" id="name">
+          </div>
+          <div class="form-group">
+            <label for="phone" class="control-label">电话：</label>
+            <input type="text"  class="form-control" name="phone" id="phone">
+          </div>
+          <div class="form-group">
+            <label for="email" class="control-label">邮箱：</label>
+            <input type="text"  class="form-control" name="email" id="email">
+          </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" id="submit-add-form">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$('#resetPsdModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var username = button.data('username') // Extract info from data-* attributes
+  var modal = $(this);
+  modal.find('#username_for_reset').val(username);
+})
+
+$('#submit-reset-form').click(function(){
+    $.ajax({
+        type: "POST",
+        url: "/manage/reset_staff_psd/",
+        data: $('#reset_form').serialize(),
+        success: function(msg) {
+            bootbox.alert({
+                size: 'small',
+                message: msg
+            });
+            if(msg == "密码修改成功！"){
+                $('#resetPsdModal').modal('hide');
+            }
+        },
+        error: function(){
+            bootbox.alert({
+                size: 'small',
+                message: "修改密码失败！"
+            });
+        }
+    });
+});
+
+
+$('#submit-add-form').click(function(){
+    $.ajax({
+        type: "POST",
+        url: "/manage/add_staff/",
+        data: $('#add_form').serialize(),
+        success: function(msg) {
+            bootbox.alert({
+                size: 'small',
+                message: msg
+            });
+            if(msg == "修改成功！"){
+                $(window.location).attr('href', '/manage/user');
+            }
+        },
+        error: function(){
+            bootbox.alert({
+                size: 'small',
+                message: "添加失败！"
+            });
+        }
+    });
+});
+
+$('#remove-data').click(function () {
+    bootbox.confirm({
+        size: 'small',
+        message: "确定要删除么？",
+        callback: function(result){
+            if(result){
+                var selects = $('#table-methods-table').bootstrapTable('getSelections');
+                stats = $.map(selects, function (row) {
+                    return row.status;
+                });
+                usernames = $.map(selects, function (row) {
+                        return row.username;
+                    });
+               $('#table-methods-table').bootstrapTable('remove', {
+                    field: 'status',
+                    values: stats
+                });
+                $.ajax({
+                    type:"POST",
+                    url:"/manage/delete_staffs/",
+                    traditional: true,
+                    data: {"usernames": usernames},
+                    dataType: "text",
+                    error: function(){
+                        bootbox.alert({
+                            size: 'small',
+                            message: "删除失败，请刷新页面后重新更改！"
+                        });
+                    },
+                    success: function(){
+                        bootbox.alert({
+                            size: 'small',
+                            message: "删除成功！"
+                        });
+                    }
+                 });
+            }
+        }
+    });
+});
+
+$.fn.editable.defaults.mode = 'inline';
+var flag = 0, sRow = null;
+$('#table-methods-table').bootstrapTable({
+//some code
+}).on('click-row.bs.table', function (e, row, $element) {
+    flag = 1;
+    sRow = row;
+}).on('editable-save.bs.table', function(e){
+    if(flag == 1){
+        $.ajax({
+            type:"POST",
+            url:"/manage/update_staff/",
+            data: sRow,
+            dataType: "text",
+            error: function(){
+                bootbox.alert({
+                    size: 'small',
+                    message: "更改失败，请刷新页面后重新更改！"
+                });
+            }
+         });
+        flag = 0;
+    }
+});
+</script>
+{% endblock %}

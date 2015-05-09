@@ -41,39 +41,15 @@
             if (!$export.length) {
                 $export = $([
                     '<div class="export btn-group">',
-                        '<button class="btn btn-default dropdown-toggle" ' +
-                            'data-toggle="dropdown" type="button">',
-                            '<i class="glyphicon glyphicon-export icon-share"></i> ',
-                            '<span class="caret"></span>',
+                        '<button class="btn btn-default" ' +
+                            'type="button">',
+                            '<i class="glyphicon glyphicon-download-alt"></i> ',
                         '</button>',
-                        '<ul class="dropdown-menu" role="menu">',
-                        '</ul>',
                     '</div>'].join('')).appendTo($btnGroup);
 
-                var $menu = $export.find('.dropdown-menu'),
-                    exportTypes = this.options.exportTypes;
-
-                if (typeof this.options.exportTypes === 'string') {
-                    var types = this.options.exportTypes.slice(1, -1).replace(/ /g, '').split(',');
-
-                    exportTypes = [];
-                    $.each(types, function (i, value) {
-                        exportTypes.push(value.slice(1, -1));
-                    });
-                }
-                $.each(exportTypes, function (i, type) {
-                    if (TYPE_NAME.hasOwnProperty(type)) {
-                        $menu.append(['<li data-type="' + type + '">',
-                                '<a href="javascript:void(0)">',
-                                    TYPE_NAME[type],
-                                '</a>',
-                            '</li>'].join(''));
-                    }
-                });
-
-                $menu.find('li').click(function () {
+                 $export.find('button').click(function () {
                     that.$el.tableExport({
-                        type: $(this).data('type'),
+                        type: 'excel',
                         escape: false
                     });
                 });

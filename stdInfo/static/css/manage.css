@@ -29,9 +29,19 @@ pre {
 }
 
 .row {
-	margin-left: 0px;
+	margin-left: 0;
+    margin-right: 0;
 }
 
 .form-line{
     margin-bottom: 10px;
+}
+
+.table-header{
+    font-size: 16px;
+    font-weight:bold;
+    margin-bottom: 10px;
+}
+.tab-content{
+    margin-top: 20px;
 }

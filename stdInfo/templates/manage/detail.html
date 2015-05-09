@@ -2,27 +2,9 @@
 {% block title %}学生信息管理系统{% endblock %}
 
 {% block css_js %}
-    <link href="../../static/css/manage.css" rel="stylesheet">
+    <link href="/static/css/manage.css" rel="stylesheet">
 {% endblock %}
 
-{% block header %}
-<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-    <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="glyphicon glyphicon-user"></span> admin<span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">个人信息</a></li>
-            <li class="divider"></li>
-            <li><a href="#">设置</a></li>
-            <li class="divider"></li>
-            <li><a href="/logout">退出</a></li>
-          </ul>
-        </li>
-    </ul>
-</div>
-{% endblock %}
 
 {% block content %}
  <div class="container-fluid" id="main">
@@ -32,7 +14,7 @@
                     <li role="presentation">
                     <a href="/manage/search">搜索<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
-                    <li role="presentation" class="active">
+                    <li role="presentation">
                     <a href="/manage/basic_info">基本信息<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                     <li role="presentation">
@@ -45,16 +27,13 @@
                     <a href="/manage/family_info">家庭情况<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                     <li role="presentation">
-                    <a href="/manage/work_info">科创社工<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    <a href="/manage/experience_info">科创社工<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                     <li role="presentation">
                     <a href="/manage/graduation_info">毕业信息<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                     <li role="presentation">
                         <a href="/manage/import_excel">导入<i class="glyphicon glyphicon-chevron-right"></i></a>
-                    </li>
-                    <li role="presentation">
-                        <a href="/manage/export_excel">导出<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                 </ul>
             </div>
@@ -63,7 +42,245 @@
             <!--===============================================================================================-->
             <!--/span-->
             <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10"  id="content">
+                <div class="table-header">基本信息：</div>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>学号：</td>
+                                <td>{{ student.number }}</td>
 
+                                <td>姓名：</td>
+                                <td>{{ student.name }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>性别：</td>
+                                <td>{{ student.gender }}</td>
+
+                                <td>身份证号：</td>
+                                <td>{{ student.identity_number }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>出生日期：</td>
+                                <td>{{ student.birthday |date:"Ymd"}}</td>
+
+                                <td>民族：</td>
+                                <td>{{ student.nation }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>国籍：</td>
+                                <td>{{ student.nationality }}</td>
+                                <td>政治面貌：</td>
+                                <td>{{ student.politics }}</td>
+                            </tr>
+                            <tr>
+                                <td>考区：</td>
+                                <td>{{ student.exam_province }}</td>
+                                <td>毕业中学：</td>
+                                <td>{{ student.high_school }}</td>
+                            </tr>
+
+                            <tr>
+
+                                <td>高考总分：</td>
+                                <td>{{ student.entrance_exam_score }}</td>
+                                <td>邮箱：</td>
+                                <td>{{ student.graduation.email}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>手机号：</td>
+                                <td>{{ student.graduation.phone }}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <hr>
+                    <div class="table-header">学籍信息：</div>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>专业名：</td>
+                            <td>{{ student.degree.major }}</td>
+
+                            <td>教学班：</td>
+                            <td>{{ student.degree.class_num }}</td>
+                        </tr>
+                        <tr>
+                            <td>所属年级：</td>
+                            <td>{{ student.degree.grade }}</td>
+
+                            <td>是否异动：</td>
+                            <td>{{ student.degree.change }}</td>
+                        </tr>
+                        <tr>
+                            <td>学位：</td>
+                            <td>{{ student.degree.degree_type }}</td>
+
+
+                            <td>是否留学生：</td>
+                            <td>{{ student.degree.is_foreign }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>是否异动：</td>
+                            <td>{{ student.degree.change }}</td>
+
+                            <td>交换时间/学校：</td>
+                            <td>{{ student.degree.exchange_info }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>大三年级学分绩及排名：</td>
+                            <td>{{ student.degree.scores_rank }}</td>
+
+                            <td>英语水平：</td>
+                            <td>{{ student.degree.english_level }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>二学位专业名：</td>
+                            <td>{{ student.second_degree.major }}</td>
+
+                            <td>二学位单位简称：</td>
+                            <td>{{ student.second_degree.department_name}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>二学位二学位班号：</td>
+                            <td>{{ student.second_degree.class_num }}</td>
+
+                            <td>二学位毕业日期：</td>
+                            <td>{{ student.second_degree.date| date:"Ymd" }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <hr>
+                    <div class="table-header">奖助贷：</div>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>奖学金：</td>
+                            <td>{{student.scholarship_loan.scholarship}}</td>
+
+                            <td>助学金：</td>
+                            <td>{{student.scholarship_loan.grant}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>贷款：</td>
+                            <td>{{student.scholarship_loan.loan}}</td>
+
+                            <td>临时借款：</td>
+                            <td>{{ student.scholarship_loan.temp_loan}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <hr>
+                    <div class="table-header">科创社工：</div>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>赛事信息：</td>
+                                <td>{{student.experience.competition}}</td>
+
+                                <td>社工信息：</td>
+                                <td>{{ student.experience.social_work}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <hr>
+                    <div class="table-header">家庭情况：</div>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>家庭住址：</td>
+                            <td>{{ student.family.address}}</td>
+
+                            <td>家庭电话：</td>
+                            <td>{{ student.family.phone }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>户口类别：</td>
+                            <td>{{ student.family.hukou_type}}</td>
+
+                            <td>家庭人均月收入（元）：</td>
+                            <td>{{ student.family.avg_income }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>I值：</td>
+                            <td>{{ student.family.I_value }}</td>
+
+                            <td>贫困等级：</td>
+                            <td>{{ student.family.poverty_degree }}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>经济状况说明：</td>
+                            <td>{{ student.family.detail }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <hr>
+                    <div class="table-header">毕业信息：</div>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>毕业日期：</td>
+                            <td>{{ student.graduation.date | date:"Ymd"}}</td>
+
+                            <td>毕业类别：</td>
+                            <td>{{ student.graduation.type }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>毕业手机：</td>
+                            <td>{{ student.graduation.phone}}</td>
+
+                            <td>毕业邮箱：</td>
+                            <td>{{ student.graduation.email }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>毕业去向：</td>
+                            <td>{{ student.graduation.destination }}</td>
+
+                            <td>分流方向：</td>
+                            <td>{{ student.graduation.direction }}</td>
+                        </tr>
+                        <tr>
+                            <td>补行毕业类别：</td>
+                            <td>{{ student.graduation.type_ad }}</td>
+
+                            <td>补行毕业时间：</td>
+                            <td>{{ student.graduation.date_ad  | date:"Ymd"}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
     </div>
 </div>

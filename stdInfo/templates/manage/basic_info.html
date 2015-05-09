@@ -2,27 +2,9 @@
 {% block title %}学生信息管理系统{% endblock %}
 
 {% block css_js %}
-    <link href="../../static/css/manage.css" rel="stylesheet">
+    <link href="/static/css/manage.css" rel="stylesheet">
 {% endblock %}
 
-{% block header %}
-<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-    <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="glyphicon glyphicon-user"></span> admin<span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">个人信息</a></li>
-            <li class="divider"></li>
-            <li><a href="#">设置</a></li>
-            <li class="divider"></li>
-            <li><a href="/logout">退出</a></li>
-          </ul>
-        </li>
-    </ul>
-</div>
-{% endblock %}
 
 {% block content %}
  <div class="container-fluid" id="main">
@@ -45,16 +27,13 @@
                     <a href="/manage/family_info">家庭情况<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                     <li role="presentation">
-                    <a href="/manage/work_info">科创社工<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    <a href="/manage/experience_info">科创社工<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                     <li role="presentation">
                     <a href="/manage/graduation_info">毕业信息<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                     <li role="presentation">
                         <a href="/manage/import_excel">导入<i class="glyphicon glyphicon-chevron-right"></i></a>
-                    </li>
-                    <li role="presentation">
-                        <a href="/manage/export_excel">导出<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                 </ul>
             </div>
@@ -66,13 +45,13 @@
 
                 <div id="custom-toolbar">
                     <div class="btn-group">
-                       <button class="btn btn-default" id="append-data" data-method="append">新增</button>
                        <button class="btn btn-default" id="remove-data" data-method="remove">删除</button>
                     </div>
                 </div>
 
-                <table id ="table-methods-table" data-toolbar="#custom-toolbar" class="table table-hover table-bordered" data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc"
-                border="0" align="center" cellpadding="0" cellspacing="0">
+                <table id ="table-methods-table" data-toolbar="#custom-toolbar" class="table table-hover table-bordered" data-toggle="table"
+                data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1"
+                data-pagination="true"  border="0" align="center" cellpadding="0" cellspacing="0">
 
                 <!-- table content for basic_info page-->
                 <thead>
@@ -82,6 +61,8 @@
                         <th data-valign="middle" data-align="center" data-field="number" data-sortable="true">学号</th>
                         <th data-valign="middle" data-align="center" data-field="name" data-sortable="true" data-editable="true">姓名</th>
                         <th data-valign="middle" data-align="center" data-field="gender" data-sortable="true" data-editable="true">性别</th>
+                        <th data-valign="middle" data-align="center" data-field="phone" data-sortable="true" data-editable="true">手机号</th>
+                        <th data-valign="middle" data-align="center" data-field="email" data-sortable="true" data-editable="true">邮箱</th>
                         <th data-valign="middle" data-align="center" data-field="identity_number" data-sortable="true" data-editable="true">身份证号</th>
                         <th data-valign="middle" data-align="center" data-field="birthday"data-sortable="true" data-editable="true">出生日期</th>
                         <th data-valign="middle" data-align="center" data-field="nation" data-sortable="true" data-editable="true">民族</th>
@@ -99,9 +80,11 @@
                   <td>{{ student.id }}</td>
                   <td>{{ student.number }}</td>
                   <td>{{ student.name }}</td>
-                  <td>{% if student.gender %}男{% else %}女{% endif %}</td>
+                  <td>{{ student.gender }}</td>
+                  <td>{{ student.phone }}</td>
+                  <td>{{ student.email }}</td>
                   <td>{{ student.identity_number }}</td>
-                  <td>{{ student.birthday |date:"Y-m-d"}}</td>
+                  <td>{{ student.birthday |date:"Ymd"}}</td>
                   <td>{{ student.nation }}</td>
                   <td>{{ student.nationality }}</td>
                   <td>{{ student.politics }}</td>
@@ -116,14 +99,43 @@
 
             <script type="text/javascript">
             $('#remove-data').click(function () {
-                var selects = $('#table-methods-table').bootstrapTable('getSelections');
-                    ids = $.map(selects, function (row) {
-                        return row.status;
-                    });
-
-                $('#table-methods-table').bootstrapTable('remove', {
-                    field: 'status',
-                    values: ids
+                bootbox.confirm({
+                    size: 'small',
+                    message: "确定要删除么？",
+                    callback: function(result){
+                        if(result){
+                            var selects = $('#table-methods-table').bootstrapTable('getSelections');
+                            stats = $.map(selects, function (row) {
+                                return row.status;
+                            });
+                            ids = $.map(selects, function (row) {
+                                    return row.id;
+                                });
+                           $('#table-methods-table').bootstrapTable('remove', {
+                                field: 'status',
+                                values: stats
+                            });
+                            $.ajax({
+                                type:"POST",
+                                url:"/manage/delete_students/",
+                                traditional: true,
+                                data: {"ids": ids},
+                                dataType: "text",
+                                error: function(){
+                                    bootbox.alert({
+                                        size: 'small',
+                                        message: "删除失败，请刷新页面后重新更改！"
+                                    });
+                                },
+                                success: function(){
+                                    bootbox.alert({
+                                        size: 'small',
+                                        message: "删除成功！"
+                                    });
+                                }
+                             });
+                        }
+                    }
                 });
             });
 
@@ -138,22 +150,19 @@
                 if(flag == 1){
                     $.ajax({
                         type:"POST",
-                        url:"/manage/update_basic_info",
+                        url:"/manage/update_basic_info/",
                         data: sRow,
                         dataType: "text",
                         error: function(){
-                            alert("更改失败，请刷新页面后重新更改！")
+                            bootbox.alert({
+                                size: 'small',
+                                message: "更改失败，请刷新页面后重新更改！"
+                            });
                         }
                      });
                     flag = 0;
                 }
             });
-            /*$('#append-data').click(function () {
-                $('#table-methods-table').bootstrapTable('append', {
-                    number: 2011013239,
-                    name: '文庆福'
-                });
-            });*/
            </script>
 
         </div>

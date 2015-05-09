@@ -2,355 +2,247 @@
 {% block title %}学生信息管理系统{% endblock %}
 
 {% block css_js %}
-    <link href="../static/css/manage.css" rel="stylesheet">
+    <link href="/static/css/student.css" rel="stylesheet">
 {% endblock %}
 
 {% block header %}
-<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-    <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <span class="glyphicon glyphicon-user"></span>admin<span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="#">个人信息</a></li>
-                <li class="divider"></li>
-                <li><a href="#">设置</a></li>
-                <li class="divider"></li>
-                <li><a href="/logout">退出</a></li>
-            </ul>
-        </li>
-    </ul>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+      </div>
+
+      <div class="modal-body">
+          <form id="psd_form" action="/student/change_password" method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="old_password" class="control-label">旧密码：</label>
+            <input type="password" class="form-control" name="old_password" id="old_password">
+          </div>
+          <div class="form-group">
+            <label for="new_password" class="control-label">新密码：</label>
+            <input type="password" placeholder="密码长度至少6位" class="form-control" name="new_password" id="new_password">
+          </div>
+          <div class="form-group">
+            <label for="confirm_password" class="control-label">确认密码：</label>
+            <input type="password" placeholder="密码长度至少6位" class="form-control" name="confirm_password" id="confirm_password">
+          </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" id="save-button">确定</button>
+      </div>
+    </div>
+  </div>
 </div>
+<script>
+$('#save-button').click(function(){
+    $.ajax({
+        type: "POST",
+        url: "/student/change_password/",
+        data: $('#psd_form').serialize(),
+        success: function(msg) {
+            bootbox.alert({
+                size: 'small',
+                message: msg
+            });
+            if(msg == "密码修改成功！"){
+                $('#myModal').modal('hide');
+            }
+        },
+        error: function(){
+            bootbox.alert({
+                size: 'small',
+                message: "修改密码失败！"
+            });
+        }
+    });
+});
+</script>
 {% endblock %}
 
 {% block content %}
 <div class="container-fluid" id="main">
-    <div class="col-xs-50 col-sm-50 col-md-50 col-lg-50"  id="content">
-        <table class="table table-hover table-bordered " data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <form id="std_info" action="/student/"  method="POST">
+            {% csrf_token%}
+        <div class="table-header">基本信息：</div>
+        <table class="table table-hover table-bordered">
             <thead>
             </thead>
             <tbody>
-            <tr width="25%" height="45" style="font-size:18px; ">
-			    <td >
-			        <strong>基本信息：</strong>
-                </td>
-	        </tr>
-            <tr>
-                <td width="25%" height="25" align="right">
-                    <div align="right">学号：</div>
-                </td>
-                <td width="25%" align="left">{{ student.number }}</td>
+                <tr>
+                    <td>学号：</td>
+                    <td>{{ student.number }}</td>
 
-                <td width="25%" height="25" align="right">
-                    <div align="right">姓名：</div>
-                </td>
-                <td width="25%" align="left">{{ student.name }}</td>
+                    <td>姓名：</td>
+                    <td>{{ student.name }}</td>
+                </tr>
+
+                <tr>
+                    <td>性别：</td>
+                    <td>{{  student.gender }}</td>
+
+                    <td>身份证号：</td>
+                    <td>{{ student.identity_number }}</td>
+                </tr>
+
+                <tr>
+                    <td>出生日期：</td>
+                    <td>{{ student.birthday |date:"Y-m-d"}}</td>
+
+                    <td>民族：</td>
+                    <td>{{ student.nation }}</td>
+                </tr>
+
+                <tr>
+                    <td>政治面貌：</td>
+                    <td><input type="text" name="politics" value="{{ student.politics }}"></td>
+
+                    <td>考区：</td>
+                    <td>{{ student.exam_province }}</td>
+                </tr>
+
+                <tr>
+                    <td>手机号：</td>
+                    <td><input type="text" name="phone" value="{{ student.phone }}"></td>
+
+                    <td>邮箱：</td>
+                    <td><input type="text" name="email" value="{{ student.email}}"></td>
+                </tr>
+
+                <tr>
+                    <td>家庭住址：</td>
+                    <td><input type="text" name="address" value="{{ student.family.address }}"></td>
+
+                    <td>邮编：</td>
+                    <td><input type="text" name="postcode" value=""></td>
+                </tr>
+
+                <tr>
+                    <td>父母联系方式：</td>
+                    <td><input type="text" name="family_phone" value="{{ student.family.phone }}"></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr>
+        <div class="table-header">学籍信息：</div>
+        <table class="table table-hover table-bordered">
+            <thead>
+            </thead>
+            <tbody>
+            <tr>
+                <td>专业名：</td>
+                <td>{{ student.degree.major }}</td>
+                <td>教学班：</td>
+                <td>{{ student.degree.class_num }}</td>
             </tr>
 
             <tr>
-                <td height="25" align="right">
-                    <div align="right">性别：</div>
-                </td>
-                <td align="left">{% if student.gender %}男{% else %}女{% endif %}</td>
+                <td>学位：</td>
+                <td>{{ student.degree.degree_type }}</td>
 
-                <td height="25" align="right">
-                    <div align="right">身份证号：</div>
-                </td>
-                <td align="left">{{ student.identity_number }}</td>
+                <td>交换时间/学校：</td>
+                <td>{{ student.degree.exchange_info }}</td>
             </tr>
 
             <tr>
-                <td height="25" align="right">
-                    <div align="right">出生日期：</div>
-                </td>
-                <td align="left">{{ student.birthday |date:"Y-m-d"}}</td>
+                <td>大三年级学分绩及排名：</td>
+                <td>{{ student.degree.scores_rank }}</td>
 
-                <td height="25" align="right">
-                    <div align="right">民族：</div>
-                </td>
-                <td align="left">{{ student.nation }}</td>
+                <td>外语水平</td>
+                <td><input type="text" name="english_level" value="{{ student.degree.english_level }}"></td>
             </tr>
 
             <tr>
-                <td height="25" align="right">
-                    <div align="right">政治面貌：</div>
-                </td>
-                <td align="left">{{ student.politics }}</td>
+                <td>二学位专业名：</td>
+                <td>{{ student.second_degree.major }}</td>
 
-                <td height="25" align="right">
-                    <div align="right">考区：</div>
-                </td>
-                <td align="left">{{ student.exam_province }}</td>
+                <td>二学位毕业日期</td>
+                <td>{{ student.second_degree.date| date:"Y-m-d" }}</td>
             </tr>
 
+            </tbody>
+        </table>
+
+        <hr>
+        <div class="table-header">科创社工：</div>
+        <table class="table table-hover table-bordered">
+            <thead>
+            </thead>
+            <tbody>
             <tr>
-                <td height="25" align="right" align="center">
-                <form>
-                    {% csrf_token %}
-                    <div>
-                        <label>联系方式：</label>
-                    </div>
-                </form>
-                </td>
-                <td align="left">
-                    <form>
-                        {% csrf_token %}
-                        <div>
-                            <input type="text" placeholder="{{ student.graduation.phone }}">
-                        </div>
-                    </form>
-                </td>
+                <td>赛事信息：</td>
+                <td><textarea name="competition" form="std_info" rows="5" cols="60">{{student.experience.competition}}</textarea></td>
 
-                <td height="25" align="right">
-                    <form>
-                        {% csrf_token %}
-                        <div>
-                            <label>邮箱：</label>
-                        </div>
-                    </form>
-                </td>
-                <td align="left">
-                    <form>
-                        {% csrf_token %}
-                        <div>
-                            <input type="text" placeholder="{{ student.graduation.email}}">
-                        </div>
-                    </form>
-                </td>
-            </tr>
-
-            <tr>
-                <td height="25" align="right">
-                    <div align="right">外语水平：</div>
-                </td>
-                <td align="left"></td>
-
-                <td height="25" align="right">
-                    <div align="right"></div>
-                </td>
-                <td align="left"></td>
+                <td>社工信息：</td>
+                <td><textarea name="social_work" form="std_info" rows="5" cols="60">{{ student.experience.social_work}}</textarea></td>
             </tr>
             </tbody>
         </table>
 
-        <table class="table table-hover table-bordered " data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+         <hr>
+        <div class="table-header">奖助贷：</div>
+        <table class="table table-hover table-bordered">
             <thead>
             </thead>
             <tbody>
-            <tr width="25%" height="45" style="font-size:18px; ">
-			    <td >
-			        <strong>学籍信息：</strong>
-                </td>
-	        </tr>
             <tr>
-                <td width="25%" height="25" align="right">
-                    <div align="right">系所名：</div>
-                </td>
-                <td width="25%" align="left">{{ student.degree.department }}</td>
+                <td>奖学金：</td>
+                <td>{{ student.scholarship_loan.scholarship }}</td>
 
-                <td width="25%" height="25" align="right">
-                    <div align="right">专业名：</div>
-                </td>
-                <td width="25%" align="left">{{ student.degree.major }}</td>
+                <td>助学金：</td>
+                <td>{{ student.scholarship_loan.grant }}</td>
             </tr>
-
             <tr>
-                <td height="25" align="right">
-                    <div align="right">教学班：</div>
-                </td>
-                <td align="left">{{ student.degree.class_num }}</td>
+                <td>贷款：</td>
+                <td>{{ student.scholarship_loan.loan }}</td>
 
-                <td height="25" align="right">
-                    <div align="right">所属年级：</div>
-                </td>
-                <td align="left">{{ student.degree.grade }}</td>
-            </tr>
-
-            <tr>
-                <td height="25" align="right">
-                    <div align="right">学制：</div>
-                </td>
-                <td align="left">{{ student.degree.duration}}</td>
-
-                <td height="25" align="right">
-                    <div align="right">是否异动：</div>
-                </td>
-                <td align="left">{{ student.degree.change }}</td>
-            </tr>
-
-            <tr>
-                <td height="25" align="right">
-                    <div align="right">学位：</div>
-                </td>
-                <td align="left">{{ student.degree.degree_type }}</td>
-
-
-                <td height="25" align="right">
-                    <div align="right">是否留学生：</div>
-                </td>
-                <td align="left">{% if student.degree.is_foreign %}是{% else %}否{% endif %}</td>
-            </tr>
-
-            <tr>
-                <td height="25" align="right">
-                    <div align="right">是否有学籍：</div>
-                </td>
-                <td align="left">{% if student.degree.is_candidate %}是{% else %}否{% endif %}</td>
-
-                <td height="25" align="right">
-                    <div align="right">学生类别：</div>
-                </td>
-                <td align="left">{{ student.degree.student_type }}</td>
-            </tr>
-
-            <tr>
-                <td height="25" align="right">
-                    <div align="right">经费办法：</div>
-                </td>
-                <td align="left">{{ student.degree.expenditure_type }}</td>
-
-                <td height="25" align="right">
-                    <div align="right">交换时间/学校：</div>
-                </td>
-                <td align="left">{{ student.degree.exchange_info }}</td>
-            </tr>
-
-            <tr>
-                <td height="25" align="right">
-                    <div align="right">大三年级学分绩及排名：</div>
-                </td>
-                <td align="left">{{ student.degree.scores_rank }}</td>
-
-                <td height="25" align="right">
-                    <div align="right"></div>
-                </td>
-                <td align="left"></td>
+                <td>临时借款：</td>
+                <td>{{ student.scholarship_loan.temp_loan }}</td>
             </tr>
             </tbody>
         </table>
 
 
-        <table class="table table-hover table-bordered " data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+        <hr>
+        <div class="table-header">毕业信息：</div>
+        <table class="table table-hover table-bordered">
             <thead>
             </thead>
             <tbody>
             <tr>
-				<td height="45" style="font-size:18px; " >
-				    <strong>奖助贷：</strong>
-                </td>
-	        </tr>
+                <td>毕业手机：</td>
+                <td><input type="text" name="graduation_phone" value="{{ student.graduation.phone}}"></td>
 
-            <tr>
-                <td  height="25" align="right">
-                    <div align="center">奖学金学年度</div>
-                </td>
-
-                <td height="25" align="right">
-                    <div align="center">荣誉等级</div>
-                </td>
-
-                <td height="25" align="right">
-                    <div align="center">奖项简称</div>
-                </td>
-
-                <td height="25" align="right">
-                    <div align="center">获奖金额</div>
-                </td>
-
-                <td height="25" align="right">
-                    <div align="center">助学金年度</div>
-                </td>
-
-                <td height="25" align="right">
-                    <div align="center">助项简称</div>
-                </td>
-
-                <td height="25" align="right">
-                    <div align="center">获助金额</div>
-                </td>
+                <td>毕业邮箱：</td>
+                <td><input type="text" name="graduation_email" value="{{ student.graduation.email}}"></td>
             </tr>
 
             <tr>
-                <td  align="left">{{ scholarship.year}}</td>
-                <td align="left">{{ scholarship.honor_grade }}</td>
-                <td align="left">{{ scholarship.name}}</td>
-                <td align="left">{{ scholarship.amount}}</td>
-                <td align="left"></td>
-                <td align="left"></td>
-                <td align="left"></td>
+                <td>毕业去向：</td>
+                <td><input type="text" name="destination" value="{{ student.graduation.destination}}"></td>
+
+                <td>分流方向：</td>
+                <td>{{ student.graduation.direction }}</td>
             </tr>
 
             <tr>
-                <td height="25" align="center">
-                    <div align="right">贷款：</div>
-                </td>
-                <td align="left"></td>
+                <td>毕业日期：</td>
+                <td>{{ student.graduation.date | date:"Y-m-d"}}</td>
+
+                <td>毕业类别：</td>
+                <td>{{ student.graduation.type }}</td>
             </tr>
             </tbody>
         </table>
-
-
-        <table class="table table-hover table-bordered " data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
-            <thead>
-            </thead>
-            <tbody>
-            <tr>
-				<td width="25%" height="45" style="font-size:18px; " >
-			        <strong>毕业信息：</strong>
-                </td>
-	        </tr>
-
-            <tr>
-                <td width="25%" height="25" align="right">
-                    <div align="right">毕业日期：</div>
-                </td>
-                <td width="25%" align="left">{{ student.graduation.date | date:"Y-m-d"}}</td>
-
-                <td width="25%" height="25" align="right">
-                    <div align="right">毕业类别：</div>
-                </td>
-                <td width="25%" align="left">{{ student.graduation.type }}</td>
-            </tr>
-
-            <tr>
-                <td height="25" align="right">
-                    <div align="right">毕业手机：</div>
-                </td>
-                <td align="left">{{ student.graduation.phone}}</td>
-
-                <td height="25" align="right">
-                    <div align="right">毕业邮箱：</div>
-                </td>
-                <td align="left">{{ student.graduation.email }}</td>
-            </tr>
-
-            <tr>
-                <td height="25" align="right">
-                    <div align="right">毕业去向：</div>
-                </td>
-                <td align="left">{{ student.graduation.destination }}</td>
-
-                <td height="25" align="right">
-                    <div align="right">分流方向：</div>
-                </td>
-                <td align="left">{{ student.graduation.direction }}</td>
-            </tr>
-            </tbody>
-        </table>
-
-        <table class="table table-hover table-bordered " data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
-            <thead>
-            </thead>
-            <tbody>
-            <tr>
-				<td width="25%" height="45" style="font-size:18px; " >
-			        <strong>科创信息：</strong>
-                </td>
-	        </tr>
-        </tbody>
-        </table>
-
+        <div class="row" style="text-align: center"><input type="submit" class="btn btn-primary btn-lg" value="确定"/></div>
+        </form>
     </div>
 </div>
 {% endblock %}

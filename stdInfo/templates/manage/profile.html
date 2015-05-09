@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block title %}学生信息管理系统{% endblock %}
+
+{% block css_js %}
+    <link href="/static/css/manage.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid" id="main">
+    <div class="row">
+        <div class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2" id="content">
+            <ul class="nav nav-tabs">
+              <li role="presentation" class="active"><a href="#panel-info" aria-controls="panel-info" role="tab" data-toggle="tab">个人信息</a></li>
+              <li role="presentation"><a href="#panel-account" aria-controls="panel-account" role="tab" data-toggle="tab">修改密码</a></li>
+            </ul>
+            <div class="tab-content col-md-6 col-lg-6 col-lg-offset-3 col-md-offset-3">
+                  <div class="tab-pane active" id="panel-info" role="tabpanel">
+                    <form  action="/manage/update_profile/" class="form-horizontal form-style" method="POST" role="form">
+                      {% csrf_token%}
+                      <div class="form-group">
+                        <label for="name" class="col-sm-3 control-label">姓名：</label>
+                        <div class="col-sm-9" name="name">
+                          <input type="text" class="form-control" id="name" name="name" value="{{ staff.name }}">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="phone" class="col-sm-3 control-label">电话：</label>
+                        <div class="col-sm-9" name="phone">
+                          <input type="text" class="form-control" id="phone" name="phone" value="{{ staff.phone }}">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="email" class="col-sm-3 control-label">邮箱：</label>
+                        <div name="email" class="col-sm-9">
+                          <input type="text" class="form-control" name = "email" id="email" value="{{ staff.email }}">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                          <button type="submit" id="info-save-button" class="btn btn-primary">保存</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="tab-pane" id="panel-account" role="tabpanel">
+                    <form id="psd_form" class="form-horizontal form-style" role="form">
+                      {% csrf_token%}
+                      <div class="form-group">
+                        <label for="old_password" class="col-sm-3 control-label">旧密码：</label>
+                        <div class="col-sm-9">
+                          <input type="password" class="form-control" id="old_password" name="old_password">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="new_password" class="col-sm-3 control-label">新密码：</label>
+                        <div class="col-sm-9">
+                          <input type="password" placeholder="密码长度不少于6位" class="form-control" id="new_password" name="new_password">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="confirm_password" class="col-sm-3 control-label">确认密码：</label>
+                        <div class="col-sm-9">
+                          <input type="password" placeholder="密码长度不少于6位" class="form-control" id="confirm_password" name="confirm_password">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                          <button id="account-save-button" type="button" class="btn btn-primary">保存</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+              </div>
+        </div>
+    </div>
+</div>
+<script>
+$('#account-save-button').click(function(){
+    $.ajax({
+        type: "POST",
+        url: "/manage/change_password/",
+        data: $('#psd_form').serialize(),
+        success: function(msg) {
+            bootbox.alert({
+                size: 'small',
+                message: msg
+            });
+        },
+        error: function(){
+            bootbox.alert({
+                size: 'small',
+                message: "修改密码失败！"
+            });
+        }
+    });
+});
+</script>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="addModalLabel">添加用户</h4>
+      </div>
+
+      <div class="modal-body">
+          <form id="add_form" action="/manage/add_staff" method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="username" class="control-label">用户名：</label>
+            <input type="text" class="form-control" name="username" id="username">
+          </div>
+          <div class="form-group">
+            <label for="password" class="control-label">密码：</label>
+            <input type="password" placeholder="密码长度至少6位" class="form-control" name="password" id="password">
+          </div>
+          <div class="form-group">
+            <label for="confirm_password" class="control-label">重复密码：</label>
+            <input type="password" placeholder="密码长度至少6位" class="form-control" name="confirm_password" id="confirm_password">
+          </div>
+          <div class="form-group">
+            <label for="name" class="control-label">姓名：</label>
+            <input type="text"  class="form-control" name="name" id="name">
+          </div>
+          <div class="form-group">
+            <label for="phone" class="control-label">电话：</label>
+            <input type="text"  class="form-control" name="phone" id="phone">
+          </div>
+          <div class="form-group">
+            <label for="email" class="control-label">邮箱：</label>
+            <input type="text"  class="form-control" name="email" id="email">
+          </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" id="submit-add-form">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

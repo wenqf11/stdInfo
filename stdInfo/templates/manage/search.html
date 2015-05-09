@@ -2,28 +2,9 @@
 {% block title %}学生信息管理系统{% endblock %}
 
 {% block css_js %}
-    <script type="text/javascript" src="../../static/js/jquery.editable-select.min.js"></script>
-    <link href="../../static/css/manage.css" rel="stylesheet">
-    <link  rel="stylesheet"  type="text/css"  href="../../static/css/jquery.editable-select.css"/>
-{% endblock %}
-
-{% block header %}
-<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-    <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="glyphicon glyphicon-user"></span> admin<span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">个人信息</a></li>
-            <li class="divider"></li>
-            <li><a href="#">设置</a></li>
-            <li class="divider"></li>
-            <li><a href="/logout">退出</a></li>
-          </ul>
-        </li>
-    </ul>
-</div>
+    <script type="text/javascript" src="/static/js/jquery.editable-select.min.js"></script>
+    <link href="/static/css/manage.css" rel="stylesheet">
+    <link  rel="stylesheet"  type="text/css"  href="/static/css/jquery.editable-select.css"/>
 {% endblock %}
 
 {% block content %}
@@ -47,16 +28,13 @@
                     <a href="/manage/family_info">家庭情况<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                     <li role="presentation">
-                    <a href="/manage/work_info">科创社工<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    <a href="/manage/experience_info">科创社工<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                     <li role="presentation">
                     <a href="/manage/graduation_info">毕业信息<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                     <li role="presentation">
                         <a href="/manage/import_excel">导入<i class="glyphicon glyphicon-chevron-right"></i></a>
-                    </li>
-                    <li role="presentation">
-                        <a href="/manage/export_excel">导出<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
                 </ul>
             </div>
@@ -66,7 +44,7 @@
             <!--/span-->
             <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10"  id="content">
                 <div class="row">
-                    <form class="form-horizontal" action="/manage/search" method="POST">
+                    <form class="form-horizontal" action="/manage/search/" method="POST">
                         {% csrf_token %}
                       <div class="form-group">
                         <label class="col-sm-2 control-label">搜索条件</label>
@@ -271,24 +249,24 @@
                         <div class="col-sm-6">
                             <div class="row">
                                 <label class="checkbox-inline">
-                                  <input type="checkbox" name="basic_info" value="basic_info">基本信息
+                                  <input type="checkbox" name="basic_info" value="basic_info" checked>基本信息
                                 </label>
                                 <label class="checkbox-inline">
-                                  <input type="checkbox" name="degree_info" value="degree_info">学籍信息
+                                  <input type="checkbox" name="degree_info" value="degree_info" checked>学籍信息
                                 </label>
                                 <label class="checkbox-inline">
-                                  <input type="checkbox" name="award_info" value="award_info">奖助贷信息
+                                  <input type="checkbox" name="award_info" value="award_info" checked>奖助贷信息
                                 </label>
                             </div>
                             <div class="row">
                                 <label class="checkbox-inline">
-                                  <input type="checkbox" name="family_info" value="family_info">家庭情况
+                                  <input type="checkbox" name="family_info" value="family_info" checked>家庭情况
                                 </label>
                                 <label class="checkbox-inline">
-                                  <input type="checkbox" name="work_info" value="work_info">科创社工
+                                  <input type="checkbox" name="experience_info" value="experience_info" checked>科创社工
                                 </label>
                                 <label class="checkbox-inline">
-                                  <input type="checkbox" name="graduation_info" value="graduation_info">毕业信息
+                                  <input type="checkbox" name="graduation_info" value="graduation_info" checked>毕业信息
                                 </label>
                             </div>
                         </div>
@@ -301,68 +279,95 @@
                     </form>
                 </div>
                 <div class="row">
-                    <table id ="table-methods-table" class="table table-hover table-bordered" data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc"
-                            border="0" align="center" cellpadding="0" cellspacing="0">
+
+                    <div id="custom-toolbar">
+                        <div class="btn-group">
+                           <button class="btn btn-default" id="remove-data" data-method="remove">删除</button>
+                        </div>
+                    </div>
+
+                    <table id ="table-methods-table" class="table table-hover table-bordered" data-toolbar="#custom-toolbar" data-toggle="table" data-show-refresh="true"
+                           data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true"
+                           data-show-export="true" data-export-types="['excel']"  data-show-pagination-switch="true" border="0" align="center"
+                           cellpadding="0" cellspacing="0">
 
                            <!-- table content for  graduation_info page-->
                             <thead>
                                 <tr>
+                                    <th data-field="status" data-checkbox="true"></th>
                                     <th data-valign="middle" data-align="center">详情</th>
                                     <th data-field="id" data-visible="false">ID</th>
                                     <th data-valign="middle" data-align="center" data-field="number" data-sortable="true">学号</th>
-                                    <th data-valign="middle" data-align="center" data-field="name" data-sortable="true">姓名</th>
+                                    <th data-valign="middle" data-align="center" data-editable="true" data-field="name" data-sortable="true">姓名</th>
                                     {% if basic_info %}
-                                        <th data-valign="middle" data-align="center" data-field="gender" data-sortable="true">性别</th>
-                                        <th data-valign="middle" data-align="center" data-field="identity_number" data-sortable="true">身份证号</th>
-                                        <th data-valign="middle" data-align="center" data-field="birthday"data-sortable="true">出生日期</th>
-                                        <th data-valign="middle" data-align="center" data-field="nation" data-sortable="true">民族</th>
-                                        <th data-valign="middle" data-align="center" data-field="nationality" data-sortable="true">国籍</th>
-                                        <th data-valign="middle" data-align="center" data-field="politics" data-sortable="true">政治面貌</th>
-                                        <th data-valign="middle" data-align="center" data-field="high_school" data-sortable="true">毕业中学</th>
-                                        <th data-valign="middle" data-align="center" data-field="exam_province" data-sortable="true">考区</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="gender" data-sortable="true">性别</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="phone" data-sortable="true">手机号</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="email" data-sortable="true">邮箱</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="identity_number" data-sortable="true">身份证号</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="birthday"data-sortable="true">出生日期</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="nation" data-sortable="true">民族</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="nationality" data-sortable="true">国籍</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="politics" data-sortable="true">政治面貌</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="high_school" data-sortable="true">毕业中学</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="exam_province" data-sortable="true">考区</th>
                                     {% endif %}
                                     {% if degree_info %}
-                                        <th data-valign="middle" data-align="center" data-field="major" data-sortable="true">专业名</th>
-                                        <th data-valign="middle" data-align="center" data-field="class_num" data-sortable="true">教学班</th>
-                                        <th data-valign="middle" data-align="center" data-field="grade" data-sortable="true">所属年级</th>
-                                        <th data-valign="middle" data-align="center" data-field="change" data-sortable="true">是否异动</th>
-                                        <th data-valign="middle" data-align="center" data-field="degree_type" data-sortable="true">学位</th>
-                                        <th data-valign="middle" data-align="center" data-field="is_foreign" data-sortable="true">是否留学生</th>
-                                        <th data-valign="middle" data-align="center" data-field="exchange_info" data-sortable="true">交换时间/学校</th>
-                                        <th data-valign="middle" data-align="center" data-field="second_major" data-sortable="true">二学位专业名</th>
-                                        <th data-valign="middle" data-align="center" data-field="second_department_name" data-sortable="true">二学位单位简称</th>
-                                        <th data-valign="middle" data-align="center" data-field="second_date" data-sortable="true">二学位毕业日期</th>
-                                        <th data-valign="middle" data-align="center" data-field="scores_rank" data-sortable="true">大三年级学分绩及排名</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="major" data-sortable="true">专业名</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="class_num" data-sortable="true">教学班</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="grade" data-sortable="true">所属年级</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="change" data-sortable="true">是否异动</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="degree_type" data-sortable="true">学位</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="is_foreign" data-sortable="true">是否留学生</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="exchange_info" data-sortable="true">交换时间/学校</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="scores_rank" data-sortable="true">大三年级学分绩及排名</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="english_level" data-sortable="true">英语水平</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="second_major" data-sortable="true">二学位专业名</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="second_department_name" data-sortable="true">二学位单位简称</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="second_date" data-sortable="true">二学位毕业日期</th>
+                                    {% endif %}
+                                    {% if award_info %}
+                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="scholarship"  data-sortable="true" >奖学金</th>
+                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="grant"  data-sortable="true" >助学金</th>
+                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="loan"  data-sortable="true" >贷款</th>
+                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="temp_loan"  data-sortable="true" >临时借款</th>
                                     {% endif %}
                                     {% if family_info %}
-                                        <th data-valign="middle" data-halign="center" data-field="address" data-sortable="true">家庭住址</th>
-                                        <th data-valign="middle" data-align="center" data-field="hukou_type" data-sortable="true">户口类型</th>
-                                        <th data-valign="middle" data-align="center" data-field="avg_income" data-sortable="true">家庭人均月收入（元）</th>
-                                        <th data-valign="middle" data-align="center" data-field="I_value" data-sortable="true">I 值</th>
-                                        <th data-valign="middle" data-align="center" data-field="poverty_degree" data-sortable="true">贫困等级</th>
-                                        <th data-valign="middle" data-halign="center" data-field="detail" data-sortable="true">经济情况说明</th>
+                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="address" data-sortable="true">家庭住址</th>
+                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="family_phone" data-sortable="true">家庭电话</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="hukou_type" data-sortable="true">户口类型</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="avg_income" data-sortable="true">家庭人均月收入（元）</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="I_value" data-sortable="true">I 值</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="poverty_degree" data-sortable="true">贫困等级</th>
+                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="detail" data-sortable="true">经济状况说明</th>
+                                    {% endif %}
+                                    {% if experience_info %}
+                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="competition"  data-sortable="true" >赛事</th>
+                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="social_work"  data-sortable="true" >社工</th>
                                     {% endif %}
                                     {% if graduation_info %}
-                                        <th data-valign="middle" data-align="center" data-field="date" data-sortable="true">毕业日期</th>
-                                        <th data-valign="middle" data-align="center" data-field="type" data-sortable="true" >毕业类别</th>
-                                        <th data-valign="middle" data-align="center" data-field="phone" data-sortable="true" >毕业手机</th>
-                                        <th data-valign="middle" data-align="center" data-field="email" data-sortable="true" >毕业邮箱</th>
-                                        <th data-valign="middle" data-halign="center" data-field="destination"data-sortable="true" >毕业去向</th>
-                                        <th data-valign="middle" data-align="center" data-field="direction" data-sortable="true">分流方向</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="graduation_date" data-sortable="true">毕业日期</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="graduation_type" data-sortable="true" >毕业类别</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="graduation_phone" data-sortable="true" >毕业手机</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="graduation_email" data-sortable="true" >毕业邮箱</th>
+                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="destination"data-sortable="true" >毕业去向</th>
+                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="direction" data-sortable="true">分流方向</th>
                                     {% endif %}
                                 </tr>
                           </thead>
                           <tbody>
                          {%  for student in students %}
                             <tr>
+                              <td></td>
                               <td><a href="/manage/detail/{{ student.id }}">详情</a></td>
                               <td>{{ student.id }}</td>
                               <td>{{ student.number }}</td>
                               <td>{{ student.name }}</td>
                               {% if basic_info %}
-                                  <td>{% if student.gender %}男{% else %}女{% endif %}</td>
+                                  <td>{{ student.gender }}</td>
+                                  <td>{{ student.phone }}</td>
+                                  <td>{{ student.email }}</td>
                                   <td>{{ student.identity_number }}</td>
-                                  <td>{{ student.birthday |date:"Y-m-d"}}</td>
+                                  <td>{{ student.birthday |date:"Ymd"}}</td>
                                   <td>{{ student.nation }}</td>
                                   <td>{{ student.nationality }}</td>
                                   <td>{{ student.politics }}</td>
@@ -375,22 +380,35 @@
                                   <td>{{ student.degree.grade }}</td>
                                   <td>{{ student.degree.change }}</td>
                                   <td>{{ student.degree.degree_type }}</td>
-                                  <td>{% if student.degree.is_foreign %}是{% else %}否{% endif %}</td>
+                                  <td>{{ student.degree.is_foreign }}</td>
                                   <td>{{ student.degree.exchange_info }}</td>
+                                  <td>{{ student.degree.scores_rank }}</td>
+                                  <td>{{ student.degree.english_level }}</td>
                                   <td>{{ student.second_degree.major }}</td>
                                   <td>{{ student.second_degree.department_name }}</td>
-                                  <td>{{ student.second_degree.date | date:"Y-m-d"}}</td>
-                                  <td>{{ student.degree.scores_rank }}</td>
+                                  <td>{{ student.second_degree.date | date:"Ymd"}}</td>
+                              {% endif %}
+                              {% if award_info %}
+                                  <td>{{ student.scholarship_loan.scholarship }}</td>
+                                  <td>{{ student.scholarship_loan.grant }}</td>
+                                  <td>{{ student.scholarship_loan.loan }}</td>
+                                  <td>{{ student.scholarship_loan.temp_loan }}</td>
                               {% endif %}
                               {% if family_info %}
                                   <td>{{ student.family.address}}</td>
+                                  <td>{{ student.family.phone}}</td>
                                   <td>{{ student.family.hukou_type }}</td>
                                   <td>{{ student.family.avg_income }}</td>
                                   <td>{{ student.family.I_value }}</td>
                                   <td>{{ student.family.poverty_degree }}</td>
-                                  <td>{{ student.family.detail }}</td>{% endif %}
+                                  <td>{{ student.family.detail }}</td>
+                              {% endif %}
+                              {% if experience_info %}
+                                  <td>{{ student.experience.competition }}</td>
+                                  <td>{{ student.experience.social_work }}</td>
+                              {% endif %}
                               {% if graduation_info %}
-                                  <td>{{ student.graduation.date | date:"Y-m-d"}}</td>
+                                  <td>{{ student.graduation.date | date:"Ymd"}}</td>
                                   <td>{{ student.graduation.type }}</td>
                                   <td>{{ student.graduation.phone}}</td>
                                   <td>{{ student.graduation.email }}</td>
@@ -436,5 +454,73 @@ $('#all_nation').editableSelect(
        isFilter:false //If set to true, the item will be filtered according to the matching criteria.
      }
    );
+
+
+$('#remove-data').click(function () {
+    bootbox.confirm({
+        size: 'small',
+        message: "确定要删除么？",
+        callback: function(result){
+            if(result){
+                var selects = $('#table-methods-table').bootstrapTable('getSelections');
+                stats = $.map(selects, function (row) {
+                    return row.status;
+                });
+                ids = $.map(selects, function (row) {
+                    return row.id;
+                });
+               $('#table-methods-table').bootstrapTable('remove', {
+                    field: 'status',
+                    values: stats
+                });
+                $.ajax({
+                    type:"POST",
+                    url:"/manage/delete_students/",
+                    traditional: true,
+                    data: {"ids": ids},
+                    dataType: "text",
+                    error: function(){
+                        bootbox.alert({
+                            size: 'small',
+                            message: "删除失败，请刷新页面后重新更改！"
+                        });
+                    },
+                    success: function(){
+                        bootbox.alert({
+                            size: 'small',
+                            message: "删除成功！"
+                        });
+                    }
+                 });
+            }
+        }
+    });
+});
+
+
+$.fn.editable.defaults.mode = 'inline';
+var flag = 0, sRow = null;
+$('#table-methods-table').bootstrapTable({
+//some code
+}).on('click-row.bs.table', function (e, row, $element) {
+    flag = 1;
+    sRow = row;
+}).on('editable-save.bs.table', function(e){
+    if(flag == 1){
+        $.ajax({
+            type:"POST",
+            url:"/manage/update_search_result/",
+            data: sRow,
+            dataType: "text",
+            error: function(){
+                bootbox.alert({
+                    size: 'small',
+                    message: "更改失败，请刷新页面后重新更改！"
+                });
+            }
+         });
+        flag = 0;
+    }
+});
 </script>
 {% endblock %}
