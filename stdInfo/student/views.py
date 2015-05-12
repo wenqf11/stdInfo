@@ -26,7 +26,7 @@ def index(request):
         politics = request.POST.get('politics', '')
         postcode = request.POST.get('postcode', '')
         address = request.POST.get('address', '')
-        family_phone = request.POST.get('address', '')
+        family_phone = request.POST.get('family_phone', '')
         graduation_email = request.POST.get('graduation_email', '')
         graduation_phone = request.POST.get('graduation_phone', '')
         destination = request.POST.get('destination', '')
@@ -38,6 +38,7 @@ def index(request):
         student.politics = politics
         student.family.address = address
         student.family.phone = family_phone
+        student.family.postcode = postcode
         student.graduation.email = graduation_email
         student.graduation.phone = graduation_phone
         student.graduation.destination = destination

@@ -32,7 +32,9 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="/">学生信息系统</a>
-                <a class="navbar-brand" href="/postmanage">研究生</a>
+                {% if user.is_staff %}
+                     <a class="navbar-brand" href="/postmanage">研究生</a>
+                {% endif %}
             </div>
             {% if user.is_staff %}
             <form class="navbar-form navbar-left" method="POST" role="search" action="/manage/global_search/">
