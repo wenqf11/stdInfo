@@ -56,14 +56,14 @@
                     </tr>
               </thead>
               <tbody>
-             {%  for work in works %}
+             {%  for student in students %}
                 <tr>
-                  <td><a href="/postmanage/detail/{{ work| key:"id"}}">详情</a></td>
-                  <td>{{ work| key:"id"}}</td>
-                  <td>{{ work| key:"number"}}</td>
-                  <td>{{ work| key:'name' }}</td>
-                  <td><pre>{{ work| key:'competition' }}</pre></td>
-                  <td><pre>{{ work| key:'social_work' }}</pre></td>
+                  <td><a href="/postmanage/detail/{{ student.id }}">详情</a></td>
+                  <td>{{ student.id }}</td>
+                  <td>{{ student.number }}</td>
+                  <td>{{ student.name }}</td>
+                  <td><pre>{{ student.experience.competition }}</pre></td>
+                  <td><pre>{{ student.experience.social_work }}</pre></td>
                 </tr>
               {% endfor %}
               </tbody>

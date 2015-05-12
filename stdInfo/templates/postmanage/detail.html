@@ -2,7 +2,7 @@
 {% block title %}学生信息管理系统{% endblock %}
 
 {% block css_js %}
-    <link href="../../static/css/manage.css" rel="stylesheet">
+    <link href="/static/css/manage.css" rel="stylesheet">
 {% endblock %}
 
 
@@ -38,260 +38,163 @@
 
             <!--===============================================================================================-->
             <!--/span-->
-            <div class="col-xs-50 col-sm-50 col-md-50 col-lg-50"  id="content">
-                <table id ="table-methods-table" data-toolbar="#custom-toolbar" class="table table-hover table-bordered" data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" border="0" align="center" cellpadding="0" cellspacing="0">
-                    <!--basic info-->
-                    <thead>
-                        <tr>
-                            <th data-field="status" data-checkbox="true">基本信息</th>
-                            <th data-visible="false" data-field="id">ID</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td>{{ student.id }}</td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th data-valign="middle" data-align="center" data-field="number" data-sortable="true">学号</th>
-                            <th data-valign="middle" data-align="center" data-field="name" data-sortable="true" data-editable="true">姓名</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ student.number }}</td>
-                            <td>{{ student.name }}</td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th data-valign="middle" data-align="center" data-field="gender" data-sortable="true" data-editable="true">性别</th>
-                            <th data-valign="middle" data-align="center" data-field="nation" data-sortable="true" data-editable="true">民族</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ student.gender }}</td>
-                            <td>{{ student.nation }}</td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th data-valign="middle" data-align="center" data-field="politics" data-sortable="true" data-editable="true">政治面貌</th>
-                            <th data-valign="middle" data-align="center" date-field="tutor" data-sortable="true" data-editable="true">导师</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                           <td>{{ student.politics }}</td>
-                           <td>{{ student.tutor }}</td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th data-valign="middle" data-align="center" data-field="phone" data-sortable="true" data-editable="true">手机</th>
-                            <th data-valign="middle" data-align="center" data-field="email" data-sortable="true" data-editable="true">邮箱</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ student.phone }}</td>
-                            <td>{{ student.email }}</td>
-                        </tr>
-                    </tbody>
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10"  id="content">
+                <div class="table-header">基本信息：</div>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>学号：</td>
+                                <td>{{ student.number }}</td>
+                                <td>姓名：</td>
+                                <td>{{ student.name }}</td>
+                            </tr>
 
-                    <!--degree info-->
-                    <thead>
+                            <tr>
+                                <td>性别：</td>
+                                <td>{{ student.gender }}</td>
+                                <td>民族：</td>
+                                <td>{{ student.nation }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>政治面貌：</td>
+                                <td>{{ student.politics }}</td>
+                                <td>导师：</td>
+                                <td>{{ student.tutor }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>手机：</td>
+                                <td>{{ student.phone }}</td>
+                                <td>邮箱：</td>
+                                <td>{{ student.email }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <hr>
+                    <div class="table-header">学籍信息：</div>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        </thead>
+                        <tbody>
                         <tr>
-                            <th data-field="status" data-checkbox="true">学籍信息</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th data-valign="middle" data-align="center" data-field="degree" data-sortable="true" data-editable="true">学位</th>
-                            <th data-valign="middle" data-align="center" data-field="class_name" data-sortable="true" data-editable="true">班号</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
+                            <td>学位：</td>
                             <td>{{ student.degree.degree }}</td>
+                            <td>班号：</td>
                             <td>{{ student.degree.class_name }}</td>
                         </tr>
-                    </tbody>
-                    <thead>
+
                         <tr>
-                            <th data-valign="middle" data-align="center" data-field="first_test" data-sortable="true" data-editable="true">初试成绩</th>
-                            <th data-valign="middle" data-align="center" data-field="opening_time" data-sortable="true" data-editable="true">开题时间</th>
+                            <td>年级：</td>
+                            <td>{{ student.degree.grade }}</td>
+                            <td>初试成绩：</td>
+                            <td>{{ student.degree.first_test }}</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                         <tr>
-                             <td>{{ student.degree.first_test }}</td>
-                             <td>{{ student.degree.opening_time }}</td>
-                         </tr>
-                    </tbody>
-                    <thead>
+
                         <tr>
-                            <th data-valign="middle" data-align="center" data-field="exchange_info" data-sortable="true" data-editable="true">交换时间/学校</th>
-                            <th data-valign="middle" data-align="center" data-field="admissions_way" data-sortable="true" data-editable="true">招生途径</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
+                            <td>开题时间：</td>
+                            <td>{{ student.degree.opening_time }}</td>
+                            <td>交流学校/时间：</td>
                             <td>{{ student.degree.exchange_info }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>招生途径：</td>
                             <td>{{ student.degree.admissions_way }}</td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th data-valign="middle" data-align="center" data-field="rank_before_graduation" data-sortable="true" data-editable="true">毕业前或退面前综合排名</th>
-                            <th data-valign="middle" data-align="center" data-field="admissions_rank" data-sortable="true" data-editable="true">入学成绩/排名</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
+                            <td>毕业前或推免前综合排名：</td>
                             <td>{{ student.degree.rank_before_graduation }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>入学成绩/排名：</td>
                             <td>{{ student.degree.admissions_rank }}</td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th data-valign="middle" data-align="center" data-field="regular_school" data-sortable="true" data-editable="true">本科毕业学校</th>
-                            <th data-valign="middle" data-align="center" data-field="regular_major" data-sortable="true" data-editable="true">本科专业</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
+                            <td>本科毕业学校：</td>
                             <td>{{ student.degree.regular_school }}</td>
-                            <td>{{ student.degree.regular_major }}</td>
                         </tr>
-                    </tbody>
 
-                    <!--award info-->
-                    <thead>
                         <tr>
-                            <th data-field="status" data-checkbox="true">奖助贷</th>
+                            <td>本科专业：</td>
+                            <td>{{ student.second_degree.regular_major }}</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th data-valign="middle" data-halign="center"  data-sortable="true" >奖学金</th>
-                            <th data-valign="middle" data-halign="center"  data-sortable="true" >助学金</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><pre>{{ scholarship }}</pre></td>
-                            <td><pre>{{ grant }}</pre></td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th data-valign="middle" data-halign="center"  data-sortable="true" >贷款</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><pre>{{ loan }}</pre></td>
-                        </tr>
-                    </tbody>
+                        </tbody>
+                    </table>
 
-                    <!--work info-->
-                    <thead>
+                    <hr>
+                    <div class="table-header">奖助贷：</div>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        </thead>
+                        <tbody>
                         <tr>
-                            <th data-field="status" data-checkbox="true">科创社工</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th data-valign="middle" data-halign="center"  data-sortable="true" >赛事</th>
-                            <th data-valign="middle" data-halign="center"  data-sortable="true" >社工</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><pre>{{ competition }}</pre></td>
-                            <td><pre>{{ social_work }}</pre></td>
-                        </tr>
-                    </tbody>
+                            <td>奖学金：</td>
+                            <td>{{student.scholarship_loan.scholarship}}</td>
 
-                    <!--graduation info-->
-                    <thead>
-                        <tr>
-                            <th data-field="status" data-checkbox="true">毕业信息</th>
+                            <td>助学金：</td>
+                            <td>{{student.scholarship_loan.grant}}</td>
                         </tr>
-                    </thead>
-                    <tbody>
+
                         <tr>
-                            <td></td>
+                            <td>贷款：</td>
+                            <td>{{student.scholarship_loan.loan}}</td>
                         </tr>
-                    </tbody>
-                    <thead>
+                        </tbody>
+                    </table>
+
+                    <hr>
+                    <div class="table-header">科创社工：</div>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>赛事信息：</td>
+                                <td>{{student.experience.competition}}</td>
+
+                                <td>社工信息：</td>
+                                <td>{{ student.experience.social_work}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <hr>
+                    <div class="table-header">毕业信息：</div>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        </thead>
+                        <tbody>
                         <tr>
-                            <th data-valign="middle" data-align="center" data-field="date" data-sortable="true" data-editable="true">毕业日期</th>
-                            <th data-valign="middle" data-align="center" data-field="destination"data-sortable="true" data-editable="true">毕业去向</th>
+                            <td>毕业日期：</td>
+                            <td>{{ student.graduation.date | date:"Ymd"}}</td>
+
+                            <td>毕业去向：</td>
+                            <td>{{ student.graduation.destination }}</td>
                         </tr>
-                    </thead>
-                    <tbody>
+
                         <tr>
-                            <td>{{ student.graduation.date | date:"Y-m-d"}}</td>
-                            <td>{{ student.graduation.detination }}</td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th data-valign="middle" data-align="center" data-field="job" data-sortable="true" data-editable="true">职务</th>
-                            <th data-valign="middle" data-align="center" data-field="salary" data-sortable="true" data-editable="true">年薪</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ student.graduation.job }}</td>
-                            <td>{{ student.graduation.salary }}</td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th data-valign="middle" data-align="center" data-field="alumni_donation" data-sortable="true" data-editable="true">校友捐款</th>
-                            <th data-valign="middle" data-align="center" data-field="phone" data-sortable="true" data-editable="true">毕业手机</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ student.graduation.alumni_donation }}</td>
+                            <td>毕业手机：</td>
                             <td>{{ student.graduation.phone}}</td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th data-valign="middle" data-align="center" data-field="email" data-sortable="true" data-editable="true">毕业邮箱</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
+                            <td>毕业邮箱：</td>
                             <td>{{ student.graduation.email }}</td>
                         </tr>
-                    </tbody>
 
-                </table>
+                        <tr>
+                            <td>职务：</td>
+                            <td>{{ student.graduation.job }}</td>
+
+                            <td>年薪：</td>
+                            <td>{{ student.graduation.salary }}</td>
+                        </tr>
+                        <tr>
+                            <td>校友捐款：</td>
+                            <td>{{ student.graduation.alumni_donation }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+    </div>
 </div>
 {% endblock %}

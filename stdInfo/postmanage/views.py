@@ -35,32 +35,25 @@ basic_info_set = set([
     ,u'校友捐款'
     ,u'毕业手机'
     ,u'毕业邮箱'
-    ,u'奖项代码'
-    ,u'奖学金学年度'
-    ,u'奖项名称'
-    ,u'获奖金额'
-    ,u'助项代码'
-    ,u'助学金学年度'
-    ,u'助项简称'
-    ,u'获助金额'
+    ,u'奖学金'
+    ,u'助学金'
     ,u'贷款'
-    ,u'科技赛事学年度'
-    ,u'科技赛事名称'
-    ,u'社工学年度'
-    ,u'社会工作（学生干部情况）',
-
+    ,u'科技赛事'
+    ,u'社会工作',
 ])
+
 
 def global_search(request):
     content = request.POST.get('search_content', '')
-    students = Postgraduate.objects.filter(number=int(content))
+    students = Postgraduate.objects.filter(number=str(content))
     if len(students) == 0:
-        students = Postgraduate.objects.filter(name=content)
-    return render_to_response("", locals(), context_instance=RequestContext(request))
+        students = Postgraduate.objects.filter(name__contains=content)
+    return render_to_response("postmanage/degree.html", locals(), context_instance=RequestContext(request))
 
 
 def index(request):
     return search(request)
+
 
 def search(request):
     if request.method == 'GET':
@@ -83,6 +76,9 @@ def search(request):
         if request.POST.get('graduation_direction', ''):
             graduationinfos = PostGraduationInfo.objects.filter(direction=request.POST.get('graduation_direction', ''))
             students = students.filter(graduation__in=graduationinfos)
+        if request.POST.get('grade', ''):
+            degree_info = PostgraduateDegree.objects.filter(grade=request.POST.get('grade', ''))
+            students = Postgraduate.objects.filter(degree__in=degree_info)
 
         basic_info = False
         degree_info = False
@@ -109,9 +105,17 @@ def search(request):
             'graduation_info': graduation_info,
             }, context_instance=RequestContext(request))
 
+
 def get_basic_info(request):
-        students = Postgraduate.objects.filter(number__gte=2014000000)
-        return render_to_response("postmanage/basic_info.html", locals(), context_instance=RequestContext(request))
+    now = datetime.date.today()
+    if now.month > 7:
+        start_year = now.year - 3
+    else:
+        start_year = now.year - 4
+    degree_info = PostgraduateDegree.objects.filter(grade__gte=start_year)
+    students = Postgraduate.objects.filter(degree__in=degree_info)
+    return render_to_response("postmanage/basic_info.html", locals(), context_instance=RequestContext(request))
+
 
 @csrf_exempt
 def update_basic_info(request):
@@ -125,7 +129,7 @@ def update_basic_info(request):
     phone = request.POST.get('phone', '')
     email = request.POST.get('email', '')
     student = Postgraduate.objects.get(id=id)
-    student.number = int(number)
+    student.number = number
     student.name = name
     student.gender = gender
     student.nation = nation
@@ -138,8 +142,15 @@ def update_basic_info(request):
 
 
 def get_degree_info(request):
-    students = Postgraduate.objects.filter(number__gte=2014000000)
+    now = datetime.date.today()
+    if now.month > 7:
+        start_year = now.year - 3
+    else:
+        start_year = now.year - 4
+    degree_info = PostgraduateDegree.objects.filter(grade__gte=start_year)
+    students = Postgraduate.objects.filter(degree__in=degree_info)
     return render_to_response("postmanage/degree.html", locals(), context_instance=RequestContext(request))
+
 
 @csrf_exempt
 def update_degree_info(request):
@@ -157,7 +168,7 @@ def update_degree_info(request):
     regular_major = request.POST.get('regular_major','')
     class_name = request.POST.get('class_name','')
     student = Postgraduate.objects.get(id=id)
-    student.number = int(number)
+    student.number = number
     student.name = name
     student.degree.degree = degree
     student.degree.admissions_way = admissions_way
@@ -173,121 +184,76 @@ def update_degree_info(request):
     student.save()
     return HttpResponse('OK')
 
+
 def get_award_info(request):
-    students = Postgraduate.objects.filter(number__gte=2014000000)
-    awards = list()
-    for student in students:
-        scholarships = Scholarship.objects.filter(student=student)
-        grants = Grant.objects.filter(student=student)
-        loans = Loan.objects.filter(student=student)
-        award_scholarship = ''
-        award_grant = ''
-        award_loan = ''
-        for scholarship in scholarships:
-            award_scholarship += scholarship.code + ' ' + scholarship.year + ' ' + scholarship.name + ' ' + \
-                                 str(scholarship.amount) + '\r\n'
-        for grant in grants:
-            award_grant += grant.code + ' ' + grant.year + ' ' + grant.name + ' ' + str(grant.amount) + '\r\n'
+    now = datetime.date.today()
+    if now.month > 7:
+        start_year = now.year - 3
+    else:
+        start_year = now.year - 4
+    degree_info = PostgraduateDegree.objects.filter(grade__gte=start_year)
+    students = Postgraduate.objects.filter(degree__in=degree_info)
+    return render_to_response("postmanage/award.html", locals(), context_instance=RequestContext(request))
 
-        for loan in loans:
-            award_loan += loan.info + '\r\n'
-
-        awards.append({
-            'id': student.id,
-            'number': student.number,
-            'name': student.name,
-            'scholarship': award_scholarship,
-            'grant': award_grant,
-            'loan': award_loan
-        })
-    return render_to_response("postmanage/award.html", {
-        'awards' : awards
-    }, context_instance=RequestContext(request))
 
 @csrf_exempt
 def update_award_info(request):
     id = request.POST.get('id', '')
     number = request.POST.get('number', '')
     name = request.POST.get('name', '')
-    scholarship_code = request.POST.get('scholarship_code','')
-    scholarship_year = request.POST.get('scholarship_year','')
-    scholarship_name = request.POST.get('scholarship_name','')
-    scholarship_amount = request.POST.get('scholarship_amount','')
-    grant_code = request.POST.get('grant_code','')
-    grant_year = request.POST.get('grant_year','')
-    grant_name = request.POST.get('grant_name','')
-    grant_amount = request.POST.get('grant_amount','')
-    loan_info = request.POST.get('loan','')
+    scholarship = request.POST.get('scholarship', '')
+    loan = request.POST.get('loan', '')
+    grant = request.POST.get('grant', '')
     student = Postgraduate.objects.get(id=id)
-    student.number = int(number)
+    student.number = number
     student.name = name
-    scholarship = Scholarship.objects.get(id=id)
-    grant = Grant.objects.get(id=id)
-    loan = Loan.objects.get(id=id)
-    scholarship.code = scholarship_code
-    scholarship.year = scholarship_year
-    scholarship.name = scholarship_name
-    scholarship.amount = scholarship_amount
-    grant.code = grant_code
-    grant.year = grant_year
-    grant.name = grant_name
-    grant.amount = grant_amount
-    loan.info = loan_info
-    loan.save()
-    grant.save()
-    scholarship.save()
+    student.scholarship_loan.scholarship = scholarship
+    student.scholarship_loan.loan = loan
+    student.scholarship_loan.grant = grant
+    student.scholarship_loan.save()
     student.save()
     return HttpResponse('OK')
 
+
 def get_work_info(request):
-    students = Postgraduate.objects.filter(number__gte=2014000000)
-    works = list()
-    for student in students:
-        competitions = Competition.objects.filter(student=student)
-        social_works = SocialWork.objects.filter(student=student)
-        work_competition = ''
-        work_social_work = ''
-        for competition in competitions:
-            work_competition += competition.year + ' ' + competition.name + '\r\n'
-
-        for social_work in social_works:
-            work_social_work += social_work.year + ' ' + social_work.name + '\r\n'
-
-        works.append({
-            'id': student.id,
-            'number': student.number,
-            'name': student.name,
-            'competition': work_competition,
-            'social_work': work_social_work
-        })
+    now = datetime.date.today()
+    if now.month > 7:
+        start_year = now.year - 3
+    else:
+        start_year = now.year - 4
+    degree_info = PostgraduateDegree.objects.filter(grade__gte=start_year)
+    students = Postgraduate.objects.filter(degree__in=degree_info)
     return render_to_response("postmanage/work.html", {
-        'works' : works
+        'students' : students
     }, context_instance=RequestContext(request))
+
 
 def update_work_info(request):
     id = request.POST.get('id', '')
     number = request.POST.get('number', '')
     name = request.POST.get('name', '')
-    socialwork_year = request.POST.get('socialwork_year','')
-    socialwork_name = request.POST.get('socialwork_name','')
-    competition_year = request.POST.get('competition_year','')
-    competition_name = request.POST.get('competition_name','')
+    competition = request.POST.get('competition', '')
+    social_work = request.POST.get('social_work', '')
     student = Postgraduate.objects.get(id=id)
     student.number = number
     student.name = name
-    socialwork = SocialWork.objects.get(id=id)
-    competition = Competition.objects.get(id=id)
-    socialwork.year = socialwork_year
-    socialwork.name = socialwork_name
-    competition.year = competition_year
-    competition.name = competition_name
-    competition.save()
-    socialwork.save()
+    student.experience.competition = competition
+    student.experience.social_work = social_work
+    student.experience.save()
     student.save()
+    return HttpResponse('OK')
+
 
 def get_graduation_info(request):
-    students = Postgraduate.objects.filter(number__gte=2014000000)
+    now = datetime.date.today()
+    if now.month > 7:
+        start_year = now.year - 3
+    else:
+        start_year = now.year - 4
+    degree_info = PostgraduateDegree.objects.filter(grade__gte=start_year)
+    students = Postgraduate.objects.filter(degree__in=degree_info)
     return render_to_response("postmanage/graduation.html", locals(), context_instance=RequestContext(request))
+
 
 @csrf_exempt
 def update_graduation_info(request):
@@ -302,9 +268,10 @@ def update_graduation_info(request):
     phone = request.POST.get('phone', '')
     email = request.POST.get('email', '')
     student = Postgraduate.objects.get(id=id)
-    student.number = int(number)
+    student.number = number
     student.name = name
-    student.graduation.date = datetime.datetime.strptime(date, "%Y-%m-%d")
+    if len(date) == 8:
+        student.graduation.date = datetime.datetime.strptime(date, "%Y%m%d")
     student.graduation.destination = destination
     student.graduation.job = job
     student.graduation.salary = salary
@@ -315,34 +282,14 @@ def update_graduation_info(request):
     student.save()
     return HttpResponse('OK')
 
+
 def get_detail(request, id):
-    student = Postgraduate.objects.get(id=id)
-
-    scholarships = Scholarship.objects.filter(student=student)
-    grants = Grant.objects.filter(student=student)
-    loans = Loan.objects.filter(student=student)
-    award_scholarship = ''
-    award_grant = ''
-    award_loan = ''
-    for scholarship in scholarships:
-        award_scholarship += scholarship.code + ' ' + scholarship.year + ' ' + scholarship.name + ' ' + \
-                             str(scholarship.amount) + '\r\n'
-    for grant in grants:
-        award_grant += grant.code + ' ' + grant.year + ' ' + grant.name + ' ' + str(grant.amount) + '\r\n'
-    for loan in loans:
-        award_loan += loan.info + '\r\n'
-
-    competitions = Competition.objects.filter(student=student)
-    social_works = SocialWork.objects.filter(student=student)
-    work_competition = ''
-    work_social_work = ''
-    for competition in competitions:
-        work_competition += competition.year + ' ' + competition.name + '\r\n'
-
-    for social_work in social_works:
-        work_social_work += social_work.year + ' ' + social_work.name + '\r\n'
-
-    return render_to_response("postmanage/detail.html", locals(), context_instance=RequestContext(request))
+    students = Postgraduate.objects.filter(id=id)
+    if len(students) == 0:
+        student = None
+    else:
+        student = students[0]
+    return render_to_response("postmanage/detail.html", {'student': student}, context_instance=RequestContext(request))
 
 
 def import_excel(request):
@@ -354,34 +301,41 @@ def import_excel(request):
             nrows = table.nrows
             ncols = table.ncols
             for i in xrange(1, nrows):
-                std_num = int(table.cell(i, 0).value)
-                if len(str(std_num)) != 10:
+                std_num = table.cell(i, 0).value
+                if isinstance(std_num, float):
+                    std_num = int(std_num)
+                std_num = str(std_num)
+                if len(std_num) != 10:
                     raise ValueError('学号有误')
                 students = Postgraduate.objects.filter(number=std_num)
                 if len(students) == 0:
                     student = Postgraduate(number=std_num)
                     degree = PostgraduateDegree()
                     graduation = PostGraduationInfo()
-                    scholarship = Scholarship(student=student)
-                    loan = Loan(student=student)
-                    grant = Grant(student=student)
-                    competition = Competition(student=student)
-                    social_work = SocialWork(student=student)
+                    scholarship_loan = ScholarshipLoan()
+                    experience = Experience()
+                    grade = std_num[0:4]
+                    degree.grade = grade
                 else:
                     student = students[0]
                     if student.degree:
                         degree = student.degree
                     else:
                         degree = PostgraduateDegree()
+                    grade = std_num[0:4]
+                    degree.grade = grade
                     if student.graduation:
                         graduation = student.graduation
                     else:
                         graduation = PostGraduationInfo()
-                    scholarship = Scholarship(student=student)
-                    loan = Loan(student=student)
-                    grant = Grant(student=student)
-                    competition = Competition(student=student)
-                    social_work = SocialWork(student=student)
+                    if student.scholarship_loan:
+                        scholarship_loan = student.scholarship_loan
+                    else:
+                        scholarship_loan = ScholarshipLoan()
+                    if student.experience:
+                        experience = student.experience
+                    else:
+                        experience = Experience()
 
                 for j in xrange(1, ncols):
                     try:
@@ -414,8 +368,7 @@ def import_excel(request):
                             elif table.cell(0, j).value == u'初试成绩':
                                 degree.first_test = value
                             elif table.cell(0, j).value == u'开题时间':
-                                #if value != '':
-                                #    degree.opening_time = value
+                                #degree.opening_time = value
                                 continue
                             elif table.cell(0, j).value == u'交流学校/时间':
                                 degree.exchange_info = value
@@ -439,37 +392,31 @@ def import_excel(request):
                                 graduation.phone = value
                             elif table.cell(0, j).value == u'毕业邮箱':
                                 graduation.email = value
-                            elif table.cell(0, j).value == u'奖项代码':
-                                scholarship.code = value
-                            elif table.cell(0, j).value == u'奖学金学年度':
-                                scholarship.year = value
-                            elif table.cell(0, j).value == u'奖项名称':
-                                scholarship.name = value
-                            elif table.cell(0, j).value == u'获奖金额':
-                                scholarship.amount = int(value)
-                                scholarship.save()
-                            elif table.cell(0, j).value == u'助项代码':
-                                grant.code = value
-                            elif table.cell(0, j).value == u'助学金学年度':
-                                grant.year = value
-                            elif table.cell(0, j).value == u'助项简称':
-                                grant.name = value
-                            elif table.cell(0, j).value == u'获助金额':
-                                grant.amount = int(value)
-                                grant.save()
+                            elif table.cell(0, j).value == u'奖学金':
+                                if scholarship_loan.scholarship:
+                                    scholarship_loan.scholarship += '\r\n' + value
+                                else:
+                                    scholarship_loan.scholarship = value
+                            elif table.cell(0, j).value == u'助学金':
+                                if scholarship_loan.grant:
+                                    scholarship_loan.grant += '\r\n' + value
+                                else:
+                                    scholarship_loan.grant = value
                             elif table.cell(0, j).value == u'贷款':
-                                loan.info = value
-                                loan.save()
-                            elif table.cell(0, j).value == u'科技赛事学年度':
-                                competition.year = value
-                            elif table.cell(0, j).value == u'科技赛事名称':
-                                competition.name = value
-                                competition.save()
-                            elif table.cell(0, j).value == u'社工学年度':
-                                social_work.year = value
-                            elif table.cell(0, j).value == u'社会工作（学生干部情况）':
-                                social_work.name = value
-                                social_work.save()
+                                if scholarship_loan.loan:
+                                    scholarship_loan.loan += '\r\n' + value
+                                else:
+                                    scholarship_loan.loan = value
+                            elif table.cell(0, j).value == u'科技赛事':
+                                if experience.competition:
+                                    experience.competition += '\r\n' + value
+                                else:
+                                    experience.competition = value
+                            elif table.cell(0, j).value == u'社会工作':
+                                if experience.social_work:
+                                    experience.social_work += '\r\n' + value
+                                else:
+                                    experience.social_work = value
                     except Exception as e:
                         error_msg = u'导入文件错误，错误位置(%d, %d)' %(i, j)
                         return render_to_response("postmanage/error.html", {
@@ -479,11 +426,16 @@ def import_excel(request):
                 if len(User.objects.filter(username=str(std_num))) == 0:
                     user = User.objects.create(username=str(std_num))
                     user.set_password(str(std_num))
+                    user.save()
                     student.user = user
                 graduation.save()
                 degree.save()
-                student.graduation = graduation
+                scholarship_loan.save()
+                experience.save()
                 student.degree = degree
+                student.graduation = graduation
+                student.scholarship_loan = scholarship_loan
+                student.experience = experience
                 student.save()
             return render_to_response("postmanage/import_excel.html", {}, context_instance=RequestContext(request))
         except Exception as e:

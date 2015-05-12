@@ -56,15 +56,15 @@
                     </tr>
               </thead>
               <tbody>
-             {%  for award in awards %}
+             {%  for student in students %}
                 <tr>
-                  <td><a href="/postmanage/detail/{{ award| key:"id"}}">详情</a></td>
-                  <td>{{ award| key:"id"}}</td>
-                  <td>{{ award| key:"number"}}</td>
-                  <td>{{ award| key:'name' }}</td>
-                  <td><pre>{{ award| key:'scholarship' }}</pre></td>
-                  <td><pre>{{ award| key:'grant' }}</pre></td>
-                  <td><pre>{{ award| key:'loan' }}</pre></td>
+                  <td><a href="/postmanage/detail/{{ student.id }}">详情</a></td>
+                  <td>{{ student.id }}</td>
+                  <td>{{ student.number }}</td>
+                  <td>{{ student.name }}</td>
+                  <td><pre>{{ student.scholarship_loan.scholarship }}</pre></td>
+                  <td><pre>{{ student.scholarship_loan.grant }}</pre></td>
+                  <td><pre>{{ student.scholarship_loan.loan }}</pre></td>
                 </tr>
               {% endfor %}
 
