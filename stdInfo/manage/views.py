@@ -924,10 +924,10 @@ def parse_data(request, excel_data):
                     elif table.cell(0, j).value == u'身份证号':
                         student.identity_number = value
                     elif table.cell(0, j).value == u'出生日期':
-                        if value == '':
-                            student.birthday = None
-                        else:
+                        try:
                             student.birthday = datetime.datetime.strptime(str(int(value)), "%Y%m%d")
+                        except:
+                            student.birthday = None
                     elif table.cell(0, j).value == u'民族':
                         student.nation = value
                     elif table.cell(0, j).value == u'国籍':
@@ -969,15 +969,15 @@ def parse_data(request, excel_data):
                     elif table.cell(0, j).value == u'二学位班号':
                         second_degree.class_num = value
                     elif table.cell(0, j).value == u'二学位毕业日期':
-                        if value == '':
-                            second_degree.date = None
-                        else:
+                        try:
                             second_degree.date = datetime.datetime.strptime(str(int(value)), "%Y%m%d")
+                        except:
+                            second_degree.date = None
                     elif table.cell(0, j).value == u'毕业日期':
-                        if value == '':
-                            graduation.date = None
-                        else:
+                        try:
                             graduation.date = datetime.datetime.strptime(str(int(value)), "%Y%m%d")
+                        except:
+                            graduation.date = None
                     elif table.cell(0, j).value == u'毕业类别':
                         graduation.type = value
                     elif table.cell(0, j).value == u'毕业手机':
