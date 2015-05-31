@@ -162,7 +162,7 @@ def update_degree_info(request):
     rank_before_graduation = request.POST.get('rank_before_graduation','')
     admissions_rank = request.POST.get('admissions_rank','')
     first_test = request.POST.get('first_test','')
-    opening_time = request.POST.get('opening_time','')
+    opening_time = request.POST.get('opening_time', '')
     exchange_info = request.POST.get('exchange_info','')
     regular_school = request.POST.get('regular_school','')
     regular_major = request.POST.get('regular_major','')
@@ -175,13 +175,19 @@ def update_degree_info(request):
     student.degree.rank_before_graduation = rank_before_graduation
     student.degree.admissions_rank = admissions_rank
     student.degree.first_test = first_test
-    student.degree.opening_time = opening_time
+    if len(opening_time) == 8:
+        student.degree.opening_time = datetime.datetime.strptime(opening_time, "%Y%m%d")
+    else:
+        student.degree.opening_time = None
     student.degree.exchange_info = exchange_info
-    student.degree.regular_school  = regular_school
+    student.degree.regular_school = regular_school
     student.degree.regular_major = regular_major
     student.degree.class_name = class_name
+#    try:
     student.degree.save()
     student.save()
+#    except Exception as e:
+#        return HttpResponse(e)
     return HttpResponse('OK')
 
 
@@ -227,7 +233,7 @@ def get_work_info(request):
         'students' : students
     }, context_instance=RequestContext(request))
 
-
+@csrf_exempt
 def update_work_info(request):
     id = request.POST.get('id', '')
     number = request.POST.get('number', '')
@@ -272,14 +278,19 @@ def update_graduation_info(request):
     student.name = name
     if len(date) == 8:
         student.graduation.date = datetime.datetime.strptime(date, "%Y%m%d")
+    else:
+        student.graduation.date = None
     student.graduation.destination = destination
     student.graduation.job = job
     student.graduation.salary = salary
     student.graduation.alumni_donation = alumni_donation
     student.graduation.phone = phone
     student.graduation.email = email
-    student.graduation.save()
-    student.save()
+    try:
+        student.graduation.save()
+        student.save()
+    except Exception as e:
+        return HttpResponse(e)
     return HttpResponse('OK')
 
 
@@ -292,152 +303,250 @@ def get_detail(request, id):
     return render_to_response("postmanage/detail.html", {'student': student}, context_instance=RequestContext(request))
 
 
+def parse_data(request, excel_data):
+    data = xlrd.open_workbook(file_contents=excel_data.read())
+    table = data.sheets()[0]
+    nrows = table.nrows
+    ncols = table.ncols
+    for i in xrange(1, nrows):
+        std_num = table.cell(i, 0).value
+        if isinstance(std_num, float):
+            std_num = int(std_num)
+        students = Postgraduate.objects.filter(number=std_num)
+
+        if len(students) == 0:
+            student = Postgraduate(number=std_num)
+            degree = PostgraduateDegree()
+            graduation = PostGraduationInfo()
+            scholarship_loan = ScholarshipLoan()
+            experience = Experience()
+        else:
+            student = students[0]
+            if student.degree:
+                degree = student.degree
+            else:
+                degree = PostgraduateDegree()
+            if student.graduation:
+                graduation = student.graduation
+            else:
+                graduation = PostGraduationInfo()
+
+            if student.scholarship_loan:
+                scholarship_loan = student.scholarship_loan
+            else:
+                scholarship_loan = ScholarshipLoan()
+
+            if student.experience:
+                experience = student.experience
+            else:
+                experience = Experience()
+
+        for j in xrange(1, ncols):
+            try:
+                if table.cell(0, j).value in basic_info_set:
+                    value = table.cell(i, j).value
+                    if table.cell(0, j).value == u'姓名':
+                        student.name = value
+                    elif table.cell(0, j).value == u'性别':
+                        student.gender = value
+                    elif table.cell(0, j).value == u'民族':
+                        student.nation = value
+                    elif table.cell(0, j).value == u'政治面貌':
+                        student.politics = value
+                    elif table.cell(0, j).value == u'邮箱':
+                        student.email = value
+                    elif table.cell(0, j).value == u'手机':
+                        if isinstance(value, float):
+                            value = int(value)
+                        student.phone = value
+                    elif table.cell(0, j).value == u'导师':
+                        student.tutor = value
+                    elif table.cell(0, j).value == u'学位':
+                         degree.degree= value
+                    elif table.cell(0, j).value == u'班号':
+                        degree.class_name= value
+                    elif table.cell(0, j).value == u'年级':
+                        degree.grade= value
+                    elif table.cell(0, j).value == u'初试成绩':
+                        degree.first_test= value
+                    elif table.cell(0, j).value == u'开题时间':
+                        if value == '':
+                            degree.opening_time = None
+                        elif len(value) == 8:
+                            degree.opening_time = datetime.datetime.strptime(str(int(value)), "%Y%m%d")
+                    elif table.cell(0, j).value == u'交流学校/时间':
+                        degree.exchange_info= value
+                    elif table.cell(0, j).value == u'招生途径':
+                        degree.admissions_way= value
+                    elif table.cell(0, j).value == u'毕业前或推免前综合排名':
+                        degree.rank_before_graduation= value
+                    elif table.cell(0, j).value == u'入学成绩/排名':
+                        degree.admissions_rank= value
+                    elif table.cell(0, j).value == u'本科毕业学校':
+                        degree.regular_school= value
+                    elif table.cell(0, j).value == u'本科专业':
+                        degree.regular_major= value
+                    elif table.cell(0, j).value == u'毕业日期':
+                        if value == '':
+                            graduation.date = None
+                        elif len(value) == 8:
+                            graduation.date = datetime.datetime.strptime(str(int(value)), "%Y%m%d")
+                    elif table.cell(0, j).value == u'毕业去向':
+                        graduation.destination = value
+                    elif table.cell(0, j).value == u'职务':
+                        graduation.job = value
+                    elif table.cell(0, j).value == u'年薪':
+                        graduation.salary = value
+                    elif table.cell(0, j).value == u'校友捐款':
+                        graduation.alumni_donation = value
+                    elif table.cell(0, j).value == u'毕业手机':
+                        graduation.phone = value
+                    elif table.cell(0, j).value == u'毕业邮箱':
+                        graduation.email = value
+                    elif table.cell(0, j).value == u'奖学金':
+                        if value == '':
+                            value = None
+                        scholarship_loan.scholarship = value
+                    elif table.cell(0, j).value == u'助学金':
+                        if value == '':
+                            value = None
+                        scholarship_loan.grant = value
+                    elif table.cell(0, j).value == u'贷款':
+                        if value == '':
+                            value = None
+                        scholarship_loan.loan = value
+                    elif table.cell(0, j).value == u'科技赛事':
+                        if value == '':
+                            value = None
+                        experience.competition = value
+                    elif table.cell(0, j).value == u'社会工作':
+                        if value == '':
+                            value = None
+                        experience.social_work = value
+            except Exception as e:
+                error_msg = u'导入文件错误，错误位置(%d, %d)' %(i, j)
+                return render_to_response("postmanage/error.html", {
+                    "error_msg": error_msg
+                }, context_instance=RequestContext(request))
+
+        if len(User.objects.filter(username=std_num)) == 0:
+            user = User.objects.create(username=std_num)
+            user.set_password(std_num)
+            user.save()
+            student.user = user
+
+        graduation.save()
+        degree.save()
+        scholarship_loan.save()
+        experience.save()
+
+        student.graduation = graduation
+        student.degree = degree
+        student.scholarship_loan = scholarship_loan
+        student.experience = experience
+        student.save()
+    return render_to_response("postmanage/import_excel.html", {}, context_instance=RequestContext(request))
+
+
+def parse_data_ad(request, excel_data_ad):
+    data = xlrd.open_workbook(file_contents=excel_data_ad.read())
+    table = data.sheets()[0]
+    nrows = table.nrows
+    ncols = table.ncols
+    for i in xrange(1, nrows):
+        std_num = table.cell(i, 0).value
+        if isinstance(std_num, float):
+            std_num = int(std_num)
+        students = Postgraduate.objects.filter(number=std_num)
+
+        if len(students) == 0:
+            student = Postgraduate(number=std_num)
+            degree = PostgraduateDegree()
+            postGraduationInfo = PostGraduationInfo()
+            scholarship_loan = ScholarshipLoan()
+            experience = Experience()
+        else:
+            student = students[0]
+            if student.degree:
+                degree = student.degree
+            else:
+                degree = PostgraduateDegree()
+            if student.graduation:
+                postGraduationInfo = student.graduation
+            else:
+                postGraduationInfo = PostGraduationInfo()
+            if student.scholarship_loan:
+                scholarship_loan = student.scholarship_loan
+            else:
+                scholarship_loan = ScholarshipLoan()
+            if student.experience:
+                experience = student.experience
+            else:
+                experience = Experience()
+
+        for j in xrange(1, ncols):
+            try:
+                if table.cell(0, j).value in basic_info_set:
+                    value = table.cell(i, j).value
+                    if table.cell(0, j).value == u'奖学金':
+                        if scholarship_loan.scholarship:
+                            scholarship_loan.scholarship += '\r\n' + value
+                        else:
+                            scholarship_loan.scholarship = value
+                    elif table.cell(0, j).value == u'助学金':
+                        if scholarship_loan.grant:
+                            scholarship_loan.grant += '\r\n' + value
+                        else:
+                            scholarship_loan.grant = value
+                    elif table.cell(0, j).value == u'贷款':
+                        if scholarship_loan.loan:
+                            scholarship_loan.loan += u'\r\n' + value
+                        else:
+                            scholarship_loan.loan = value
+                    elif table.cell(0, j).value == u'科技赛事':
+                        if experience.competition:
+                            experience.competition += '\r\n' + value
+                        else:
+                            experience.competition = value
+                    elif table.cell(0, j).value == u'社会工作':
+                        if experience.social_work:
+                            experience.social_work +=  u'\r\n' + value
+                        else:
+                            experience.social_work = value
+            except Exception as e:
+                error_msg = u'导入文件错误，错误位置(%d, %d)' %(i, j)
+                return render_to_response("postmanage/error.html", {
+                    "error_msg": error_msg
+                }, context_instance=RequestContext(request))
+
+        if len(User.objects.filter(username=std_num)) == 0:
+            user = User.objects.create(username=std_num)
+            user.set_password(std_num)
+            user.save()
+            student.user = user
+
+        postGraduationInfo.save()
+        degree.save()
+        scholarship_loan.save()
+        experience.save()
+
+        student.graduation = postGraduationInfo
+        student.degree = degree
+        student.scholarship_loan = scholarship_loan
+        student.experience = experience
+        student.save()
+    return render_to_response("postmanage/import_excel.html", {}, context_instance=RequestContext(request))
+
+
 def import_excel(request):
     if request.method == 'POST':
         try:
-            basic_info = request.FILES['basic_info']
-            data = xlrd.open_workbook(file_contents=basic_info.read())
-            table = data.sheets()[0]
-            nrows = table.nrows
-            ncols = table.ncols
-            for i in xrange(1, nrows):
-                std_num = table.cell(i, 0).value
-                if isinstance(std_num, float):
-                    std_num = int(std_num)
-                std_num = str(std_num)
-                if len(std_num) != 10:
-                    raise ValueError('学号有误')
-                students = Postgraduate.objects.filter(number=std_num)
-                if len(students) == 0:
-                    student = Postgraduate(number=std_num)
-                    degree = PostgraduateDegree()
-                    graduation = PostGraduationInfo()
-                    scholarship_loan = ScholarshipLoan()
-                    experience = Experience()
-                    grade = std_num[0:4]
-                    degree.grade = grade
-                else:
-                    student = students[0]
-                    if student.degree:
-                        degree = student.degree
-                    else:
-                        degree = PostgraduateDegree()
-                    grade = std_num[0:4]
-                    degree.grade = grade
-                    if student.graduation:
-                        graduation = student.graduation
-                    else:
-                        graduation = PostGraduationInfo()
-                    if student.scholarship_loan:
-                        scholarship_loan = student.scholarship_loan
-                    else:
-                        scholarship_loan = ScholarshipLoan()
-                    if student.experience:
-                        experience = student.experience
-                    else:
-                        experience = Experience()
-
-                for j in xrange(1, ncols):
-                    try:
-                        if table.cell(0, j).value in basic_info_set:
-                            value = table.cell(i, j).value
-                            if value == '':
-                                continue
-                            if table.cell(0, j).value == u'姓名':
-                                student.name = value
-                            elif table.cell(0, j).value == u'性别':
-                                student.gender = value
-                            elif table.cell(0, j).value == u'民族':
-                                student.nation = value
-                            elif table.cell(0, j).value == u'政治面貌':
-                                student.politics = value
-                            elif table.cell(0, j).value == u'导师':
-                                student.tutor = value
-                            elif table.cell(0, j).value == u'手机':
-                                student.phone = str(value)
-                            elif table.cell(0, j).value == u'邮箱':
-                                student.email = value
-                            elif table.cell(0, j).value == u'学位':
-                                degree.degree = value
-                            elif table.cell(0, j).value == u'招生途径':
-                                degree.admissions_way = value
-                            elif table.cell(0, j).value == u'毕业前或推免前综合排名':
-                                degree.rank_before_graduation = value
-                            elif table.cell(0, j).value == u'入学成绩/排名':
-                                degree.admissions_rank = value
-                            elif table.cell(0, j).value == u'初试成绩':
-                                degree.first_test = value
-                            elif table.cell(0, j).value == u'开题时间':
-                                #degree.opening_time = value
-                                continue
-                            elif table.cell(0, j).value == u'交流学校/时间':
-                                degree.exchange_info = value
-                            elif table.cell(0, j).value == u'本科毕业学校':
-                                degree.regular_school = value
-                            elif table.cell(0, j).value == u'本科专业':
-                                degree.regular_major = value
-                            elif table.cell(0, j).value == u'班号':
-                                degree.class_name = value
-                            elif table.cell(0, j).value == u'毕业日期':
-                                graduation.date = value
-                            elif table.cell(0, j).value == u'毕业去向':
-                                graduation.destination = value
-                            elif table.cell(0, j).value == u'职务':
-                                graduation.job = value
-                            elif table.cell(0, j).value == u'年薪':
-                                graduation.salary = value
-                            elif table.cell(0, j).value == u'校友捐款':
-                                graduation.alumni_donation = value
-                            elif table.cell(0, j).value == u'毕业手机':
-                                graduation.phone = value
-                            elif table.cell(0, j).value == u'毕业邮箱':
-                                graduation.email = value
-                            elif table.cell(0, j).value == u'奖学金':
-                                if scholarship_loan.scholarship:
-                                    scholarship_loan.scholarship += '\r\n' + value
-                                else:
-                                    scholarship_loan.scholarship = value
-                            elif table.cell(0, j).value == u'助学金':
-                                if scholarship_loan.grant:
-                                    scholarship_loan.grant += '\r\n' + value
-                                else:
-                                    scholarship_loan.grant = value
-                            elif table.cell(0, j).value == u'贷款':
-                                if scholarship_loan.loan:
-                                    scholarship_loan.loan += '\r\n' + value
-                                else:
-                                    scholarship_loan.loan = value
-                            elif table.cell(0, j).value == u'科技赛事':
-                                if experience.competition:
-                                    experience.competition += '\r\n' + value
-                                else:
-                                    experience.competition = value
-                            elif table.cell(0, j).value == u'社会工作':
-                                if experience.social_work:
-                                    experience.social_work += '\r\n' + value
-                                else:
-                                    experience.social_work = value
-                    except Exception as e:
-                        error_msg = u'导入文件错误，错误位置(%d, %d)' %(i, j)
-                        return render_to_response("postmanage/error.html", {
-                            "error_msg": error_msg
-                        }, context_instance=RequestContext(request))
-
-                if len(User.objects.filter(username=str(std_num))) == 0:
-                    user = User.objects.create(username=str(std_num))
-                    user.set_password(str(std_num))
-                    user.save()
-                    student.user = user
-                graduation.save()
-                degree.save()
-                scholarship_loan.save()
-                experience.save()
-                student.degree = degree
-                student.graduation = graduation
-                student.scholarship_loan = scholarship_loan
-                student.experience = experience
-                student.save()
-            return render_to_response("postmanage/import_excel.html", {}, context_instance=RequestContext(request))
+            excel_data = request.FILES.get("excel_data")
+            excel_data_ad = request.FILES.get("excel_data_ad")
+            if excel_data is not None:
+                return parse_data(request, excel_data)
+            elif excel_data_ad is not None:
+                return parse_data_ad(request, excel_data_ad)
         except Exception as e:
             error_msg = u'导入文件错误！%s' % e
             return render_to_response("postmanage/error.html", {
@@ -445,5 +554,161 @@ def import_excel(request):
             }, context_instance=RequestContext(request))
     else:
         return render_to_response("postmanage/import_excel.html", {}, context_instance=RequestContext(request))
+
+
+#def import_excel(request):
+#    if request.method == 'POST':
+#        try:
+#            basic_info = request.FILES['basic_info']
+#            data = xlrd.open_workbook(file_contents=basic_info.read())
+#            table = data.sheets()[0]
+#            nrows = table.nrows
+#            ncols = table.ncols
+#            for i in xrange(1, nrows):
+#                std_num = table.cell(i, 0).value
+#                if isinstance(std_num, float):
+#                    std_num = int(std_num)
+#                std_num = str(std_num)
+#                if len(std_num) != 10:
+#                    raise ValueError('学号有误')
+#                students = Postgraduate.objects.filter(number=std_num)
+#                if len(students) == 0:
+#                    student = Postgraduate(number=std_num)
+#                    degree = PostgraduateDegree()
+#                    graduation = PostGraduationInfo()
+#                    scholarship_loan = ScholarshipLoan()
+#                    experience = Experience()
+#                    grade = std_num[0:4]
+#                    degree.grade = grade
+#                else:
+#                    student = students[0]
+#                    if student.degree:
+#                        degree = student.degree
+#                    else:
+#                        degree = PostgraduateDegree()
+#                    grade = std_num[0:4]
+#                    degree.grade = grade
+#                    if student.graduation:
+#                        graduation = student.graduation
+#                    else:
+#                        graduation = PostGraduationInfo()
+#                    if student.scholarship_loan:
+#                        scholarship_loan = student.scholarship_loan
+#                    else:
+#                        scholarship_loan = ScholarshipLoan()
+#                    if student.experience:
+#                        experience = student.experience
+#                    else:
+#                        experience = Experience()
+#
+#                for j in xrange(1, ncols):
+#                    try:
+#                        if table.cell(0, j).value in basic_info_set:
+#                            value = table.cell(i, j).value
+#                            if value == '':
+#                                continue
+#                            if table.cell(0, j).value == u'姓名':
+#                                student.name = value
+#                            elif table.cell(0, j).value == u'性别':
+#                                student.gender = value
+#                            elif table.cell(0, j).value == u'民族':
+#                                student.nation = value
+#                            elif table.cell(0, j).value == u'政治面貌':
+#                                student.politics = value
+#                            elif table.cell(0, j).value == u'导师':
+#                                student.tutor = value
+#                            elif table.cell(0, j).value == u'手机':
+#                                student.phone = str(value)
+#                            elif table.cell(0, j).value == u'邮箱':
+#                                student.email = value
+#                            elif table.cell(0, j).value == u'学位':
+#                                degree.degree = value
+#                            elif table.cell(0, j).value == u'招生途径':
+#                                degree.admissions_way = value
+#                            elif table.cell(0, j).value == u'毕业前或推免前综合排名':
+#                                degree.rank_before_graduation = value
+#                            elif table.cell(0, j).value == u'入学成绩/排名':
+#                                degree.admissions_rank = value
+#                            elif table.cell(0, j).value == u'初试成绩':
+#                                degree.first_test = value
+#                            elif table.cell(0, j).value == u'开题时间':
+#                                #degree.opening_time = value
+#                                continue
+#                            elif table.cell(0, j).value == u'交流学校/时间':
+#                                degree.exchange_info = value
+#                            elif table.cell(0, j).value == u'本科毕业学校':
+#                                degree.regular_school = value
+#                            elif table.cell(0, j).value == u'本科专业':
+#                                degree.regular_major = value
+#                            elif table.cell(0, j).value == u'班号':
+#                                degree.class_name = value
+#                            elif table.cell(0, j).value == u'毕业日期':
+#                                graduation.date = value
+#                            elif table.cell(0, j).value == u'毕业去向':
+#                                graduation.destination = value
+#                            elif table.cell(0, j).value == u'职务':
+#                                graduation.job = value
+#                            elif table.cell(0, j).value == u'年薪':
+#                                graduation.salary = value
+#                            elif table.cell(0, j).value == u'校友捐款':
+#                                graduation.alumni_donation = value
+#                            elif table.cell(0, j).value == u'毕业手机':
+#                                graduation.phone = value
+#                            elif table.cell(0, j).value == u'毕业邮箱':
+#                                graduation.email = value
+#                            elif table.cell(0, j).value == u'奖学金':
+#                                if scholarship_loan.scholarship:
+#                                    scholarship_loan.scholarship += '\r\n' + value
+#                                else:
+#                                    scholarship_loan.scholarship = value
+#                            elif table.cell(0, j).value == u'助学金':
+#                                if scholarship_loan.grant:
+#                                    scholarship_loan.grant += '\r\n' + value
+#                                else:
+#                                    scholarship_loan.grant = value
+#                            elif table.cell(0, j).value == u'贷款':
+#                                if scholarship_loan.loan:
+#                                    scholarship_loan.loan += '\r\n' + value
+#                                else:
+#                                    scholarship_loan.loan = value
+#                            elif table.cell(0, j).value == u'科技赛事':
+#                                if experience.competition:
+#                                    experience.competition += '\r\n' + value
+#                                else:
+#                                    experience.competition = value
+#                            elif table.cell(0, j).value == u'社会工作':
+#                                if experience.social_work:
+#                                    experience.social_work += '\r\n' + value
+#                                else:
+#                                    experience.social_work = value
+#                    except Exception as e:
+#                        error_msg = u'导入文件错误，错误位置(%d, %d)' %(i, j)
+#                        return render_to_response("postmanage/error.html", {
+#                            "error_msg": error_msg
+#                        }, context_instance=RequestContext(request))
+#
+#                if len(User.objects.filter(username=str(std_num))) == 0:
+#                    user = User.objects.create(username=str(std_num))
+#                    user.set_password(str(std_num))
+#                    user.save()
+#                    student.user = user
+#                graduation.save()
+#                degree.save()
+#                scholarship_loan.save()
+#                experience.save()
+#                student.degree = degree
+#                student.graduation = graduation
+#                student.scholarship_loan = scholarship_loan
+#                student.experience = experience
+#                student.save()
+#            return render_to_response("postmanage/import_excel.html", {}, context_instance=RequestContext(request))
+#        except Exception as e:
+#            error_msg = u'导入文件错误！%s' % e
+#            return render_to_response("postmanage/error.html", {
+#                "error_msg": error_msg
+#            }, context_instance=RequestContext(request))
+#    else:
+#        return render_to_response("postmanage/import_excel.html", {}, context_instance=RequestContext(request))
+
 
 

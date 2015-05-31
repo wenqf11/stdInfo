@@ -41,7 +41,8 @@
             <!--/span-->
             <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10"  id="content">
 
-                <table id ="table-methods-table" class="table table-hover table-bordered" data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc"
+                <table id ="table-methods-table" class="table table-hover table-bordered" data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true"
+                data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc"
                 border="0" align="center" cellpadding="0" cellspacing="0">
 
               <!-- table content for degree_info page-->
@@ -102,7 +103,10 @@
                         data: sRow,
                         dataType: "text",
                         error: function(){
-                            alert("更改失败，请刷新页面后重新更改！")
+                            bootbox.alert({
+                                size: 'small',
+                                message: "更改失败，请刷新页面后重新更改！"
+                            });
                         }
                      });
                     flag = 0;

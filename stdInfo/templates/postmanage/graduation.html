@@ -96,7 +96,10 @@
                         data: sRow,
                         dataType: "text",
                         error: function(){
-                            alert("更改失败，请刷新页面后重新更改！")
+                            bootbox.alert({
+                                size: 'small',
+                                message: "更改失败，请刷新页面后重新更改！"
+                            });
                         }
                      });
                     flag = 0;

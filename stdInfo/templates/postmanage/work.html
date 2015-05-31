@@ -41,18 +41,18 @@
             <!--/span-->
             <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10"  id="content">
 
-                <table id ="table-methods-table" class="table table-hover table-bordered" data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc"
+                <table id ="table-methods-table" class="table table-hover table-bordered" data-toggle="table" data-show-refresh="true"
+                data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true"
                 border="0" align="center" cellpadding="0" cellspacing="0">
-
                <!-- table content for  graduation_info page-->
                 <thead>
                     <tr>
                         <th data-valign="middle" data-align="center">详情</th>
-                        <th data-field="id" data-visible="false">ID</th>
-                        <th data-valign="middle" data-align="center"  data-sortable="true" >学号</th>
-                        <th data-valign="middle" data-align="center"  data-sortable="true" >姓名</th>
-                        <th data-valign="middle" data-halign="center"  data-sortable="true" >赛事</th>
-                        <th data-valign="middle" data-halign="center"  data-sortable="true" >社工</th>
+                        <th data-field="id" data-visible="false" data-field="id">ID</th>
+                        <th data-valign="middle" data-align="center"   data-field="number" data-sortable="true" >学号</th>
+                        <th data-valign="middle" data-align="center"   data-field="name" data-sortable="true" data-editable="true">姓名</th>
+                        <th data-valign="middle" data-halign="center"  data-field="competition" data-sortable="true" data-editable="true">赛事</th>
+                        <th data-valign="middle" data-halign="center"  data-field="social_work" data-sortable="true" data-editable="true">社工</th>
                     </tr>
               </thead>
               <tbody>
@@ -62,12 +62,40 @@
                   <td>{{ student.id }}</td>
                   <td>{{ student.number }}</td>
                   <td>{{ student.name }}</td>
-                  <td><pre>{{ student.experience.competition }}</pre></td>
-                  <td><pre>{{ student.experience.social_work }}</pre></td>
+                  <td>{{ student.experience.competition }}</td>
+                  <td>{{ student.experience.social_work }}</td>
                 </tr>
               {% endfor %}
               </tbody>
             </table>
+
+            <script type="text/javascript">
+            $.fn.editable.defaults.mode = 'inline';
+            var flag = 0, sRow = null;
+            $('#table-methods-table').bootstrapTable({
+            //some code
+            }).on('click-row.bs.table', function (e, row, $element) {
+                flag = 1;
+                sRow = row;
+            }).on('editable-save.bs.table', function(e){
+                if(flag == 1){
+                    $.ajax({
+                        type:"POST",
+                        url:"/postmanage/update_work_info",
+                        data: sRow,
+                        dataType: "text",
+                        error: function(){
+                            bootbox.alert({
+                                size: 'small',
+                                message: "更改失败，请刷新页面后重新更改！"
+                            });
+                        }
+                     });
+                    flag = 0;
+                }
+            });
+           </script>
+
         </div>
     </div>
 </div>
