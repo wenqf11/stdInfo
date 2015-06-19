@@ -924,10 +924,10 @@ def parse_data(request, excel_data):
                     elif table.cell(0, j).value == u'身份证号':
                         student.identity_number = value
                     elif table.cell(0, j).value == u'出生日期':
-                        if value == '':
-                            student.birthday = None
-                        else:
+                        try:
                             student.birthday = datetime.datetime.strptime(str(int(value)), "%Y%m%d")
+                        except:
+                            student.birthday = None
                     elif table.cell(0, j).value == u'民族':
                         student.nation = value
                     elif table.cell(0, j).value == u'国籍':
@@ -969,19 +969,22 @@ def parse_data(request, excel_data):
                     elif table.cell(0, j).value == u'二学位班号':
                         second_degree.class_num = value
                     elif table.cell(0, j).value == u'二学位毕业日期':
-                        if value == '':
-                            second_degree.date = None
-                        else:
+                        try:
                             second_degree.date = datetime.datetime.strptime(str(int(value)), "%Y%m%d")
+                        except:
+                            second_degree.date = None
                     elif table.cell(0, j).value == u'毕业日期':
-                        if value == '':
-                            graduation.date = None
-                        else:
+                        try:
                             graduation.date = datetime.datetime.strptime(str(int(value)), "%Y%m%d")
+                        except:
+                            graduation.date = None
                     elif table.cell(0, j).value == u'毕业类别':
                         graduation.type = value
                     elif table.cell(0, j).value == u'毕业手机':
-                        graduation.phone = int(value)
+                        try:
+                            graduation.phone = int(value)
+                        except:
+                            graduation.phone = ''
                     elif table.cell(0, j).value == u'毕业邮箱':
                         graduation.email = value
                     elif table.cell(0, j).value == u'毕业去向':
@@ -1021,9 +1024,9 @@ def parse_data(request, excel_data):
                     elif table.cell(0, j).value == u'社会工作':
                         experience.social_work = value
             except Exception as e:
-                error_msg = u'导入文件错误，错误位置(%d, %d)' %(i, j)
-                return render_to_response("manage/error.html", {
-                    "error_msg": error_msg
+                error_msg = u'导入文件错误，错误位置第%d行，第%d列。%s' %(i+1, j+1, e)
+                return render_to_response("manage/message.html", {
+                    "msg": error_msg
                 }, context_instance=RequestContext(request))
 
         if len(User.objects.filter(username=std_num)) == 0:
@@ -1046,7 +1049,9 @@ def parse_data(request, excel_data):
         student.scholarship_loan = scholarship_loan
         student.experience = experience
         student.save()
-    return render_to_response("manage/import_excel.html", {}, context_instance=RequestContext(request))
+    return render_to_response("manage/message.html", {
+                "msg": "导入成功！"
+            }, context_instance=RequestContext(request))
 
 
 def parse_data_ad(request, excel_data_ad):
@@ -1129,13 +1134,13 @@ def parse_data_ad(request, excel_data_ad):
                             experience.competition = value
                     elif table.cell(0, j).value == u'社会工作':
                         if experience.social_work:
-                            experience.social_work +=  u'\r\n' + value
+                            experience.social_work += u'\r\n' + value
                         else:
                             experience.social_work = value
             except Exception as e:
-                error_msg = u'导入文件错误，错误位置(%d, %d)' %(i, j)
-                return render_to_response("manage/error.html", {
-                    "error_msg": error_msg
+                error_msg = u'导入文件错误，错误位置第%d行，第%d列。' %(i+1, j+1)
+                return render_to_response("manage/message.html", {
+                    "msg": error_msg
                 }, context_instance=RequestContext(request))
 
         if len(User.objects.filter(username=std_num)) == 0:
@@ -1158,7 +1163,9 @@ def parse_data_ad(request, excel_data_ad):
         student.scholarship_loan = scholarship_loan
         student.experience = experience
         student.save()
-    return render_to_response("manage/import_excel.html", {}, context_instance=RequestContext(request))
+    return render_to_response("manage/message.html", {
+                "msg": "导入成功！"
+            }, context_instance=RequestContext(request))
 
 
 @login_required
@@ -1173,8 +1180,8 @@ def import_excel(request):
                 return parse_data_ad(request, excel_data_ad)
         except Exception as e:
             error_msg = u'导入文件错误！%s' % e
-            return render_to_response("manage/error.html", {
-                "error_msg": error_msg
+            return render_to_response("manage/message.html", {
+                "msg": error_msg
             }, context_instance=RequestContext(request))
     else:
         return render_to_response("manage/import_excel.html", {}, context_instance=RequestContext(request))
