@@ -345,6 +345,8 @@ def parse_data(request, excel_data):
             try:
                 if table.cell(0, j).value in basic_info_set:
                     value = table.cell(i, j).value
+                    if value == "":
+                        continue
                     if table.cell(0, j).value == u'姓名':
                         student.name = value
                     elif table.cell(0, j).value == u'性别':
@@ -356,8 +358,7 @@ def parse_data(request, excel_data):
                     elif table.cell(0, j).value == u'邮箱':
                         student.email = value
                     elif table.cell(0, j).value == u'手机':
-                        if isinstance(value, float):
-                            value = int(value)
+                        value = int(value)
                         student.phone = value
                     elif table.cell(0, j).value == u'导师':
                         student.tutor = value
@@ -370,10 +371,9 @@ def parse_data(request, excel_data):
                     elif table.cell(0, j).value == u'初试成绩':
                         degree.first_test= value
                     elif table.cell(0, j).value == u'开题时间':
-                        if value == '':
-                            degree.opening_time = None
-                        elif len(value) == 8:
-                            degree.opening_time = datetime.datetime.strptime(str(int(value)), "%Y%m%d")
+                        value = str(int(value))
+                        if len(value) == 8:
+                            degree.opening_time = datetime.datetime.strptime(value, "%Y%m%d")
                     elif table.cell(0, j).value == u'交流学校/时间':
                         degree.exchange_info= value
                     elif table.cell(0, j).value == u'招生途径':
@@ -387,10 +387,9 @@ def parse_data(request, excel_data):
                     elif table.cell(0, j).value == u'本科专业':
                         degree.regular_major= value
                     elif table.cell(0, j).value == u'毕业日期':
-                        if value == '':
-                            graduation.date = None
-                        elif len(value) == 8:
-                            graduation.date = datetime.datetime.strptime(str(int(value)), "%Y%m%d")
+                        value = str(int(value))
+                        if len(value) == 8:
+                            graduation.date = datetime.datetime.strptime(value, "%Y%m%d")
                     elif table.cell(0, j).value == u'毕业去向':
                         graduation.destination = value
                     elif table.cell(0, j).value == u'职务':
@@ -404,24 +403,14 @@ def parse_data(request, excel_data):
                     elif table.cell(0, j).value == u'毕业邮箱':
                         graduation.email = value
                     elif table.cell(0, j).value == u'奖学金':
-                        if value == '':
-                            value = None
                         scholarship_loan.scholarship = value
                     elif table.cell(0, j).value == u'助学金':
-                        if value == '':
-                            value = None
                         scholarship_loan.grant = value
                     elif table.cell(0, j).value == u'贷款':
-                        if value == '':
-                            value = None
                         scholarship_loan.loan = value
                     elif table.cell(0, j).value == u'科技赛事':
-                        if value == '':
-                            value = None
                         experience.competition = value
                     elif table.cell(0, j).value == u'社会工作':
-                        if value == '':
-                            value = None
                         experience.social_work = value
             except Exception as e:
                 error_msg = u'导入文件错误，错误位置(%d, %d)' %(i, j)
