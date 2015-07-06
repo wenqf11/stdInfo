@@ -31,9 +31,11 @@
                     <li role="presentation">
                     <a href="/manage/graduation_info">毕业信息<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
+                    {% ifequal is_editable 'true' %}
                     <li role="presentation">
                         <a href="/manage/import_excel">导入<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
+                    {% endifequal %}
                 </ul>
             </div>
 
@@ -54,14 +56,14 @@
                         <th data-valign="middle" data-align="center">详情</th>
                         <th data-field="id" data-visible="false">ID</th>
                         <th data-valign="middle" data-align="center" data-field="number" data-sortable="true">学号</th>
-                        <th data-valign="middle" data-align="center" data-field="name" data-sortable="true" data-editable="true">姓名</th>
-                        <th data-valign="middle" data-halign="center" data-field="address" data-sortable="true" data-editable="true">家庭住址</th>
-                        <th data-valign="middle" data-halign="center" data-field="phone" data-sortable="true" data-editable="true">家庭电话</th>
-                        <th data-valign="middle" data-align="center" data-field="hukou_type" data-sortable="true" data-editable="true">户口类型</th>
-                        <th data-valign="middle" data-align="center" data-field="avg_income" data-sortable="true" data-editable="true">家庭人均月收入（元）</th>
-                        <th data-valign="middle" data-align="center" data-field="I_value" data-sortable="true" data-editable="true">I 值</th>
-                        <th data-valign="middle" data-align="center" data-field="poverty_degree" data-sortable="true" data-editable="true">贫困等级</th>
-                        <th data-valign="middle" data-halign="center" data-field="detail" data-sortable="true" data-editable="true">经济状况说明</th>
+                        <th data-valign="middle" data-align="center" data-field="name" data-sortable="true" data-editable={{ is_editable }}>姓名</th>
+                        <th data-valign="middle" data-halign="center" data-field="address" data-sortable="true" data-editable={{ is_editable }}>家庭住址</th>
+                        <th data-valign="middle" data-halign="center" data-field="phone" data-sortable="true" data-editable={{ is_editable }}>家庭电话</th>
+                        <th data-valign="middle" data-align="center" data-field="hukou_type" data-sortable="true" data-editable={{ is_editable }}>户口类型</th>
+                        <th data-valign="middle" data-align="center" data-field="avg_income" data-sortable="true" data-editable={{ is_editable }}>家庭人均月收入（元）</th>
+                        <th data-valign="middle" data-align="center" data-field="I_value" data-sortable="true" data-editable={{ is_editable }}>I 值</th>
+                        <th data-valign="middle" data-align="center" data-field="poverty_degree" data-sortable="true" data-editable={{ is_editable }}>贫困等级</th>
+                        <th data-valign="middle" data-halign="center" data-field="detail" data-sortable="true" data-editable={{ is_editable }}>经济状况说明</th>
                 </tr>
               </thead>
               <tbody>

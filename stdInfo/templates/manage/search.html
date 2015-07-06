@@ -33,9 +33,11 @@
                     <li role="presentation">
                     <a href="/manage/graduation_info">毕业信息<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
+                    {% ifequal is_editable 'true' %}
                     <li role="presentation">
                         <a href="/manage/import_excel">导入<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
+                    {% endifequal %}
                 </ul>
             </div>
 
@@ -279,13 +281,13 @@
                     </form>
                 </div>
                 <div class="row">
-
+                    {% ifequal is_editable 'true' %}
                     <div id="custom-toolbar">
                         <div class="btn-group">
                            <button class="btn btn-default" id="remove-data" data-method="remove">删除</button>
                         </div>
                     </div>
-
+                    {% endifequal %}
                     <table id ="table-methods-table" class="table table-hover table-bordered" data-toolbar="#custom-toolbar" data-toggle="table" data-show-refresh="true"
                            data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true"
                            data-show-export="true" data-export-types="['excel']"  data-show-pagination-switch="true" border="0" align="center"
@@ -294,63 +296,63 @@
                            <!-- table content for  graduation_info page-->
                             <thead>
                                 <tr>
-                                    <th data-field="status" data-checkbox="true"></th>
+                                    <th data-visible={{ is_editable }} data-field="status" data-checkbox="true"></th>
                                     <th data-valign="middle" data-align="center">详情</th>
                                     <th data-field="id" data-visible="false">ID</th>
                                     <th data-valign="middle" data-align="center" data-field="number" data-sortable="true">学号</th>
-                                    <th data-valign="middle" data-align="center" data-editable="true" data-field="name" data-sortable="true">姓名</th>
+                                    <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="name" data-sortable="true">姓名</th>
                                     {% if basic_info %}
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="gender" data-sortable="true">性别</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="phone" data-sortable="true">手机号</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="email" data-sortable="true">邮箱</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="identity_number" data-sortable="true">身份证号</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="birthday"data-sortable="true">出生日期</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="nation" data-sortable="true">民族</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="nationality" data-sortable="true">国籍</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="politics" data-sortable="true">政治面貌</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="high_school" data-sortable="true">毕业中学</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="exam_province" data-sortable="true">考区</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="gender" data-sortable="true">性别</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="phone" data-sortable="true">手机号</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="email" data-sortable="true">邮箱</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="identity_number" data-sortable="true">身份证号</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="birthday"data-sortable="true">出生日期</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="nation" data-sortable="true">民族</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="nationality" data-sortable="true">国籍</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="politics" data-sortable="true">政治面貌</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="high_school" data-sortable="true">毕业中学</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="exam_province" data-sortable="true">考区</th>
                                     {% endif %}
                                     {% if degree_info %}
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="major" data-sortable="true">专业名</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="class_num" data-sortable="true">教学班</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="grade" data-sortable="true">所属年级</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="change" data-sortable="true">是否异动</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="degree_type" data-sortable="true">学位</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="is_foreign" data-sortable="true">是否留学生</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="exchange_info" data-sortable="true">交换时间/学校</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="scores_rank" data-sortable="true">大三年级学分绩及排名</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="english_level" data-sortable="true">英语水平</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="second_major" data-sortable="true">二学位专业名</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="second_department_name" data-sortable="true">二学位单位简称</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="second_date" data-sortable="true">二学位毕业日期</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="major" data-sortable="true">专业名</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="class_num" data-sortable="true">教学班</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="grade" data-sortable="true">所属年级</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="change" data-sortable="true">是否异动</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="degree_type" data-sortable="true">学位</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="is_foreign" data-sortable="true">是否留学生</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="exchange_info" data-sortable="true">交换时间/学校</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="scores_rank" data-sortable="true">大三年级学分绩及排名</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="english_level" data-sortable="true">英语水平</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="second_major" data-sortable="true">二学位专业名</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="second_department_name" data-sortable="true">二学位单位简称</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="second_date" data-sortable="true">二学位毕业日期</th>
                                     {% endif %}
                                     {% if award_info %}
-                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="scholarship"  data-sortable="true" >奖学金</th>
-                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="grant"  data-sortable="true" >助学金</th>
-                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="loan"  data-sortable="true" >贷款</th>
-                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="temp_loan"  data-sortable="true" >临时借款</th>
+                                        <th data-valign="middle" data-halign="center" data-editable={{ is_editable }} data-field="scholarship"  data-sortable="true" >奖学金</th>
+                                        <th data-valign="middle" data-halign="center" data-editable={{ is_editable }} data-field="grant"  data-sortable="true" >助学金</th>
+                                        <th data-valign="middle" data-halign="center" data-editable={{ is_editable }} data-field="loan"  data-sortable="true" >贷款</th>
+                                        <th data-valign="middle" data-halign="center" data-editable={{ is_editable }} data-field="temp_loan"  data-sortable="true" >临时借款</th>
                                     {% endif %}
                                     {% if family_info %}
-                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="address" data-sortable="true">家庭住址</th>
-                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="family_phone" data-sortable="true">家庭电话</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="hukou_type" data-sortable="true">户口类型</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="avg_income" data-sortable="true">家庭人均月收入（元）</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="I_value" data-sortable="true">I 值</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="poverty_degree" data-sortable="true">贫困等级</th>
-                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="detail" data-sortable="true">经济状况说明</th>
+                                        <th data-valign="middle" data-halign="center" data-editable={{ is_editable }} data-field="address" data-sortable="true">家庭住址</th>
+                                        <th data-valign="middle" data-halign="center" data-editable={{ is_editable }} data-field="family_phone" data-sortable="true">家庭电话</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="hukou_type" data-sortable="true">户口类型</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="avg_income" data-sortable="true">家庭人均月收入（元）</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="I_value" data-sortable="true">I 值</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="poverty_degree" data-sortable="true">贫困等级</th>
+                                        <th data-valign="middle" data-halign="center" data-editable={{ is_editable }} data-field="detail" data-sortable="true">经济状况说明</th>
                                     {% endif %}
                                     {% if experience_info %}
-                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="competition"  data-sortable="true" >赛事</th>
-                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="social_work"  data-sortable="true" >社工</th>
+                                        <th data-valign="middle" data-halign="center" data-editable={{ is_editable }} data-field="competition"  data-sortable="true" >赛事</th>
+                                        <th data-valign="middle" data-halign="center" data-editable={{ is_editable }} data-field="social_work"  data-sortable="true" >社工</th>
                                     {% endif %}
                                     {% if graduation_info %}
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="graduation_date" data-sortable="true">毕业日期</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="graduation_type" data-sortable="true" >毕业类别</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="graduation_phone" data-sortable="true" >毕业手机</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="graduation_email" data-sortable="true" >毕业邮箱</th>
-                                        <th data-valign="middle" data-halign="center" data-editable="true" data-field="destination"data-sortable="true" >毕业去向</th>
-                                        <th data-valign="middle" data-align="center" data-editable="true" data-field="direction" data-sortable="true">分流方向</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="graduation_date" data-sortable="true">毕业日期</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="graduation_type" data-sortable="true" >毕业类别</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="graduation_phone" data-sortable="true" >毕业手机</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="graduation_email" data-sortable="true" >毕业邮箱</th>
+                                        <th data-valign="middle" data-halign="center" data-editable={{ is_editable }} data-field="destination"data-sortable="true" >毕业去向</th>
+                                        <th data-valign="middle" data-align="center" data-editable={{ is_editable }} data-field="direction" data-sortable="true">分流方向</th>
                                     {% endif %}
                                 </tr>
                           </thead>

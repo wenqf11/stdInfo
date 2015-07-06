@@ -31,9 +31,11 @@
                     <li role="presentation" class="active">
                     <a href="/manage/graduation_info">毕业信息<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
+                    {% ifequal is_editable 'true' %}
                     <li role="presentation">
                         <a href="/manage/import_excel">导入<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
+                    {% endifequal %}
                 </ul>
             </div>
 
@@ -54,13 +56,13 @@
                         <th data-valign="middle" data-align="center">详情</th>
                         <th data-field="id" data-visible="false">ID</th>
                         <th data-valign="middle" data-align="center" data-field="number" data-sortable="true">学号</th>
-                        <th data-valign="middle" data-align="center" data-field="name" data-sortable="true" data-editable="true">姓名</th>
-                        <th data-valign="middle" data-align="center" data-field="date" data-sortable="true" data-editable="true">毕业日期</th>
-                        <th data-valign="middle" data-align="center" data-field="type" data-sortable="true" data-editable="true">毕业类别</th>
-                        <th data-valign="middle" data-align="center" data-field="phone" data-sortable="true" data-editable="true">毕业手机</th>
-                        <th data-valign="middle" data-align="center" data-field="email" data-sortable="true" data-editable="true">毕业邮箱</th>
-                        <th data-valign="middle" data-halign="center" data-field="destination"data-sortable="true" data-editable="true">毕业去向</th>
-                        <th data-valign="middle" data-align="center" data-field="direction" data-sortable="true" data-editable="true">分流方向</th>
+                        <th data-valign="middle" data-align="center" data-field="name" data-sortable="true" data-editable={{ is_editable }}>姓名</th>
+                        <th data-valign="middle" data-align="center" data-field="date" data-sortable="true" data-editable={{ is_editable }}>毕业日期</th>
+                        <th data-valign="middle" data-align="center" data-field="type" data-sortable="true" data-editable={{ is_editable }}>毕业类别</th>
+                        <th data-valign="middle" data-align="center" data-field="phone" data-sortable="true" data-editable={{ is_editable }}>毕业手机</th>
+                        <th data-valign="middle" data-align="center" data-field="email" data-sortable="true" data-editable={{ is_editable }}>毕业邮箱</th>
+                        <th data-valign="middle" data-halign="center" data-field="destination"data-sortable="true" data-editable={{ is_editable }}>毕业去向</th>
+                        <th data-valign="middle" data-align="center" data-field="direction" data-sortable="true" data-editable={{ is_editable }}>分流方向</th>
                     </tr>
               </thead>
               <tbody>

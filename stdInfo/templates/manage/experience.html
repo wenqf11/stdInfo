@@ -32,9 +32,11 @@
                     <li role="presentation">
                     <a href="/manage/graduation_info">毕业信息<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
+                    {% ifequal is_editable 'true' %}
                     <li role="presentation">
                         <a href="/manage/import_excel">导入<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
+                    {% endifequal %}
                 </ul>
             </div>
 
@@ -55,9 +57,9 @@
                         <th data-valign="middle" data-align="center">详情</th>
                         <th data-field="id" data-visible="false" data-field="id">ID</th>
                         <th data-valign="middle" data-align="center" data-field="number" data-sortable="true" >学号</th>
-                        <th data-valign="middle" data-align="center" data-field="name" data-editable="true" data-sortable="true" >姓名</th>
-                        <th data-valign="middle" data-halign="center" data-field="competition" data-editable="true"  data-sortable="true" >赛事</th>
-                        <th data-valign="middle" data-halign="center" data-field="social_work" data-editable="true"  data-sortable="true" >社工</th>
+                        <th data-valign="middle" data-align="center" data-field="name" data-editable={{ is_editable }} data-sortable="true" >姓名</th>
+                        <th data-valign="middle" data-halign="center" data-field="competition" data-editable={{ is_editable }}  data-sortable="true" >赛事</th>
+                        <th data-valign="middle" data-halign="center" data-field="social_work" data-editable={{ is_editable }}  data-sortable="true" >社工</th>
                     </tr>
               </thead>
               <tbody>

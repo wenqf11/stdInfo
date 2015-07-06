@@ -144,7 +144,9 @@ def search(request):
         if request.POST.get('graduation_info', ''):
             graduation_info = True
 
-
+        is_editable = 'false'
+        if request.user.staff.status == '1':
+            is_editable = 'true'
         return render_to_response("manage/search.html", {
             'students': students,
             'basic_info': basic_info,
@@ -152,7 +154,8 @@ def search(request):
             'award_info': award_info,
             'family_info': family_info,
             'experience_info': experience_info,
-            'graduation_info': graduation_info
+            'graduation_info': graduation_info,
+            'is_editable': is_editable
         }, context_instance=RequestContext(request))
 
 
@@ -241,7 +244,15 @@ def get_basic_info(request):
     degreeinfos = DegreeInfo.objects.filter(grade__gte=start_year)
 
     students = Student.objects.filter(degree__in=degreeinfos)
-    return render_to_response("manage/basic_info.html", {'students': students}, context_instance=RequestContext(request))
+
+    is_editable = 'false'
+    if request.user.staff.status == '1':
+        is_editable = 'true'
+
+    return render_to_response("manage/basic_info.html", {
+        'students': students,
+        'is_editable': is_editable
+    }, context_instance=RequestContext(request))
 
 
 @login_required
@@ -290,7 +301,15 @@ def get_degree_info(request):
     degreeinfos = DegreeInfo.objects.filter(grade__gte=start_year)
 
     students = Student.objects.filter(degree__in=degreeinfos)
-    return render_to_response("manage/degree.html", {'students': students}, context_instance=RequestContext(request))
+
+    is_editable = 'false'
+    if request.user.staff.status == '1':
+        is_editable = 'true'
+
+    return render_to_response("manage/degree.html", {
+        'students': students,
+        'is_editable': is_editable
+    }, context_instance=RequestContext(request))
 
 
 @login_required
@@ -343,7 +362,14 @@ def get_award_info(request):
     degreeinfos = DegreeInfo.objects.filter(grade__gte=start_year)
 
     students = Student.objects.filter(degree__in=degreeinfos)
-    return render_to_response("manage/award.html", {'students': students}, context_instance=RequestContext(request))
+    is_editable = 'false'
+    if request.user.staff.status == '1':
+        is_editable = 'true'
+
+    return render_to_response("manage/award.html", {
+        'students': students,
+        'is_editable': is_editable
+    }, context_instance=RequestContext(request))
 
 
 @login_required
@@ -379,7 +405,15 @@ def get_family_info(request):
     degreeinfos = DegreeInfo.objects.filter(grade__gte=start_year)
 
     students = Student.objects.filter(degree__in=degreeinfos)
-    return render_to_response("manage/family.html", {'students': students}, context_instance=RequestContext(request))
+
+    is_editable = 'false'
+    if request.user.staff.status == '1':
+        is_editable = 'true'
+
+    return render_to_response("manage/family.html", {
+        'students': students,
+        'is_editable': is_editable
+    }, context_instance=RequestContext(request))
 
 
 @login_required
@@ -423,7 +457,15 @@ def get_experience_info(request):
     degreeinfos = DegreeInfo.objects.filter(grade__gte=start_year)
 
     students = Student.objects.filter(degree__in=degreeinfos)
-    return render_to_response("manage/experience.html", {'students': students}, context_instance=RequestContext(request))
+
+    is_editable = 'false'
+    if request.user.staff.status == '1':
+        is_editable = 'true'
+
+    return render_to_response("manage/experience.html", {
+        'students': students,
+        'is_editable': is_editable
+    }, context_instance=RequestContext(request))
 
 @login_required
 @csrf_exempt
@@ -453,7 +495,14 @@ def get_graduation_info(request):
     degreeinfos = DegreeInfo.objects.filter(grade__lt=start_year).exclude(grade__lt=start_year-2)
 
     students = Student.objects.filter(degree__in=degreeinfos)
-    return render_to_response("manage/graduation.html",  {'students': students}, context_instance=RequestContext(request))
+    is_editable = 'false'
+    if request.user.staff.status == '1':
+        is_editable = 'true'
+
+    return render_to_response("manage/graduation.html", {
+        'students': students,
+        'is_editable': is_editable
+    }, context_instance=RequestContext(request))
 
 
 @login_required
@@ -1220,6 +1269,11 @@ def add_staff(request):
     name = request.POST.get('name', '')
     phone = request.POST.get('phone', '')
     email = request.POST.get('email', '')
+    user_type = request.POST.get('user_type', '')
+    if user_type == 'editable':
+        user_type = '1'
+    else:
+        user_type = '0'
     if len(User.objects.filter(username=username)) > 0:
         return HttpResponse("添加失败，用户名已存在！")
     elif password != confirm_password:
@@ -1240,6 +1294,7 @@ def add_staff(request):
                 name=name,
                 phone=phone,
                 email=email,
+                status=user_type,
             )
             staff.save()
     except:
@@ -1255,11 +1310,18 @@ def update_staff(request):
     name = request.POST.get('name', '')
     phone = request.POST.get('phone', '')
     email = request.POST.get('email', '')
+    user_type = request.POST.get('user_type', '')
+    if user_type ==  u'可编辑用户':
+        user_type = '1'
+    else:
+        user_type = '0'
+
     user = User.objects.get(username=username)
     staff = Staff.objects.get(user=user)
     staff.name = name
     staff.phone = phone
     staff.email = email
+    staff.status = user_type
     staff.save()
     return HttpResponse("OK")
 

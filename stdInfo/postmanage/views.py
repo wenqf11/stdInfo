@@ -413,7 +413,7 @@ def parse_data(request, excel_data):
                     elif table.cell(0, j).value == u'社会工作':
                         experience.social_work = value
             except Exception as e:
-                error_msg = u'导入文件错误，错误位置(%d, %d)' %(i, j)
+                error_msg = u'导入文件错误，错误位置第%d行，第%d列。%s' %(i+1, j+1, e)
                 return render_to_response("postmanage/error.html", {
                     "error_msg": error_msg
                 }, context_instance=RequestContext(request))
@@ -503,7 +503,7 @@ def parse_data_ad(request, excel_data_ad):
                         else:
                             experience.social_work = value
             except Exception as e:
-                error_msg = u'导入文件错误，错误位置(%d, %d)' %(i, j)
+                error_msg = u'导入文件错误，错误位置第%d行，第%d列。%s' %(i+1, j+1, e)
                 return render_to_response("postmanage/error.html", {
                     "error_msg": error_msg
                 }, context_instance=RequestContext(request))

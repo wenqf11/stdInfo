@@ -25,6 +25,7 @@
                     <tr>
                         <th data-field="status" data-checkbox="true"></th>
                         <th data-valign="middle" data-align="center"  data-field="username" data-sortable="true" >用户名</th>
+                        <th data-valign="middle" data-align="center" data-field="user_type" data-sortable="true" data-editable="true">用户类别</th>
                         <th data-valign="middle" data-align="center"  data-field="name" data-sortable="true" data-editable="true">姓名</th>
                         <th data-valign="middle" data-align="center" data-field="phone" data-sortable="true" data-editable="true">电话</th>
                         <th data-valign="middle" data-align="center" data-field="email" data-sortable="true" data-editable="true">邮箱</th>
@@ -36,6 +37,7 @@
                 <tr>
                   <td></td>
                   <td>{{ staff.user.username}}</td>
+                  <td>{% ifequal staff.status '1'%}可编辑用户{% else %}不可编辑用户{% endifequal %}</td>
                   <td>{{ staff.name }}</td>
                   <td>{{ staff.phone }}</td>
                   <td>{{ staff.email }}</td>
@@ -90,6 +92,14 @@
       <div class="modal-body">
           <form id="add_form" action="/manage/add_staff" method="POST">
           {% csrf_token %}
+
+          <div class="form-group">
+            <label for="user_type" class="control-label">用户类别：</label>
+            <select class="form-control" name="user_type" id="user_type">
+                <option value="editable">可编辑</option>
+                <option value="none-editable">不可编辑</option>
+            </select>
+          </div>
           <div class="form-group">
             <label for="username" class="control-label">用户名：</label>
             <input type="text" class="form-control" name="username" id="username">

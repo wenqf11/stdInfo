@@ -31,9 +31,11 @@
                     <li role="presentation">
                     <a href="/manage/graduation_info">毕业信息<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
+                    {% ifequal is_editable 'true' %}
                     <li role="presentation">
                         <a href="/manage/import_excel">导入<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
+                    {% endifequal %}
                 </ul>
             </div>
 
@@ -54,19 +56,19 @@
                         <th data-valign="middle" data-align="center">详情</th>
                         <th data-field="id" data-visible="false">ID</th>
                         <th data-valign="middle" data-align="center" data-field="number" data-sortable="true" >学号</th>
-                        <th data-valign="middle" data-align="center" data-field="name" data-sortable="true" data-editable="true">姓名</th>
-                        <th data-valign="middle" data-align="center" data-field="major" data-sortable="true" data-editable="true">专业名</th>
-                        <th data-valign="middle" data-align="center" data-field="class_num" data-sortable="true" data-editable="true">教学班</th>
-                        <th data-valign="middle" data-align="center" data-field="grade" data-sortable="true" data-editable="true">所属年级</th>
-                        <th data-valign="middle" data-align="center" data-field="change" data-sortable="true" data-editable="true">是否异动</th>
-                        <th data-valign="middle" data-align="center" data-field="degree_type" data-sortable="true" data-editable="true">学位</th>
-                        <th data-valign="middle" data-align="center" data-field="is_foreign" data-sortable="true" data-editable="true">是否留学生</th>
-                        <th data-valign="middle" data-align="center" data-field="exchange_info" data-sortable="true" data-editable="true">交换时间/学校</th>
-                        <th data-valign="middle" data-align="center" data-field="english_level" data-sortable="true" data-editable="true">英语水平</th>
-                        <th data-valign="middle" data-align="center" data-field="scores_rank" data-sortable="true" data-editable="true">大三年级学分绩及排名</th>
-                        <th data-valign="middle" data-align="center" data-field="second_major" data-sortable="true" data-editable="true">二学位专业名</th>
-                        <th data-valign="middle" data-align="center" data-field="second_department" data-sortable="true" data-editable="true">二学位单位简称</th>
-                        <th data-valign="middle" data-align="center" data-field="second_date" data-sortable="true" data-editable="true">二学位毕业日期</th>
+                        <th data-valign="middle" data-align="center" data-field="name" data-sortable="true" data-editable={{ is_editable }}>姓名</th>
+                        <th data-valign="middle" data-align="center" data-field="major" data-sortable="true" data-editable={{ is_editable }}>专业名</th>
+                        <th data-valign="middle" data-align="center" data-field="class_num" data-sortable="true" data-editable={{ is_editable }}>教学班</th>
+                        <th data-valign="middle" data-align="center" data-field="grade" data-sortable="true" data-editable={{ is_editable }}>所属年级</th>
+                        <th data-valign="middle" data-align="center" data-field="change" data-sortable="true" data-editable={{ is_editable }}>是否异动</th>
+                        <th data-valign="middle" data-align="center" data-field="degree_type" data-sortable="true" data-editable={{ is_editable }}>学位</th>
+                        <th data-valign="middle" data-align="center" data-field="is_foreign" data-sortable="true" data-editable={{ is_editable }}>是否留学生</th>
+                        <th data-valign="middle" data-align="center" data-field="exchange_info" data-sortable="true" data-editable={{ is_editable }}>交换时间/学校</th>
+                        <th data-valign="middle" data-align="center" data-field="english_level" data-sortable="true" data-editable={{ is_editable }}>英语水平</th>
+                        <th data-valign="middle" data-align="center" data-field="scores_rank" data-sortable="true" data-editable={{ is_editable }}>大三年级学分绩及排名</th>
+                        <th data-valign="middle" data-align="center" data-field="second_major" data-sortable="true" data-editable={{ is_editable }}>二学位专业名</th>
+                        <th data-valign="middle" data-align="center" data-field="second_department" data-sortable="true" data-editable={{ is_editable }}>二学位单位简称</th>
+                        <th data-valign="middle" data-align="center" data-field="second_date" data-sortable="true" data-editable={{ is_editable }}>二学位毕业日期</th>
                     </tr>
               </thead>
               <tbody>
