@@ -28,9 +28,11 @@
                     <li role="presentation">
                     <a href="/postmanage/graduation_info">毕业信息<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
+                    {% ifequal is_editable 'true' %}
                     <li role="presentation">
                         <a href="/postmanage/import_excel">导入<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
+                    {% endifequal %}
                 </ul>
             </div>
 
@@ -51,17 +53,17 @@
                         <th data-valign="middle" data-align="center">详情</th>
                         <th data-field="id" data-visible="false">ID</th>
                         <th data-valign="middle" data-align="center" data-field="number" data-sortable="true" >学号</th>
-                        <th data-valign="middle" data-align="center" data-field="name" data-sortable="true" data-editable="true">姓名</th>
-                        <th data-valign="middle" data-align="center" data-field="degree" data-sortable="true" data-editable="true">学位</th>
-                        <th data-valign="middle" data-align="center" data-field="class_name" data-sortable="true" data-editable="true">班号</th>
-                        <th data-valign="middle" data-align="center" data-field="first_test" data-sortable="true" data-editable="true">初试成绩</th>
-                        <th data-valign="middle" data-align="center" data-field="opening_time" data-sortable="true" data-editable="true">开题时间</th>
-                        <th data-valign="middle" data-align="center" data-field="exchange_info" data-sortable="true" data-editable="true">交换时间/学校</th>
-                        <th data-valign="middle" data-align="center" data-field="admissions_way" data-sortable="true" data-editable="true">招生途径</th>
-                        <th data-valign="middle" data-align="center" data-field="rank_before_graduation" data-sortable="true" data-editable="true">毕业前或退面前综合排名</th>
-                        <th data-valign="middle" data-align="center" data-field="admissions_rank" data-sortable="true" data-editable="true">入学成绩/排名</th>
-                        <th data-valign="middle" data-align="center" data-field="regular_school" data-sortable="true" data-editable="true">本科毕业学校</th>
-                        <th data-valign="middle" data-align="center" data-field="regular_major" data-sortable="true" data-editable="true">本科专业</th>
+                        <th data-valign="middle" data-align="center" data-field="name" data-sortable="true" data-editable={{ is_editable }}>姓名</th>
+                        <th data-valign="middle" data-align="center" data-field="degree" data-sortable="true" data-editable={{ is_editable }}>学位</th>
+                        <th data-valign="middle" data-align="center" data-field="class_name" data-sortable="true" data-editable={{ is_editable }}>班号</th>
+                        <th data-valign="middle" data-align="center" data-field="first_test" data-sortable="true" data-editable={{ is_editable }}>初试成绩</th>
+                        <th data-valign="middle" data-align="center" data-field="opening_time" data-sortable="true" data-editable={{ is_editable }}>开题时间</th>
+                        <th data-valign="middle" data-align="center" data-field="exchange_info" data-sortable="true" data-editable={{ is_editable }}>交换时间/学校</th>
+                        <th data-valign="middle" data-align="center" data-field="admissions_way" data-sortable="true" data-editable={{ is_editable }}>招生途径</th>
+                        <th data-valign="middle" data-align="center" data-field="rank_before_graduation" data-sortable="true" data-editable={{ is_editable }}>毕业前或退面前综合排名</th>
+                        <th data-valign="middle" data-align="center" data-field="admissions_rank" data-sortable="true" data-editable={{ is_editable }}>入学成绩/排名</th>
+                        <th data-valign="middle" data-align="center" data-field="regular_school" data-sortable="true" data-editable={{ is_editable }}>本科毕业学校</th>
+                        <th data-valign="middle" data-align="center" data-field="regular_major" data-sortable="true" data-editable={{ is_editable }}>本科专业</th>
                     </tr>
               </thead>
               <tbody>

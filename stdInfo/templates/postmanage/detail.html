@@ -29,9 +29,11 @@
                     <li role="presentation">
                     <a href="/postmanage/graduation_info">毕业信息<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
+                    {% ifequal is_editable 'true' %}
                     <li role="presentation">
                         <a href="/postmanage/import_excel">导入<i class="glyphicon glyphicon-chevron-right"></i></a>
                     </li>
+                    {% endifequal %}
                 </ul>
             </div>
 

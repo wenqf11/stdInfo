@@ -96,6 +96,9 @@ def search(request):
         if request.POST.get('graduation_info', ''):
             graduation_info = True
 
+        is_editable = 'false'
+        if request.user.staff.status == '1':
+            is_editable = 'true'
         return render_to_response("postmanage/search.html", {
             'students': students,
             'basic_info': basic_info,
@@ -103,6 +106,7 @@ def search(request):
             'award_info': award_info,
             'work_info': work_info,
             'graduation_info': graduation_info,
+            'is_editable': is_editable
             }, context_instance=RequestContext(request))
 
 
@@ -114,7 +118,15 @@ def get_basic_info(request):
         start_year = now.year - 4
     degree_info = PostgraduateDegree.objects.filter(grade__gte=start_year)
     students = Postgraduate.objects.filter(degree__in=degree_info)
-    return render_to_response("postmanage/basic_info.html", locals(), context_instance=RequestContext(request))
+
+    is_editable = 'false'
+    if request.user.staff.status == '1':
+        is_editable = 'true'
+
+    return render_to_response("postmanage/basic_info.html", {
+        'students': students,
+        'is_editable': is_editable
+    }, context_instance=RequestContext(request))
 
 
 @csrf_exempt
@@ -149,7 +161,15 @@ def get_degree_info(request):
         start_year = now.year - 4
     degree_info = PostgraduateDegree.objects.filter(grade__gte=start_year)
     students = Postgraduate.objects.filter(degree__in=degree_info)
-    return render_to_response("postmanage/degree.html", locals(), context_instance=RequestContext(request))
+
+    is_editable = 'false'
+    if request.user.staff.status == '1':
+        is_editable = 'true'
+
+    return render_to_response("postmanage/degree.html", {
+        'students': students,
+        'is_editable': is_editable
+    }, context_instance=RequestContext(request))
 
 
 @csrf_exempt
@@ -183,11 +203,11 @@ def update_degree_info(request):
     student.degree.regular_school = regular_school
     student.degree.regular_major = regular_major
     student.degree.class_name = class_name
-#    try:
-    student.degree.save()
-    student.save()
-#    except Exception as e:
-#        return HttpResponse(e)
+    try:
+        student.degree.save()
+        student.save()
+    except Exception as e:
+        return HttpResponse(e)
     return HttpResponse('OK')
 
 
@@ -199,7 +219,15 @@ def get_award_info(request):
         start_year = now.year - 4
     degree_info = PostgraduateDegree.objects.filter(grade__gte=start_year)
     students = Postgraduate.objects.filter(degree__in=degree_info)
-    return render_to_response("postmanage/award.html", locals(), context_instance=RequestContext(request))
+
+    is_editable = 'false'
+    if request.user.staff.status == '1':
+        is_editable = 'true'
+
+    return render_to_response("postmanage/award.html", {
+        'students': students,
+        'is_editable': is_editable
+    }, context_instance=RequestContext(request))
 
 
 @csrf_exempt
@@ -229,8 +257,14 @@ def get_work_info(request):
         start_year = now.year - 4
     degree_info = PostgraduateDegree.objects.filter(grade__gte=start_year)
     students = Postgraduate.objects.filter(degree__in=degree_info)
+
+    is_editable = 'false'
+    if request.user.staff.status == '1':
+        is_editable = 'true'
+
     return render_to_response("postmanage/work.html", {
-        'students' : students
+        'students': students,
+        'is_editable': is_editable
     }, context_instance=RequestContext(request))
 
 @csrf_exempt
@@ -258,7 +292,15 @@ def get_graduation_info(request):
         start_year = now.year - 4
     degree_info = PostgraduateDegree.objects.filter(grade__gte=start_year)
     students = Postgraduate.objects.filter(degree__in=degree_info)
-    return render_to_response("postmanage/graduation.html", locals(), context_instance=RequestContext(request))
+
+    is_editable = 'false'
+    if request.user.staff.status == '1':
+        is_editable = 'true'
+
+    return render_to_response("postmanage/graduation.html", {
+        'students': students,
+        'is_editable': is_editable
+    }, context_instance=RequestContext(request))
 
 
 @csrf_exempt
@@ -300,7 +342,9 @@ def get_detail(request, id):
         student = None
     else:
         student = students[0]
-    return render_to_response("postmanage/detail.html", {'student': student}, context_instance=RequestContext(request))
+    return render_to_response("postmanage/detail.html", {
+        'student': student
+    }, context_instance=RequestContext(request))
 
 
 def parse_data(request, excel_data):
@@ -312,7 +356,8 @@ def parse_data(request, excel_data):
         std_num = table.cell(i, 0).value
         if isinstance(std_num, float):
             std_num = int(std_num)
-        students = Postgraduate.objects.filter(number=std_num)
+        grade = str(std_num)[0:4]
+        students = Postgraduate.objects.filter(number=std_num, grade=grade)
 
         if len(students) == 0:
             student = Postgraduate(number=std_num)
@@ -363,11 +408,9 @@ def parse_data(request, excel_data):
                     elif table.cell(0, j).value == u'导师':
                         student.tutor = value
                     elif table.cell(0, j).value == u'学位':
-                         degree.degree= value
+                         degree.degree = value
                     elif table.cell(0, j).value == u'班号':
-                        degree.class_name= value
-                    elif table.cell(0, j).value == u'年级':
-                        degree.grade= value
+                        degree.class_name = value
                     elif table.cell(0, j).value == u'初试成绩':
                         degree.first_test= value
                     elif table.cell(0, j).value == u'开题时间':
