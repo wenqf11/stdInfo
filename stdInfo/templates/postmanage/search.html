@@ -226,6 +226,15 @@
                                         <th data-valign="middle" data-align="center" data-field="regular_school" data-sortable="true" data-editable={{ is_editable }}>本科毕业学校</th>
                                         <th data-valign="middle" data-align="center" data-field="regular_major" data-sortable="true" data-editable={{ is_editable }}>本科专业</th>
                                     {% endif %}
+                                    {% if award_info %}
+                                        <th data-valign="middle" data-halign="center"  data-field="scholarship" data-sortable="true" data-editable={{ is_editable }}>奖学金</th>
+                                        <th data-valign="middle" data-halign="center"  data-field="grant" data-sortable="true" data-editable={{ is_editable }}>助学金</th>
+                                        <th data-valign="middle" data-halign="center"  data-field="loan" data-sortable="true" data-editable={{ is_editable }}>贷款</th>
+                                    {% endif %}
+                                    {% if work_info %}
+                                        <th data-valign="middle" data-halign="center"  data-field="competition" data-sortable="true" data-editable={{ is_editable }}>赛事</th>
+                                        <th data-valign="middle" data-halign="center"  data-field="social_work" data-sortable="true" data-editable={{ is_editable }}>社工</th>
+                                    {% endif %}
                                     {% if graduation_info %}
                                         <th data-valign="middle" data-align="center" data-field="date" data-sortable="true" data-editable={{ is_editable }}>毕业日期</th>
                                         <th data-valign="middle" data-align="center" data-field="destination"data-sortable="true" data-editable={{ is_editable }}>毕业去向</th>
@@ -240,6 +249,7 @@
                           <tbody>
                          {%  for student in students %}
                             <tr>
+                              <td></td>
                               <td><a href="/postmanage/detail/{{ student.id }}">详情</a></td>
                               <td>{{ student.id }}</td>
                               <td>{{ student.number }}</td>
@@ -263,6 +273,15 @@
                                   <td>{{ student.degree.admissions_rank }}</td>
                                   <td>{{ student.degree.regular_school }}</td>
                                   <td>{{ student.degree.regular_major }}</td>
+                              {% endif %}
+                              {% if award_info %}
+                                  <td>{{ student.scholarship_loan.scholarship }}</td>
+                                  <td>{{ student.scholarship_loan.grant }}</td>
+                                  <td>{{ student.scholarship_loan.loan }}</td>
+                              {% endif %}
+                              {% if work_info %}
+                                  <td>{{ student.experience.competition }}</td>
+                                  <td>{{ student.experience.social_work }}</td>
                               {% endif %}
                               {% if graduation_info %}
                                   <td>{{ student.graduation.date | date:"Y-m-d"}}</td>

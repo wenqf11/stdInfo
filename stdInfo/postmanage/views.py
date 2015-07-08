@@ -357,7 +357,7 @@ def parse_data(request, excel_data):
         if isinstance(std_num, float):
             std_num = int(std_num)
         grade = str(std_num)[0:4]
-        students = Postgraduate.objects.filter(number=std_num, grade=grade)
+        students = Postgraduate.objects.filter(number=std_num)
 
         if len(students) == 0:
             student = Postgraduate(number=std_num)
@@ -386,12 +386,17 @@ def parse_data(request, excel_data):
             else:
                 experience = Experience()
 
+        degree.grade = grade
         for j in xrange(1, ncols):
+            if i == 1 and j == 1:
+                value = 2
             try:
                 if table.cell(0, j).value in basic_info_set:
                     value = table.cell(i, j).value
                     if value == "":
                         continue
+                    if isinstance(value, float):
+                        value = int(value)
                     if table.cell(0, j).value == u'姓名':
                         student.name = value
                     elif table.cell(0, j).value == u'性别':
@@ -414,9 +419,11 @@ def parse_data(request, excel_data):
                     elif table.cell(0, j).value == u'初试成绩':
                         degree.first_test= value
                     elif table.cell(0, j).value == u'开题时间':
-                        value = str(int(value))
-                        if len(value) == 8:
+                        try:
+                            value = str(value)
                             degree.opening_time = datetime.datetime.strptime(value, "%Y%m%d")
+                        except:
+                            degree.opening_time = None
                     elif table.cell(0, j).value == u'交流学校/时间':
                         degree.exchange_info= value
                     elif table.cell(0, j).value == u'招生途径':
@@ -430,9 +437,11 @@ def parse_data(request, excel_data):
                     elif table.cell(0, j).value == u'本科专业':
                         degree.regular_major= value
                     elif table.cell(0, j).value == u'毕业日期':
-                        value = str(int(value))
-                        if len(value) == 8:
+                        try:
+                            value = str(value)
                             graduation.date = datetime.datetime.strptime(value, "%Y%m%d")
+                        except:
+                            graduation.date = None
                     elif table.cell(0, j).value == u'毕业去向':
                         graduation.destination = value
                     elif table.cell(0, j).value == u'职务':
